@@ -1,0 +1,2490 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
+
+  <meta name="author" content="Mathieu Fontaine">
+  <meta name="dcterms.date" content="2026-02-11">
+  <title>CM3 — Apprendre les représentations du locuteur</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-0427d8d92a431aa6a6430e53ec02a470.css">
+  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">CM3 — Apprendre les représentations du locuteur</h1>
+  <p class="subtitle">Softmax, géométrie hypersphérique, AAM-Softmax et augmentations</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Mathieu Fontaine
+</div>
+</div>
+</div>
+
+  <p class="date">2026-02-11</p>
+</section>
+<section class="slide level2">
+
+<p><link rel="stylesheet" href="assets/css/course.css"></p>
+</section>
+<section id="objectifs-du-cm3" class="slide level2">
+<h2>Objectifs du CM3</h2>
+<p>À la fin de la séance, vous devez pouvoir :</p>
+<ul>
+<li>expliquer <strong>comment une loss de classification façonne un espace d’embeddings</strong> ;</li>
+<li>dériver le passage du softmax classique au <strong>softmax normalisé</strong> ;</li>
+<li>distinguer <strong>AM-Softmax</strong> et <strong>AAM-Softmax</strong> ;</li>
+<li>interpréter le rôle de la <strong>marge angulaire</strong> et du facteur d’échelle <span class="math inline">\(s\)</span> ;</li>
+<li>comparer une loss de classification à marge à des objectifs de <strong>metric learning</strong> (triplet, GE2E, prototypical) ;</li>
+<li>expliquer ce que l’<strong>augmentation de données</strong> apprend à l’extracteur et au backend PLDA ;</li>
+<li>relier apprentissage <strong>closed-set</strong> et utilisation <strong>open-set</strong> en vérification.</li>
+</ul>
+</section>
+<section id="fil-directeur" class="slide level2">
+<h2>Fil directeur</h2>
+<div class="pipeline">
+<div class="pipe-node">
+audio <span class="math inline">\(u\)</span>
+</div>
+<div class="pipe-arrow">
+→
+</div>
+<div class="pipe-node red">
+extracteur <span class="math inline">\(f_\theta\)</span>
+</div>
+<div class="pipe-arrow">
+→
+</div>
+<div class="pipe-node">
+embedding <span class="math inline">\(x\)</span>
+</div>
+<div class="pipe-arrow">
+→
+</div>
+<div class="pipe-node">
+score
+</div>
+</div>
+<p>Aujourd’hui, la question est :</p>
+<p><span class="math display">\[
+\boxed{\text{qu'est-ce qui force }x\text{ à porter l'identité du locuteur ?}}
+\]</span></p>
+</section>
+<section id="question-de-départ" class="slide level2">
+<h2>Question de départ</h2>
+<div class="cm2-question">
+<p>Dans un x-vector ou un ECAPA, où apparaît explicitement le <strong>nom du locuteur</strong> pendant l’apprentissage ?</p>
+</div>
+<div class="fragment">
+<div class="cm2-answer">
+<p>Dans la <strong>fonction de coût</strong> : pendant l’apprentissage, chaque utterance est associé à une classe locuteur. L’extracteur est optimisé pour rendre cette classification possible.</p>
+</div>
+</div>
+</section>
+<section id="apprentissage-fermé-utilisation-ouverte" class="slide level2">
+<h2>Apprentissage fermé, utilisation ouverte</h2>
+<p>Pendant l’apprentissage, on connaît un ensemble de locuteurs :</p>
+<p><span class="math display">\[
+\mathcal S_{\mathrm{train}}=\{1,\dots,K\}.
+\]</span></p>
+<p>On entraîne donc un <strong>classifieur <span class="math inline">\(K\)</span>-classes</strong>. Pourtant, au test, les locuteurs peuvent être absents de <span class="math inline">\(\mathcal S_{\mathrm{train}}\)</span>.</p>
+<p><span class="math display">\[
+\boxed{\text{closed-set training}\quad\longrightarrow\quad\text{open-set verification}}
+\]</span></p>
+<div class="fragment">
+<p>Le classifieur est un <strong>outil d’apprentissage</strong> : sa dernière couche sera jetée. Ce que l’on veut conserver est la géométrie de l’espace d’embeddings.</p>
+</div>
+</section>
+<section id="deux-objets-à-ne-pas-confondre" class="slide level2">
+<h2>Deux objets à ne pas confondre</h2>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Classifieur d’apprentissage</strong></p>
+<p><span class="math display">\[
+x\mapsto (g_1,\dots,g_K)
+\]</span></p>
+<p>Il n’est généralement <strong>pas utilisé</strong> pour la vérification finale.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Embedding</strong></p>
+<p><span class="math display">\[
+x=f_\theta(u)
+\]</span></p>
+<p>C’est lui qui sera comparé par cosinus ou PLDA.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="le-classifieur-comme-contrainte-géométrique" class="slide level2">
+<h2>Le classifieur comme contrainte géométrique</h2>
+<p>La couche de classification associe à chaque locuteur <span class="math inline">\(k\)</span> un vecteur de poids <span class="math inline">\(w_k\)</span>.</p>
+<p>Pendant l’apprentissage, on pousse l’embedding <span class="math inline">\(x\)</span> à produire un logit élevé pour son locuteur <span class="math inline">\(y\)</span> :</p>
+<p><span class="math display">\[
+w_y^\top x+b_y \quad \text{grand}.
+\]</span></p>
+<p>Les poids <span class="math inline">\(w_k\)</span> vont progressivement jouer le rôle de <strong>directions/prototypes de classes</strong>.</p>
+</section>
+<section id="ce-que-nous-allons-modifier-progressivement" class="slide level2">
+<h2>Ce que nous allons modifier progressivement</h2>
+<p>On partira de</p>
+<p><span class="math display">\[
+g_k=w_k^\top x+b_k
+\]</span></p>
+<p>puis on retirera les degrés de liberté qui nous gênent :</p>
+<p><span class="math display">\[
+\text{biais}\;\to\;0,
+\qquad
+\|w_k\|\to1,
+\qquad
+\|x\|\to1,
+\]</span></p>
+<p>pour arriver à</p>
+<p><span class="math display">\[
+\boxed{g_k=s\cos\theta_k.}
+\]</span></p>
+</section>
+<section id="plan" class="slide level2">
+<h2>Plan</h2>
+<ol type="1">
+<li>Softmax + cross-entropy : que fait réellement la classification ?</li>
+<li>Normalisation : faire de l’angle la variable centrale</li>
+<li>Marges : AM-Softmax puis AAM-Softmax</li>
+<li>Au-delà d’AAM : triplet, GE2E et prototypes de batch</li>
+<li>Augmentations : apprendre des invariances utiles</li>
+<li>Recette pratique : entraîner sans se tromper de métrique</li>
+<li>Transition vers le TD</li>
+</ol>
+</section>
+<section>
+<section id="de-la-classification-à-la-géométrie" class="title-slide slide level1 center">
+<h1>1. De la classification à la géométrie</h1>
+
+</section>
+<section id="le-réseau-produit-un-embedding" class="slide level2">
+<h2>Le réseau produit un embedding</h2>
+<p>Pour un utterance <span class="math inline">\(u\)</span>, l’extracteur donne un embedding</p>
+<p><span class="math display">\[
+\boxed{x=f_\theta(u)\in\mathbb R^d}.
+\]</span></p>
+<p>La dernière couche d’apprentissage est linéaire et produit les logits</p>
+<p><span class="math display">\[
+\boxed{g=W^\top x+b},
+\]</span></p>
+<p>avec <span class="math inline">\(W=[w_1,\ldots,w_K]\in\mathbb R^{d\times K}\)</span>.</p>
+</section>
+<section id="un-logit-par-locuteur" class="slide level2">
+<h2>Un logit par locuteur</h2>
+<p>Pour la classe <span class="math inline">\(k\)</span> :</p>
+<p><span class="math display">\[
+\boxed{g_k=w_k^\top x+b_k.}
+\]</span></p>
+<p>Le logit <span class="math inline">\(g_k\)</span> est un <strong>score non normalisé de classification</strong>.</p>
+<p>Il ne s’agit pas encore d’une probabilité.</p>
+</section>
+<section id="softmax-des-logits-aux-probabilités" class="slide level2">
+<h2>Softmax : des logits aux probabilités</h2>
+<p>À partir des logits <span class="math inline">\(g_1,\ldots,g_K\)</span> :</p>
+<p><span class="math display">\[
+p_k=P(y=k\mid x)=\frac{e^{g_k}}{\sum_{j=1}^{K}e^{g_j}}.
+\]</span></p>
+<p>Le softmax transforme les logits en nombres positifs de somme <span class="math inline">\(1\)</span>, mais ne change pas la classe gagnante :</p>
+<p><span class="math display">\[
+\arg\max_k p_k=\arg\max_k g_k.
+\]</span></p>
+<p>Ajouter la même constante à tous les logits ne change pas non plus les probabilités.</p>
+</section>
+<section id="cross-entropy" class="slide level2">
+<h2>Cross-entropy</h2>
+<p>Pour un exemple de classe vraie <span class="math inline">\(y\)</span> :</p>
+<p><span class="math display">\[
+\boxed{
+\mathcal L_{\mathrm{CE}}
+=-\log p_y
+}
+\]</span></p>
+<p>soit</p>
+<p><span class="math display">\[
+\mathcal L_{\mathrm{CE}}
+=-g_y+\log\sum_{j=1}^K e^{g_j}.
+\]</span></p>
+</section>
+<section id="que-fait-réellement-la-cross-entropy" class="slide level2">
+<h2>Que fait réellement la cross-entropy ?</h2>
+<p>Pour la classe vraie <span class="math inline">\(y\)</span> :</p>
+<p><span class="math display">\[
+\mathcal L_{\mathrm{CE}}
+=-\log
+\frac{e^{g_y}}
+{e^{g_y}+\sum_{j\neq y}e^{g_j}}.
+\]</span></p>
+<p>Pour diminuer cette loss, il faut rendre le logit de la classe vraie <strong>plus grand relativement aux logits concurrents</strong>.</p>
+<p>Autrement dit, pour chaque concurrent <span class="math inline">\(j\neq y\)</span>, on cherche à augmenter la marge de logit</p>
+<p><span class="math display">\[
+\boxed{g_y-g_j}.
+\]</span></p>
+<div class="fragment">
+<p>Ce n’est pas une consigne indépendante « monter <span class="math inline">\(g_y\)</span> et descendre chaque <span class="math inline">\(g_j\)</span> » : c’est <strong>l’écart relatif entre la classe vraie et les autres classes</strong> qui compte dans le softmax.</p>
+</div>
+</section>
+<section id="gradient-par-rapport-aux-logits" class="slide level2">
+<h2>Gradient par rapport aux logits</h2>
+<p>On introduit d’abord la cible <strong>one-hot</strong> <span class="math inline">\(t=(t_1,\ldots,t_K)\)</span> :</p>
+<p><span class="math display">\[
+t_k = \mathbf 1[k=y]
+=
+\begin{cases}
+1 &amp; \text{si } k=y,\\
+0 &amp; \text{sinon}.
+\end{cases}
+\]</span></p>
+<p>La dérivée de la cross-entropy par rapport au logit <span class="math inline">\(g_k\)</span> vaut alors :</p>
+<p><span class="math display">\[
+\boxed{
+\frac{\partial\mathcal L_{\mathrm{CE}}}{\partial g_k}
+=p_k-t_k
+}
+\]</span></p>
+<p>Donc :</p>
+<ul>
+<li>pour la classe vraie : <span class="math inline">\(p_y-1&lt;0\)</span> ;</li>
+<li>pour les autres : <span class="math inline">\(p_k&gt;0\)</span>.</li>
+</ul>
+</section>
+<section id="gradient-sur-lembedding" class="slide level2">
+<h2>Gradient sur l’embedding</h2>
+<p>Comme <span class="math inline">\(g=W^\top x+b\)</span> :</p>
+<p><span class="math display">\[
+\boxed{
+\nabla_x\mathcal L_{\mathrm{CE}}
+=
+W(p-t)
+}
+\]</span></p>
+<p>où <span class="math inline">\(t\)</span> est le vecteur one-hot défini à la slide précédente.</p>
+<p>L’embedding est donc attiré vers <span class="math inline">\(w_y\)</span> et repoussé par une combinaison des autres <span class="math inline">\(w_j\)</span>.</p>
+</section>
+<section id="la-cross-entropy-rapproche-t-elle-explicitement-deux-utterances" class="slide level2">
+<h2>La cross-entropy rapproche-t-elle explicitement deux utterances ?</h2>
+<div class="cm2-question">
+<p>Deux utterances du même locuteur sont-elles directement comparées dans <span class="math inline">\(\mathcal L_{\mathrm{CE}}\)</span> ?</p>
+</div>
+<div class="fragment">
+<div class="cm2-answer">
+<p><strong>Non.</strong> Chaque embedding <span class="math inline">\(x\)</span> est comparé aux poids de classification <span class="math inline">\(w_1,\ldots,w_K\)</span>.</p>
+<p>La compacité intra-locuteur apparaît donc <strong>indirectement</strong>, parce que tous les utterances d’un même locuteur doivent être bien classés par le même poids <span class="math inline">\(w_y\)</span>.</p>
+</div>
+</div>
+</section>
+<section id="de-lembedding-à-la-cross-entropy" class="slide level2">
+<h2>De l’embedding à la cross-entropy</h2>
+
+<img data-src="assets/img/cm3/softmax_loss_plus_linear.png" class="cm2-img-wide r-stretch"><div class="notation">
+<p><strong>Notations utilisées dans la suite :</strong> <span class="math inline">\(x\)</span> = embedding, <span class="math inline">\(g=W^\top x+b\)</span> = logits, <span class="math inline">\(p=f(g)=\operatorname{softmax}(g)\)</span> = probabilités, <span class="math inline">\(t\)</span> = cible one-hot et <span class="math inline">\(\mathcal L_{\mathrm{CE}}\)</span> = cross-entropy.</p>
+<p>Pour chaque classe <span class="math inline">\(k\)</span>, <span class="math inline">\(t_k=1\)</span> uniquement si <span class="math inline">\(k\)</span> est la classe vraie (<span class="math inline">\(k=y\)</span>), et <span class="math inline">\(t_k=0\)</span> sinon.</p>
+<p>La figure omet le biais (<span class="math inline">\(b=0\)</span>) ; nous allons justement expliquer ensuite pourquoi on le supprime dans les losses angulaires.</p>
+</div>
+</section>
+<section id="que-représente-géométriquement-le-poids-w_k" class="slide level2">
+<h2>Que représente géométriquement le poids <span class="math inline">\(w_k\)</span> ?</h2>
+<p>La colonne <span class="math inline">\(w_k\)</span> de la dernière couche est un <strong>vecteur appris associé à la classe d’entraînement <span class="math inline">\(k\)</span></strong>.</p>
+<p>Ce n’est pas, en général, la moyenne des embeddings du locuteur <span class="math inline">\(k\)</span>.</p>
+<p>On peut décomposer le produit scalaire :</p>
+<p><span class="math display">\[
+\boxed{
+w_k^\top x
+=
+\|w_k\|_2\,\|x\|_2\cos\theta_k
+}
+\]</span></p>
+<p>où <span class="math inline">\(\theta_k=\angle(x,w_k)\)</span>.</p>
+<div class="fragment">
+<p>Après normalisation, seule la <strong>direction</strong> de <span class="math inline">\(w_k\)</span> compte. On l’utilisera alors comme une <strong>direction de référence de classe</strong>, souvent appelée « prototype de classe » dans ce contexte.</p>
+</div>
+</section>
+<section id="trois-façons-daugmenter-un-logit" class="slide level2">
+<h2>Trois façons d’augmenter un logit</h2>
+<p>On repart de la décomposition</p>
+<p><span class="math display">\[
+\boxed{
+g_y
+=
+w_y^\top x+b_y
+=
+\|w_y\|_2\,\|x\|_2\cos\theta_y+b_y.
+}
+\]</span></p>
+<p>Le réseau peut donc augmenter <span class="math inline">\(g_y\)</span> de plusieurs façons :</p>
+<ol type="1">
+<li><strong>réduire l’angle</strong> <span class="math inline">\(\theta_y\)</span> ;</li>
+<li><strong>augmenter la norme</strong> <span class="math inline">\(\|x\|_2\)</span> ;</li>
+<li>augmenter <span class="math inline">\(\|w_y\|_2\)</span> ou exploiter le <strong>biais</strong> <span class="math inline">\(b_y\)</span>.</li>
+</ol>
+<p>Or, à l’inférence, un backend cosinus ne conservera que l’information angulaire. C’est pourquoi nous allons progressivement supprimer les autres degrés de liberté.</p>
+</section>
+<section id="deux-degrés-de-liberté-gênants-norme-et-biais" class="slide level2">
+<h2>Deux degrés de liberté « gênants » : norme et biais</h2>
+<p>Le logit s’écrit</p>
+<p><span class="math display">\[
+g_k=\|w_k\|\,\|x\|\cos\theta_k+b_k.
+\]</span></p>
+<p>Ils ne sont pas « mauvais » en soi : ils sont surtout <strong>mal alignés avec un score cosinus</strong> utilisé ensuite en vérification.</p>
+<ul>
+<li>augmenter <span class="math inline">\(\|x\|\)</span> ou <span class="math inline">\(\|w_k\|\)</span> peut augmenter le logit <strong>sans améliorer l’angle</strong> ;</li>
+<li>le biais <span class="math inline">\(b_k\)</span> déplace la frontière, qui ne passe plus nécessairement par l’origine.</li>
+</ul>
+<p>On va donc les retirer afin que l’objectif d’apprentissage dépende de la même géométrie que le score cosinus utilisé au test.</p>
+</section>
+<section id="bonne-classification-bons-embeddings" class="slide level2">
+<h2>Bonne classification ≠ bons embeddings</h2>
+<p>Pendant l’apprentissage fermé, une prédiction correcte exige seulement</p>
+<p><span class="math display">\[
+\boxed{g_y&gt;g_j\qquad\forall j\neq y.}
+\]</span></p>
+<p>Cela indique que <span class="math inline">\(x\)</span> est bien classé <strong>par la tête <span class="math inline">\(W,b\)</span> apprise sur les speakers du train</strong>.</p>
+<p>Mais à l’inférence, cette tête disparaît. On compare directement deux embeddings :</p>
+<p><span class="math display">\[
+\boxed{s(x_e,x_t)=\cos(x_e,x_t)}
+\]</span></p>
+<p>pour des locuteurs qui peuvent n’avoir jamais été vus pendant l’entraînement.</p>
+<div class="fragment">
+<p>Une excellente accuracy sur les classes du train ne garantit donc pas, à elle seule, une bonne séparation <strong>target / non-target sur de nouveaux locuteurs</strong>. La validation doit utiliser des speakers distincts de ceux du train.</p>
+</div>
+</section>
+<section id="widget-géométrie-du-softmax" class="slide level2">
+<h2>Widget — géométrie du softmax</h2>
+<div class="cm3-widget" data-cm3-widget="softmax">
+<div class="cm3-widget-loading">
+Chargement du widget…
+</div>
+</div>
+<div class="click-hint">
+Faites varier l’angle, la norme et la normalisation. Observez ce qui change dans les logits et dans les probabilités.
+</div>
+</section>
+<section id="à-retenir-du-widget" class="slide level2">
+<h2>À retenir du widget</h2>
+<p>Sans normalisation :</p>
+<p><span class="math display">\[
+g_k=\|w_k\|\,\|x\|\cos\theta_k+b_k.
+\]</span></p>
+<p>La norme peut rendre le softmax plus confiant <strong>sans améliorer l’angle</strong>.</p>
+<p>Pour la vérification cosinus, c’est un décalage entre objectif d’apprentissage et objectif final.</p>
+</section>
+<section id="vers-un-classifieur-purement-angulaire" class="slide level2">
+<h2>Vers un classifieur purement angulaire</h2>
+<p>On retire progressivement les degrés de liberté inutiles :</p>
+<p><span class="math display">\[
+b_k=0,
+\qquad
+\|w_k\|_2=1,
+\qquad
+\hat x=\frac{x}{\|x\|_2}.
+\]</span></p>
+<p>Alors</p>
+<p><span class="math display">\[
+\boxed{w_k^\top\hat x=\cos\theta_k.}
+\]</span></p>
+<p>La décision dépend désormais uniquement de l’angle avec les directions de référence des classes.</p>
+<div class="notation">
+Pour alléger les équations, dans la suite de la partie angulaire on notera simplement <span class="math inline">\(x\)</span> cette version normalisée <span class="math inline">\(\hat x\)</span>.
+</div>
+<div class="fragment">
+<p><strong>Attention :</strong> cette normalisation borne les logits dans <span class="math inline">\([-1,1]\)</span>. Nous réintroduirons un facteur d’échelle <span class="math inline">\(s\)</span> un peu plus loin pour contrôler la dynamique du softmax <strong>sans modifier la géométrie angulaire</strong>.</p>
+</div>
+</section>
+<section id="le-classifieur-devient-angulaire" class="slide level2">
+<h2>Le classifieur devient angulaire</h2>
+<p>La décision entre deux classes devient :</p>
+<p><span class="math display">\[
+\cos\theta_1
+\underset{2}{\overset{1}{\gtrless}}
+\cos\theta_2.
+\]</span></p>
+<p>Sur <span class="math inline">\([0,\pi]\)</span>, le cosinus est décroissant :</p>
+<p><span class="math display">\[
+\theta_1
+\underset{1}{\overset{2}{\gtrless}}
+\theta_2.
+\]</span></p>
+<p>On choisit donc la <strong>direction de prototype la plus proche</strong>.</p>
+</section></section>
+<section>
+<section id="normaliser-lhypersphère" class="title-slide slide level1 center">
+<h1>2. Normaliser : l’hypersphère</h1>
+
+</section>
+<section id="lhypersphère" class="slide level2">
+<h2>L’hypersphère</h2>
+<p>Après normalisation :</p>
+<p><span class="math display">\[
+x\in\mathbb S^{d-1}
+=
+\{u\in\mathbb R^d:\|u\|_2=1\}.
+\]</span></p>
+<p>En dimension <span class="math inline">\(d=3\)</span>, c’est une sphère ordinaire.</p>
+<p>En dimension <span class="math inline">\(d=192\)</span> ou <span class="math inline">\(256\)</span>, c’est une hypersphère.</p>
+</section>
+<section id="cosinus-et-distance-euclidienne" class="slide level2">
+<h2>Cosinus et distance euclidienne</h2>
+<p>Pour <span class="math inline">\(\|x_i\|=\|x_j\|=1\)</span> :</p>
+<p><span class="math display">\[
+\begin{aligned}
+\|x_i-x_j\|_2^2
+&amp;=\|x_i\|^2+\|x_j\|^2-2x_i^\top x_j\\
+&amp;=2-2\cos\theta_{ij}.
+\end{aligned}
+\]</span></p>
+</section>
+<section id="question-distance-et-cosinus" class="slide level2">
+<h2>Question — distance et cosinus</h2>
+<div class="cm2-question">
+<p>Sur l’hypersphère, minimiser la distance euclidienne entre deux embeddings est-il équivalent à maximiser leur similarité cosinus ?</p>
+</div>
+<div class="fragment">
+<div class="cm2-answer">
+<p>Oui. Pour deux embeddings normalisés,</p>
+<p><span class="math display">\[
+\|x_i-x_j\|_2^2=2-2\cos\theta_{ij}.
+\]</span></p>
+<p>Les deux critères donnent donc exactement le même ordre des paires tant que les normes sont fixées à <span class="math inline">\(1\)</span>.</p>
+</div>
+</div>
+</section>
+<section id="directions-de-classe-et-frontière-sur-la-sphère" class="slide level2">
+<h2>Directions de classe et frontière sur la sphère</h2>
+<p>Après normalisation, chaque poids <span class="math inline">\(w_k\)</span> est une <strong>direction de référence apprise</strong> pour le locuteur d’entraînement <span class="math inline">\(k\)</span> :</p>
+<p><span class="math display">\[
+w_k\in\mathbb S^{d-1}.
+\]</span></p>
+<p>Dans la littérature, on parle souvent de <strong>prototype de classe</strong>. Ici, ce mot désigne donc <span class="math inline">\(w_k\)</span> ; il ne signifie pas nécessairement « moyenne des embeddings ».</p>
+<p>Pour bien classer un exemple target <span class="math inline">\(y\)</span> :</p>
+<p><span class="math display">\[
+\theta_y&lt;\theta_j\qquad\forall j\neq y.
+\]</span></p>
+<p>À deux classes, la frontière vérifie</p>
+<p><span class="math display">\[
+\theta_1=\theta_2,
+\]</span></p>
+<p>c’est-à-dire la <strong>bissectrice angulaire</strong> des deux prototypes.</p>
+</section>
+<section id="visualisation" class="slide level2">
+<h2>Visualisation</h2>
+
+<img data-src="assets/img/cm3/softmax_intuition.png" class="cm2-img-tall r-stretch"><div class="refs">
+La figure illustre la décision à deux classes lorsque les normes des poids sont contrôlées.
+</div>
+</section>
+<section id="ce-que-lon-veut-géométriquement" class="slide level2">
+<h2>Ce que l’on veut géométriquement</h2>
+<p>Deux objectifs complémentaires :</p>
+<p><strong>Compacité intra-speaker</strong></p>
+<p><span class="math display">\[
+\theta(x_{k,j},w_k)\text{ petit}.
+\]</span></p>
+<p><strong>Séparation inter-speaker</strong></p>
+<p><span class="math display">\[
+\theta(w_k,w_\ell)\text{ grand},\qquad k\neq\ell.
+\]</span></p>
+<p>Avec beaucoup de locuteurs, cela devient un problème de <strong>packing sphérique</strong> : la place angulaire disponible est limitée.</p>
+</section>
+<section id="pourquoi-faut-il-un-facteur-déchelle" class="slide level2">
+<h2>Pourquoi faut-il un facteur d’échelle ?</h2>
+<p>Après normalisation pure :</p>
+<p><span class="math display">\[
+g_k=\cos\theta_k\in[-1,1].
+\]</span></p>
+<p>Même dans un cas idéal <span class="math inline">\(\cos\theta_y=1\)</span> et <span class="math inline">\(\cos\theta_j=-1\)</span>, on obtient</p>
+<p><span class="math display">\[
+p_y=\frac{e^2}{e^2+K-1}.
+\]</span></p>
+<p>Pour <span class="math inline">\(K=1000\)</span> :</p>
+<p><span class="math display">\[
+p_y\approx0.0073.
+\]</span></p>
+<p>La géométrie peut être parfaite tout en donnant un softmax très peu confiant.</p>
+</section>
+<section id="on-introduit-un-scale-s" class="slide level2">
+<h2>On introduit un scale <span class="math inline">\(s\)</span></h2>
+<p>On définit :</p>
+<p><span class="math display">\[
+\boxed{g_k=s\cos\theta_k}
+\]</span></p>
+<p>avec <span class="math inline">\(s&gt;0\)</span>.</p>
+<p>Le scale ne change pas l’ordre des classes :</p>
+<p><span class="math display">\[
+\arg\max_k s\cos\theta_k=\arg\max_k\cos\theta_k.
+\]</span></p>
+</section>
+<section id="le-scale-change-la-dynamique-pas-la-géométrie" class="slide level2">
+<h2>Le scale change la dynamique, pas la géométrie</h2>
+<p>Le softmax devient</p>
+<p><span class="math display">\[
+p_k=\frac{e^{s\cos\theta_k}}{\sum_j e^{s\cos\theta_j}}.
+\]</span></p>
+<p>Dans le cas idéal :</p>
+<p><span class="math display">\[
+p_{\max}(s)=\frac{e^{2s}}{e^{2s}+K-1}.
+\]</span></p>
+<p>Quand <span class="math inline">\(s\)</span> augmente, les probabilités deviennent plus pointues, mais l’ordre angulaire des classes ne change pas.</p>
+</section>
+<section id="widget-rôle-de-s" class="slide level2">
+<h2>Widget — rôle de <span class="math inline">\(s\)</span></h2>
+<div class="cm3-widget" data-cm3-widget="scale">
+<div class="cm3-widget-loading">
+Chargement du widget…
+</div>
+</div>
+<div class="click-hint">
+Faites varier <span class="math inline">\(K\)</span> et <span class="math inline">\(s\)</span>. Le widget affiche la probabilité maximale dans le cas idéal <span class="math inline">\(\cos\theta_y=1\)</span>, <span class="math inline">\(\cos\theta_j=-1\)</span>.
+</div>
+</section>
+<section id="normalisation-et-scale-rôles-différents" class="slide level2">
+<h2>Normalisation et scale : rôles différents</h2>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Normalisation</strong></p>
+<p>Fixe la géométrie :</p>
+<p><span class="math display">\[
+\|x\|=\|w_k\|=1.
+\]</span></p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Scale <span class="math inline">\(s\)</span></strong></p>
+<p>Fixe l’amplitude des logits :</p>
+<p><span class="math display">\[
+g_k=s\cos\theta_k.
+\]</span></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="softmax-normalisé" class="slide level2">
+<h2>Softmax normalisé</h2>
+<p>La loss devient :</p>
+<p><span class="math display">\[
+\boxed{
+\mathcal L_{\mathrm{CE}}
+=-\log
+\frac{e^{s\cos\theta_y}}
+{e^{s\cos\theta_y}+\sum_{j\neq y}e^{s\cos\theta_j}}
+}
+\]</span></p>
+<p>Nous avons maintenant une classification <strong>entièrement angulaire</strong>.</p>
+</section>
+<section id="pourquoi-ajouter-une-marge" class="slide level2">
+<h2>Pourquoi ajouter une marge ?</h2>
+<p>Avec le softmax normalisé, il suffit encore d’être du bon côté de la frontière :</p>
+<p><span class="math display">\[
+\theta_y&lt;\theta_j.
+\]</span></p>
+<p>Un embedding peut être très proche de cette frontière. Pour la vérification open-set, on veut une <strong>zone de sécurité</strong> supplémentaire :</p>
+<p><span class="math display">\[
+\boxed{\theta_y+\text{marge}&lt;\theta_j.}
+\]</span></p>
+</section>
+<section id="visualisation-pourquoi-une-marge" class="slide level2">
+<h2>Visualisation : pourquoi une marge ?</h2>
+
+<img data-src="assets/img/cm3/softmax_motivation.png" class="cm2-img-wide r-stretch"><div class="refs">
+La marge crée une zone que l’exemple target doit dépasser pour être considéré comme suffisamment bien placé.
+</div>
+</section>
+<section id="am-et-aam-que-signifient-les-acronymes" class="slide level2">
+<h2>AM et AAM : que signifient les acronymes ?</h2>
+<p>On rencontre deux variantes proches mais distinctes :</p>
+<ul>
+<li><strong>AM-Softmax = Additive Margin Softmax</strong> : on soustrait une marge dans l’espace du cosinus ;</li>
+<li><strong>AAM-Softmax = Additive Angular Margin Softmax</strong> : on ajoute une marge directement à l’angle target avant de reprendre le cosinus.</li>
+</ul>
+<p><span class="math display">\[
+\text{AM : }\cos\theta_y-m_c
+\qquad\text{vs}\qquad
+\text{AAM : }\cos(\theta_y+m_a).
+\]</span></p>
+<div class="fragment">
+<p>AAM n’est donc pas « AM puis une deuxième marge angulaire » : c’est <strong>une autre façon d’introduire la marge</strong>, directement dans l’angle.</p>
+</div>
+</section></section>
+<section>
+<section id="marges-am-softmax-et-aam-softmax" class="title-slide slide level1 center">
+<h1>3. Marges : AM-Softmax et AAM-Softmax</h1>
+
+</section>
+<section id="am-softmax-idée" class="slide level2">
+<h2>AM-Softmax : idée</h2>
+<p>AM-Softmax remplace, pour la classe vraie :</p>
+<p><span class="math display">\[
+\cos\theta_y
+\longrightarrow
+\cos\theta_y-m.
+\]</span></p>
+<p>Le logit target devient</p>
+<p><span class="math display">\[
+\boxed{g_y=s(\cos\theta_y-m).}
+\]</span></p>
+</section>
+<section id="am-softmax-condition-de-décision" class="slide level2">
+<h2>AM-Softmax : condition de décision</h2>
+<p>Pour battre un concurrent <span class="math inline">\(j\)</span> :</p>
+<p><span class="math display">\[
+\cos\theta_y-m&gt;\cos\theta_j.
+\]</span></p>
+<p>soit</p>
+<p><span class="math display">\[
+\cos\theta_y&gt;\cos\theta_j+m.
+\]</span></p>
+<p>La classe vraie doit donc disposer d’un avantage explicite dans l’espace des cosinus.</p>
+</section>
+<section id="am-une-marge-dans-le-cosinus-pas-dans-langle" class="slide level2">
+<h2>AM : une marge dans le cosinus, pas dans l’angle</h2>
+<p>La pénalité <span class="math inline">\(m\)</span> est constante dans l’espace des <strong>cosinus</strong>, mais la relation</p>
+<p><span class="math display">\[
+\cos\theta
+\]</span></p>
+<p>est non linéaire. Une même différence de cosinus ne correspond donc pas à une même différence angulaire suivant la valeur de <span class="math inline">\(\theta\)</span>.</p>
+</section>
+<section id="aam-softmax-marge-additive-angulaire" class="slide level2">
+<h2>AAM-Softmax : marge additive <strong>angulaire</strong></h2>
+<p>AAM signifie <strong>Additive Angular Margin</strong>.</p>
+<p>On part toujours du softmax normalisé</p>
+<p><span class="math display">\[
+g_y=s\cos\theta_y,
+\]</span></p>
+<p>mais, uniquement pour la classe vraie pendant l’entraînement, on ajoute la marge dans l’angle :</p>
+<p><span class="math display">\[
+\theta_y\longrightarrow\theta_y+m_a.
+\]</span></p>
+<p>Le logit target devient alors</p>
+<p><span class="math display">\[
+\boxed{g_y^{\mathrm{AAM}}=s\cos(\theta_y+m_a).}
+\]</span></p>
+<p>Ce n’est pas l’AM-Softmax auquel on ajouterait encore quelque chose : <strong>AM et AAM sont deux variantes différentes</strong>.</p>
+</section>
+<section id="aam-condition-à-deux-classes" class="slide level2">
+<h2>AAM : condition à deux classes</h2>
+<p>Pour battre un concurrent <span class="math inline">\(j\)</span> :</p>
+<p><span class="math display">\[
+\cos(\theta_y+m)&gt;\cos\theta_j.
+\]</span></p>
+<p>Dans le domaine usuel où le cosinus est décroissant :</p>
+<p><span class="math display">\[
+\boxed{\theta_y+m&lt;\theta_j.}
+\]</span></p>
+</section>
+<section id="aam-une-marge-directement-interprétable" class="slide level2">
+<h2>AAM : une marge directement interprétable</h2>
+<p>La condition</p>
+<p><span class="math display">\[
+\theta_y+m&lt;\theta_j
+\]</span></p>
+<p>signifie que l’exemple doit être au moins <span class="math inline">\(m\)</span> radians plus proche de son prototype que du concurrent.</p>
+<p>Par exemple :</p>
+<p><span class="math display">\[
+m=0.2\,\mathrm{rad}\approx11.5^\circ.
+\]</span></p>
+</section>
+<section id="formule-trigonométrique" class="slide level2">
+<h2>Formule trigonométrique</h2>
+<p>On peut développer :</p>
+<p><span class="math display">\[
+\cos(\theta_y+m)
+=
+\cos\theta_y\cos m
+-
+\sin\theta_y\sin m.
+\]</span></p>
+<p>C’est cette quantité qui remplace le logit target normalisé.</p>
+</section>
+<section id="am-et-aam-deux-pénalités-différentes" class="slide level2">
+<h2>AM et AAM : deux pénalités différentes</h2>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Loss</th>
+<th style="text-align: right;">Logit target</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>normalized softmax</td>
+<td style="text-align: right;"><span class="math inline">\(s\cos\theta_y\)</span></td>
+</tr>
+<tr class="even">
+<td>AM-Softmax</td>
+<td style="text-align: right;"><span class="math inline">\(s(\cos\theta_y-m_c)\)</span></td>
+</tr>
+<tr class="odd">
+<td>AAM-Softmax</td>
+<td style="text-align: right;"><span class="math inline">\(s\cos(\theta_y+m_a)\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Pour une petite marge angulaire,</p>
+<p><span class="math display">\[
+\cos(\theta_y+m_a)\approx\cos\theta_y-m_a\sin\theta_y,
+\]</span></p>
+<p>ce qui montre que la pénalité AAM dépend de l’angle courant.</p>
+</section>
+<section id="figure-historique-effet-des-losses-à-marge-sur-les-embeddings" class="slide level2">
+<h2>Figure historique : effet des losses à marge sur les embeddings</h2>
+
+<img data-src="assets/img/cm3/A_softmax.png" class="cm2-img-wide r-stretch"><p>Dans cette figure, <strong>chaque point est un embedding normalisé</strong> et chaque couleur correspond à une classe.</p>
+<ul>
+<li><strong>Softmax</strong> : les classes peuvent rester assez étalées sur la sphère ;</li>
+<li><strong>NormFace</strong> : poids et features sont normalisés ;</li>
+<li><strong>SphereFace</strong> : une marge angulaire multiplicative est imposée ;</li>
+<li><strong>AM-Softmax</strong> : la marge additive dans le cosinus resserre progressivement les clusters lorsque <span class="math inline">\(m\)</span> augmente.</li>
+</ul>
+<div class="fragment">
+<p>Avec nos notations, l’idée à regarder est donc la <strong>compacité intra-classe</strong> et la <strong>séparation angulaire inter-classe</strong>. Cette figure vient du papier AM-Softmax ; elle n’illustre pas directement la formule AAM <span class="math inline">\(\cos(\theta_y+m_a)\)</span> vue juste après.</p>
+</div>
+<div class="refs">
+Wang et al., « Additive Margin Softmax for Face Verification », IEEE SPL, 2018.
+</div>
+</section>
+<section id="widget-aam-softmax" class="slide level2">
+<h2>Widget — AAM-Softmax</h2>
+<div class="cm3-widget" data-cm3-widget="aam">
+<div class="cm3-widget-loading">
+Chargement du widget…
+</div>
+</div>
+<div class="click-hint">
+Déplacez l’embedding et faites varier <span class="math inline">\(m\)</span> et <span class="math inline">\(s\)</span>. Regardez la frontière requise pour que la classe 1 reste correcte.
+</div>
+</section>
+<section id="ce-quil-faut-regarder-dans-le-widget" class="slide level2">
+<h2>Ce qu’il faut regarder dans le widget</h2>
+<p>Trois quantités :</p>
+<p><span class="math display">\[
+\theta_y,
+\qquad
+\theta_j,
+\qquad
+\theta_y+m.
+\]</span></p>
+<p>La classification target avec AAM exige :</p>
+<p><span class="math display">\[
+\theta_y+m&lt;\theta_j.
+\]</span></p>
+</section>
+<section id="la-marge-nexiste-que-pendant-lapprentissage" class="slide level2">
+<h2>La marge n’existe que pendant l’apprentissage</h2>
+<p>Pendant l’apprentissage, le label <span class="math inline">\(y\)</span> est connu : on modifie uniquement le logit target <span class="math inline">\(g_y\)</span>.</p>
+<p>À l’inférence, il n’y a plus de classe vraie parmi les <span class="math inline">\(K\)</span> speakers d’apprentissage :</p>
+<p><span class="math display">\[
+\boxed{\text{on ne calcule pas }\cos(\theta+m)\text{ entre enrollment et test}.}
+\]</span></p>
+<p>On extrait les embeddings et on utilise le backend choisi : cosinus ou PLDA.</p>
+</section>
+<section id="que-devient-la-couche-de-classification" class="slide level2">
+<h2>Que devient la couche de classification ?</h2>
+<p>Après entraînement :</p>
+<p><span class="math display">\[
+\boxed{W\text{ est jetée}}
+\]</span></p>
+<p>et on conserve :</p>
+<p><span class="math display">\[
+\boxed{f_\theta(u).}
+\]</span></p>
+<p>Le but de <span class="math inline">\(W\)</span> était de sculpter l’espace d’embeddings.</p>
+</section>
+<section id="effet-géométrique-recherché" class="slide level2">
+<h2>Effet géométrique recherché</h2>
+<p>AAM cherche simultanément à :</p>
+<ul>
+<li>réduire la dispersion intra-speaker autour du prototype ;</li>
+<li>créer une zone de sécurité entre les régions de décision.</li>
+</ul>
+<p>L’objectif est d’apprendre une règle générale :</p>
+<p><span class="math display">\[
+\text{même identité}\Rightarrow\text{directions proches},
+\]</span></p>
+<p><span class="math display">\[
+\text{identités différentes}\Rightarrow\text{directions séparées}.
+\]</span></p>
+</section>
+<section id="la-loss-ne-connaît-pourtant-pas-les-futurs-speakers" class="slide level2">
+<h2>La loss ne connaît pourtant pas les futurs speakers</h2>
+<p>AAM n’apprend évidemment aucun poids de classe pour les locuteurs qui seront rencontrés plus tard au test.</p>
+<p>Elle apprend en revanche une <strong>fonction commune <span class="math inline">\(f_\theta\)</span></strong> en répétant la même contrainte géométrique sur un grand nombre de locuteurs d’entraînement :</p>
+<p><span class="math display">\[
+\text{utterances d'un même speaker}\to\text{directions proches},
+\]</span></p>
+<p><span class="math display">\[
+\text{speakers différents}\to\text{directions séparées}.
+\]</span></p>
+<p>C’est cette règle apprise par l’extracteur qui doit se transférer aux locuteurs non vus.</p>
+</section>
+<section id="la-diversité-du-corpus-fait-partie-de-la-loss" class="slide level2">
+<h2>La diversité du corpus fait partie de la loss</h2>
+<p>Pour généraliser, il faut :</p>
+<ul>
+<li><strong>beaucoup de locuteurs</strong>, afin de multiplier les séparations à apprendre ;</li>
+<li><strong>plusieurs sessions par locuteur</strong>, afin de révéler ce qui reste stable malgré contenu, canal, bruit ou microphone.</li>
+</ul>
+<p>Une seule session par speaker permettrait beaucoup plus facilement de mémoriser des détails accidentels.</p>
+</section>
+<section id="choisir-la-marge-m" class="slide level2">
+<h2>Choisir la marge <span class="math inline">\(m\)</span></h2>
+<p>Si <span class="math inline">\(m\approx0\)</span>, AAM se rapproche du softmax normalisé.</p>
+<p>Si <span class="math inline">\(m\)</span> est trop grand, la condition</p>
+<p><span class="math display">\[
+\theta_y+m&lt;\theta_j
+\]</span></p>
+<p>peut devenir trop difficile, surtout au début de l’apprentissage.</p>
+<p><span class="math inline">\(m\)</span> contrôle donc la <strong>sévérité géométrique</strong> de la tâche.</p>
+</section>
+<section id="choisir-le-scale-s" class="slide level2">
+<h2>Choisir le scale <span class="math inline">\(s\)</span></h2>
+<p>Si <span class="math inline">\(s\)</span> est trop petit, les probabilités restent plates et les gradients peu discriminants.</p>
+<p>Si <span class="math inline">\(s\)</span> est très grand, le softmax devient extrêmement pointu et les exemples difficiles peuvent recevoir de forts gradients.</p>
+<p><span class="math inline">\(s\)</span> contrôle surtout la <strong>dynamique d’optimisation</strong> ; <span class="math inline">\(m\)</span> contrôle surtout la <strong>marge géométrique</strong>.</p>
+</section>
+<section id="aam-est-une-tête-de-classification-pas-une-architecture" class="slide level2">
+<h2>AAM est une tête de classification, pas une architecture</h2>
+<p>On peut entraîner avec AAM un TDNN, un ResNet, un ECAPA-TDNN ou un autre extracteur.</p>
+<p>Dans une recette ECAPA typique :</p>
+<p><span class="math display">\[
+u\to\text{ECAPA}\to x\to\text{normalisation}\to\text{AAM classifier}.
+\]</span></p>
+<p>Architecture et loss sont deux leviers complémentaires.</p>
+</section>
+<section id="une-lecture-probabiliste-prudente" class="slide level2">
+<h2>Une lecture probabiliste prudente</h2>
+<p>Les sorties softmax de la tête AAM sont utiles pour l’<strong>objectif d’entraînement</strong>.</p>
+<p>Il ne faut pas les interpréter comme les probabilités finales de l’hypothèse target/non-target de la vérification.</p>
+<p>Ce sont deux problèmes différents.</p>
+</section>
+<section id="pause" class="slide level2">
+<h2>Pause</h2>
+<div style="font-size:2.0em; text-align:center; margin-top:2.2em; font-weight:700;">
+Pause — 10 min
+</div>
+<div style="text-align:center; margin-top:1.0em;">
+À la reprise : passer d’une classification par classes d’entraînement à des comparaisons directes entre embeddings.
+</div>
+</section></section>
+<section>
+<section id="au-delà-daam-apprendre-directement-une-métrique" class="title-slide slide level1 center">
+<h1>4. Au-delà d’AAM : apprendre directement une métrique</h1>
+
+</section>
+<section id="pourquoi-regarder-au-delà-daam" class="slide level2">
+<h2>Pourquoi regarder au-delà d’AAM ?</h2>
+<p>AAM façonne bien une géométrie utile, mais <strong>la comparaison utilisée dans la loss reste</strong></p>
+<p><span class="math display">\[
+\boxed{x_i\longleftrightarrow w_k}
+\]</span></p>
+<p>où <span class="math inline">\(w_k\)</span> est un poids appris pour une classe du train.</p>
+<p>La tâche finale, elle, compare directement deux observations :</p>
+<p><span class="math display">\[
+\boxed{x_e\longleftrightarrow x_t}
+\qquad\longrightarrow\qquad
+\text{même locuteur ou non ?}
+\]</span></p>
+<p>La question devient donc plus précise :</p>
+<blockquote>
+<p>Peut-on construire une loss où les comparaisons entre <strong>utterances / embeddings</strong> apparaissent directement pendant l’entraînement, plutôt que seulement via les poids <span class="math inline">\(w_k\)</span> ?</p>
+</blockquote>
+</section>
+<section id="deux-familles-dobjectifs" class="slide level2">
+<h2>Deux familles d’objectifs</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Famille</th>
+<th>Ce que la loss compare</th>
+<th>D’où vient la référence de classe ?</th>
+<th>Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>Classification à marge</strong></td>
+<td>un embedding <span class="math inline">\(x_i\)</span> aux poids <span class="math inline">\(w_1,\ldots,w_K\)</span></td>
+<td><span class="math inline">\(w_k\)</span> est un <strong>paramètre global appris</strong> pour le speaker <span class="math inline">\(k\)</span> du train</td>
+<td>AAM-Softmax</td>
+</tr>
+<tr class="even">
+<td><strong>Metric / episodic learning</strong></td>
+<td>des embeddings entre eux, ou une query à un centroïde construit dans le batch</td>
+<td>la référence est <strong>calculée à partir d’utterances</strong> du batch</td>
+<td>triplet, GE2E, angular prototypical</td>
+</tr>
+</tbody>
+</table>
+<p>Donc les deux familles peuvent produire une géométrie similaire, mais <strong>le signal d’apprentissage n’est pas construit de la même façon</strong>.</p>
+<p><span class="math display">\[
+\text{objectif commun : faible intra-speaker + forte séparation inter-speaker.}
+\]</span></p>
+<div class="refs">
+Chung et al., Interspeech 2020, « In Defence of Metric Learning for Speaker Recognition ».
+</div>
+</section>
+<section id="triplet-loss-une-contrainte-relative" class="slide level2">
+<h2>Triplet loss : une contrainte relative</h2>
+<p>On construit un triplet à partir de trois utterances :</p>
+<ul>
+<li><strong>anchor</strong> <span class="math inline">\(x_a\)</span> : l’utterance de référence à partir de laquelle on mesure les deux distances ;</li>
+<li><strong>positive</strong> <span class="math inline">\(x_p\)</span> : une autre utterance du <strong>même locuteur</strong> que l’anchor ;</li>
+<li><strong>negative</strong> <span class="math inline">\(x_n\)</span> : une utterance d’un <strong>autre locuteur</strong>.</li>
+</ul>
+<p>L’anchor n’est pas un type particulier d’embedding : c’est simplement le rôle joué par un exemple dans le triplet courant.</p>
+<p>On veut imposer :</p>
+<p><span class="math display">\[
+d(x_a,x_p)+m &lt; d(x_a,x_n).
+\]</span></p>
+<p>La loss classique est :</p>
+<p><span class="math display">\[
+\boxed{
+\mathcal L_{\mathrm{triplet}}
+=\left[d(x_a,x_p)-d(x_a,x_n)+m\right]_+.
+}
+\]</span></p>
+</section>
+<section id="widget-anchor-positive-et-negative" class="slide level2">
+<h2>Widget — anchor, positive et negative</h2>
+<div id="cm3-triplet-simple" class="cm3-triplet-simple">
+<div class="triplet-controls">
+<pre><code>&lt;label&gt;
+  Distance anchor–positive : &lt;strong&gt;&lt;span data-value="dap"&gt;0.30&lt;/span&gt;&lt;/strong&gt;
+  &lt;input data-input="dap" type="range" min="0.05" max="1.20" step="0.05" value="0.30"&gt;
+&lt;/label&gt;
+&lt;label&gt;
+  Distance anchor–negative : &lt;strong&gt;&lt;span data-value="dan"&gt;0.55&lt;/span&gt;&lt;/strong&gt;
+  &lt;input data-input="dan" type="range" min="0.05" max="1.20" step="0.05" value="0.55"&gt;
+&lt;/label&gt;
+&lt;label&gt;
+  Marge $m$ : &lt;strong&gt;&lt;span data-value="margin"&gt;0.20&lt;/span&gt;&lt;/strong&gt;
+  &lt;input data-input="margin" type="range" min="0.00" max="0.60" step="0.05" value="0.20"&gt;
+&lt;/label&gt;</code></pre>
+</div>
+<div class="triplet-distance-row">
+<pre><code>&lt;div class="triplet-name"&gt;positive $p$&lt;/div&gt;
+&lt;div class="triplet-track"&gt;
+  &lt;div class="triplet-anchor"&gt;A&lt;/div&gt;
+  &lt;div class="triplet-point triplet-positive" data-point="p"&gt;P&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+<div class="triplet-distance-row">
+<pre><code>&lt;div class="triplet-name"&gt;negative $n$&lt;/div&gt;
+&lt;div class="triplet-track"&gt;
+  &lt;div class="triplet-anchor"&gt;A&lt;/div&gt;
+  &lt;div class="triplet-point triplet-negative" data-point="n"&gt;N&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+</div>
+<div class="triplet-equation">
+<pre><code>$\mathcal L=\max(d(a,p)-d(a,n)+m,0)$</code></pre>
+</div>
+<div class="triplet-status" data-status="">
+
+</div>
+</div>
+<div class="click-hint">
+<p>Faites varier les distances. Si le negative est suffisamment plus loin que le positive, la loss devient nulle.</p>
+</div>
+</section>
+<section id="triplet-loss-le-sampling-fait-partie-de-la-méthode" class="slide level2">
+<h2>Triplet loss : le sampling fait partie de la méthode</h2>
+<p>Ici, <strong>sampling</strong> ne signifie pas « fréquence d’échantillonnage audio ».</p>
+<p>Il désigne la façon dont on <strong>construit les exemples d’apprentissage</strong> : quels speakers entrent dans le mini-batch, quelles utterances jouent les rôles d’anchor / positive / negative, et quels négatifs sont effectivement utilisés dans la loss.</p>
+<p>Si le négatif sélectionné est déjà très loin :</p>
+<p><span class="math display">\[
+d(x_a,x_n)\gg d(x_a,x_p)+m
+\]</span></p>
+<p>alors</p>
+<p><span class="math display">\[
+\mathcal L_{\mathrm{triplet}}=0.
+\]</span></p>
+<p>L’exemple n’apporte presque plus de gradient.</p>
+<p>D’où le <strong>hard-negative mining</strong> : chercher des imposteurs proches de l’anchor.</p>
+<div class="cm2-answer">
+<p>La loss ne suffit donc pas à définir l’apprentissage : la construction du mini-batch et le choix des négatifs sont aussi essentiels.</p>
+</div>
+</section>
+<section id="ge2e-commencer-par-un-exemple-concret" class="slide level2">
+<h2>GE2E : commencer par un exemple concret</h2>
+<p>Prenons un mini-batch très petit :</p>
+<p><span class="math display">\[
+3\ \text{locuteurs}\times 3\ \text{utterances}.
+\]</span></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>Locuteur A</th>
+<th>Locuteur B</th>
+<th>Locuteur C</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(a_1\)</span></td>
+<td><span class="math inline">\(b_1\)</span></td>
+<td><span class="math inline">\(c_1\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(a_2\)</span></td>
+<td><span class="math inline">\(b_2\)</span></td>
+<td><span class="math inline">\(c_2\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(a_3\)</span></td>
+<td><span class="math inline">\(b_3\)</span></td>
+<td><span class="math inline">\(c_3\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Pendant l’entraînement, les identités A, B et C sont <strong>connues</strong>.</p>
+<p>Choisissons provisoirement <span class="math inline">\(a_1\)</span> comme utterance à tester.</p>
+<div class="fragment">
+<p>GE2E transforme alors le reste du mini-batch en une petite situation <strong>enrollment / test</strong>.</p>
+</div>
+</section>
+<section id="ge2e-que-compare-t-on-pour-a_1" class="slide level2">
+<h2>GE2E : que compare-t-on pour <span class="math inline">\(a_1\)</span> ?</h2>
+<p>Pour le bon locuteur A, on construit un enrollment avec les <strong>autres</strong> utterances de A :</p>
+<p><span class="math display">\[
+\boxed{
+c_A^{(-1)}=\frac{a_2+a_3}{2}
+}
+\]</span></p>
+<p>Pour les deux autres locuteurs :</p>
+<p><span class="math display">\[
+c_B=\frac{b_1+b_2+b_3}{3},
+\qquad
+c_C=\frac{c_1+c_2+c_3}{3}.
+\]</span></p>
+<p>Puis <span class="math inline">\(a_1\)</span> est comparé aux trois représentations :</p>
+<p><span class="math display">\[
+\begin{array}{ccc}
+a_1\leftrightarrow c_A^{(-1)}
+&amp;
+a_1\leftrightarrow c_B
+&amp;
+a_1\leftrightarrow c_C.
+\end{array}
+\]</span></p>
+<div class="fragment">
+<p>La loss veut simplement que la similarité avec <span class="math inline">\(c_A^{(-1)}\)</span> soit la plus grande.</p>
+</div>
+</section>
+<section id="ge2e-la-même-opération-pour-tout-le-mini-batch" class="slide level2">
+<h2>GE2E : la même opération pour tout le mini-batch</h2>
+<p><span class="math inline">\(a_1\)</span> n’est pas une query spéciale.</p>
+<p>On recommence successivement avec :</p>
+<p><span class="math display">\[
+a_1,\ a_2,\ a_3,\ b_1,\ b_2,\ b_3,\ c_1,\ c_2,\ c_3.
+\]</span></p>
+<p>Pour chaque embedding :</p>
+<ol type="1">
+<li>son <strong>centroïde positif</strong> est construit avec les autres utterances du même locuteur ;</li>
+<li>les centroïdes des autres locuteurs jouent le rôle de <strong>négatifs</strong> ;</li>
+<li>un softmax demande au bon centroïde d’obtenir le score maximal.</li>
+</ol>
+<p>Ainsi, avec <span class="math inline">\(N\)</span> speakers et <span class="math inline">\(M\)</span> utterances par speaker, GE2E exploite les <span class="math inline">\(NM\)</span> embeddings comme queries.</p>
+<div class="cm2-answer">
+<p>GE2E = beaucoup de petits tests enrollment/test simultanés dans un même mini-batch.</p>
+</div>
+</section>
+<section id="ge2e-écriture-générale" class="slide level2">
+<h2>GE2E : écriture générale</h2>
+<p>Le mini-batch contient</p>
+<p><span class="math display">\[
+N\ \text{locuteurs}\times M\ \text{utterances par locuteur}.
+\]</span></p>
+<p>Pour un embedding <span class="math inline">\(x_{j,i}\)</span> du locuteur <span class="math inline">\(j\)</span>, son centroïde positif leave-one-out est</p>
+<p><span class="math display">\[
+\boxed{
+c_j^{(-i)}
+=
+\frac{1}{M-1}
+\sum_{m\neq i}x_{j,m}.
+}
+\]</span></p>
+<p>Pour un autre locuteur <span class="math inline">\(k\neq j\)</span> :</p>
+<p><span class="math display">\[
+c_k=\frac1M\sum_{m=1}^{M}x_{k,m}.
+\]</span></p>
+<p>Les scores sont</p>
+<p><span class="math display">\[
+S_{j,i,k}
+=
+\begin{cases}
+w\cos(x_{j,i},c_j^{(-i)})+b, &amp; k=j,\\[1mm]
+w\cos(x_{j,i},c_k)+b, &amp; k\neq j.
+\end{cases}
+\]</span></p>
+<div class="refs">
+Wan et al., « Generalized End-to-End Loss for Speaker Verification », ICASSP 2018.
+</div>
+</section>
+<section id="ge2e-pourquoi-retirer-la-query-de-son-centroïde" class="slide level2">
+<h2>GE2E : pourquoi retirer la query de son centroïde ?</h2>
+<p>Si on comparait <span class="math inline">\(a_1\)</span> à</p>
+<p><span class="math display">\[
+c_A=\frac{a_1+a_2+a_3}{3},
+\]</span></p>
+<p><span class="math inline">\(a_1\)</span> contribuerait lui-même à la représentation à laquelle on le compare.</p>
+<p>On utilise donc :</p>
+<p><span class="math display">\[
+c_A^{(-1)}=\frac{a_2+a_3}{2}.
+\]</span></p>
+<p>Plus généralement :</p>
+<p><span class="math display">\[
+c_j^{(-i)}
+=
+\frac{1}{M-1}
+\sum_{m\neq i}x_{j,m}.
+\]</span></p>
+<p>Cela évite une comparaison en partie triviale et reproduit mieux :</p>
+<p><span class="math display">\[
+\boxed{
+\text{enrollment indépendant}
+\quad\leftrightarrow\quad
+\text{utterance de test}.
+}
+\]</span></p>
+</section>
+<section id="angular-prototypical-presque-ge2e-mais-avec-une-query-réservée" class="slide level2">
+<h2>Angular prototypical : presque GE2E, mais avec une query réservée</h2>
+<p>Reprenons exactement le même mini-batch.</p>
+<p>Pour chaque speaker, on réserve par exemple la dernière utterance comme <strong>query</strong> :</p>
+<p><span class="math display">\[
+q_A=a_3,\qquad q_B=b_3,\qquad q_C=c_3.
+\]</span></p>
+<p>Les autres utterances constituent le <strong>support</strong> :</p>
+<p><span class="math display">\[
+c_A=\frac{a_1+a_2}{2},
+\qquad
+c_B=\frac{b_1+b_2}{2},
+\qquad
+c_C=\frac{c_1+c_2}{2}.
+\]</span></p>
+<p>Puis chaque query est comparée aux trois prototypes :</p>
+<p><span class="math display">\[
+q_A
+\longleftrightarrow
+\{c_A,c_B,c_C\}.
+\]</span></p>
+<p>La cross-entropy demande que <span class="math inline">\(q_A\)</span> choisisse <span class="math inline">\(c_A\)</span>, <span class="math inline">\(q_B\)</span> choisisse <span class="math inline">\(c_B\)</span>, etc.</p>
+<div class="refs">
+Chung et al., « In Defence of Metric Learning for Speaker Recognition », Interspeech 2020.
+</div>
+</section>
+<section id="ge2e-vs-angular-prototypical" class="slide level2">
+<h2>GE2E vs angular prototypical</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th></th>
+<th>GE2E</th>
+<th>Angular prototypical</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Queries</td>
+<td><strong>tous</strong> les embeddings du batch, chacun à son tour</td>
+<td>une ou plusieurs utterances explicitement réservées comme queries</td>
+</tr>
+<tr class="even">
+<td>Référence positive</td>
+<td>centroïde leave-one-out pour la query courante</td>
+<td>prototype calculé sur le support</td>
+</tr>
+<tr class="odd">
+<td>Négatifs</td>
+<td>tous les autres centroïdes du batch</td>
+<td>tous les autres prototypes du batch</td>
+</tr>
+<tr class="even">
+<td>Idée</td>
+<td>maximiser l’usage du batch</td>
+<td>reproduire explicitement un épisode support/query</td>
+</tr>
+</tbody>
+</table>
+<p>Les deux méthodes apprennent donc essentiellement :</p>
+<p><span class="math display">\[
+\boxed{
+\text{query proche du centroïde de son speaker}
+\quad\text{et loin des autres}.
+}
+\]</span></p>
+<p>La différence principale est <strong>la manière d’organiser le mini-batch et de définir les rôles des utterances</strong>.</p>
+</section>
+<section id="aam-et-angular-prototypical-même-intuition-prototypes-différents" class="slide level2">
+<h2>AAM et angular prototypical : même intuition, prototypes différents</h2>
+<h3 id="aam">AAM</h3>
+<p><span class="math display">\[
+x_i\longleftrightarrow w_k
+\]</span></p>
+<ul>
+<li><span class="math inline">\(w_k\)</span> est un paramètre appris ;</li>
+<li>il représente un locuteur du corpus d’apprentissage ;</li>
+<li>tous les locuteurs d’apprentissage participent à la tête globale.</li>
+</ul>
+<h3 id="angular-prototypical">Angular prototypical</h3>
+<p><span class="math display">\[
+q_i\longleftrightarrow c_k
+\]</span></p>
+<ul>
+<li><span class="math inline">\(c_k\)</span> est calculé à partir des utterances du batch ;</li>
+<li>il n’est pas un paramètre permanent ;</li>
+<li>la structure ressemble davantage à enrollment/test.</li>
+</ul>
+</section>
+<section id="classification-ou-metric-learning" class="slide level2">
+<h2>Classification ou metric learning ?</h2>
+<p>Il n’y a pas de réponse universelle.</p>
+<p><strong>Classification à marge</strong> :</p>
+<ul>
+<li>optimisation simple et stable ;</li>
+<li>utilise efficacement de très nombreux locuteurs ;</li>
+<li>prototypes globaux appris.</li>
+</ul>
+<p><strong>Metric learning / prototypical</strong> :</p>
+<ul>
+<li>objectif plus proche du scénario de vérification ;</li>
+<li>dépend fortement du sampling et de la composition des batches ;</li>
+<li>permet de raisonner directement sur positives et imposteurs.</li>
+</ul>
+<div class="cm2-answer">
+<p>La question importante n’est pas « quelle loss faut-il mémoriser ? », mais <strong>quelle contrainte géométrique et quel sampling impose-t-elle ?</strong></p>
+</div>
+</section>
+<section id="large-margin-fine-tuning" class="slide level2">
+<h2>Large-margin fine-tuning</h2>
+<p>Une recette efficace consiste à ne pas utiliser la marge la plus agressive dès le début.</p>
+<p>Après un premier entraînement, on effectue une courte seconde phase avec :</p>
+<ul>
+<li>des segments audio <strong>plus longs</strong> ;</li>
+<li>une marge AAM <strong>plus grande</strong> ;</li>
+<li>un learning rate réduit.</li>
+</ul>
+<p>Schématiquement :</p>
+<p><span class="math display">\[
+\text{training standard}
+\longrightarrow
+\boxed{m\uparrow,\ \text{durée}\uparrow}
+\longrightarrow
+\text{fine-tuning}.
+\]</span></p>
+<p>Cette stratégie a notamment été utilisée avec ECAPA-TDNN pour améliorer la robustesse des embeddings.</p>
+<div class="refs">
+Thienpondt, Desplanques &amp; Demuynck, ICASSP 2021.
+</div>
+<aside class="notes">
+Pense-bête : il s’agit d’une seconde phase courte, pas d’une nouvelle loss. On part d’un réseau déjà convergé, on augmente la durée des chunks, on augmente la marge AAM et on baisse le learning rate. Intuition : une marge forte est plus facile à imposer quand la géométrie est déjà structurée ; les segments plus longs donnent aussi une estimation speaker plus stable. À l’inférence, rien de spécial : on extrait toujours les embeddings puis on score par cosinus/PLDA.
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="dautres-variantes-existent" class="slide level2">
+<h2>D’autres variantes existent</h2>
+<p>La littérature contient de nombreuses extensions :</p>
+<ul>
+<li>marges adaptatives ou dépendantes de la qualité ;</li>
+<li>objectifs pairwise / contrastifs ;</li>
+<li>variantes proxy-based ;</li>
+<li>sous-centres pour mieux gérer la variabilité ou les labels bruités.</li>
+</ul>
+<p>On ne les détaillera pas ici.</p>
+<p>L’idée commune reste de contrôler <strong>où</strong> se placent les embeddings et <strong>quelles comparaisons</strong> produisent le gradient.</p>
+</section>
+<section id="quatre-leviers-différents" class="slide level2">
+<h2>Quatre leviers différents</h2>
+<p>Pour apprendre un bon speaker embedding, on agit sur quatre objets distincts :</p>
+<p><span class="math display">\[
+\boxed{\text{architecture}}
+\qquad
+\boxed{\text{loss}}
+\qquad
+\boxed{\text{sampling}}
+\qquad
+\boxed{\text{augmentation}}
+\]</span></p>
+<ul>
+<li>l’architecture détermine quelles informations peuvent être extraites ;</li>
+<li>la loss façonne la géométrie ;</li>
+<li>le <strong>sampling</strong> décide quels speakers et quelles utterances sont placés ensemble dans les mini-batches, donc quelles paires / triplets / comparaisons produisent effectivement du gradient ;</li>
+<li>l’augmentation définit les nuisances auxquelles on veut être robuste.</li>
+</ul>
+<div class="notation">
+Ici, « sampling » désigne la <strong>sélection des exemples d’entraînement</strong>, pas le taux d’échantillonnage du signal audio.
+</div>
+</section></section>
+<section>
+<section id="augmentations-et-invariances" class="title-slide slide level1 center">
+<h1>5. Augmentations et invariances</h1>
+
+</section>
+<section id="apprendre-linvariance-aux-nuisances" class="slide level2">
+<h2>Apprendre l’invariance aux nuisances</h2>
+<p>La loss dit <strong>comment organiser</strong> l’espace d’embeddings.</p>
+<p>Les augmentations disent <strong>quelles transformations acoustiques doivent préserver l’identité</strong>.</p>
+<p><span class="math display">\[
+\boxed{\text{loss}+\text{augmentations}=\text{géométrie}+\text{invariances}}
+\]</span></p>
+</section>
+<section id="principe-dune-augmentation" class="slide level2">
+<h2>Principe d’une augmentation</h2>
+<p>À partir d’un signal <span class="math inline">\(u\)</span>, on construit</p>
+<p><span class="math display">\[
+\tilde u=T(u)
+\]</span></p>
+<p>avec l’hypothèse fondamentale</p>
+<p><span class="math display">\[
+\boxed{y(\tilde u)=y(u).}
+\]</span></p>
+<p>La transformation doit modifier une nuisance acoustique sans modifier l’identité du locuteur.</p>
+</section>
+<section id="augmentations-au-niveau-du-waveform" class="slide level2">
+<h2>Augmentations au niveau du waveform</h2>
+<p>Les augmentations <strong>speaker-preserving</strong> historiques agissent directement sur le signal <span class="math inline">\(u\)</span> :</p>
+<ul>
+<li><strong>bruit / musique / babble</strong> : ajout d’une source parasite à différents SNR ;</li>
+<li><strong>réverbération</strong> : convolution par une réponse impulsionnelle <span class="math inline">\(h\)</span> ;</li>
+<li>selon le domaine : <strong>codec, bande passante, canal téléphonique</strong>.</li>
+</ul>
+<p>Par exemple, pour la réverbération :</p>
+<p><span class="math display">\[
+\tilde u=h*u.
+\]</span></p>
+<p>Ici on conserve le même label <span class="math inline">\(y\)</span>, car on cherche à modifier la condition acoustique sans modifier le locuteur.</p>
+</section>
+<section id="specaugment-augmentation-temps-fréquence" class="slide level2">
+<h2>SpecAugment : augmentation temps-fréquence</h2>
+<p>Lorsque le réseau reçoit des log-Mel/filterbanks <span class="math inline">\(X\in\mathbb R^{F\times T}\)</span>, on peut masquer aléatoirement :</p>
+<p><span class="math display">\[
+\boxed{\text{des bandes de fréquences}}
+\qquad\text{et}\qquad
+\boxed{\text{des intervalles temporels}}.
+\]</span></p>
+<p>C’est <strong>SpecAugment</strong> : une augmentation appliquée directement à la représentation temps-fréquence, introduite initialement pour l’ASR puis étudiée pour les speaker embeddings avec TDNN/ResNet et Softmax/AAM-Softmax. Elle agit sur les <strong>features</strong>, contrairement au bruit ou à la réverbération qui agissent sur le waveform.</p>
+<div class="refs">
+Park et al., Interspeech 2019, « SpecAugment » ; Wang et al., ICASSP 2020, « Investigation of SpecAugment for Deep Speaker Embedding Learning ».
+</div>
+<div class="cm2-answer">
+<p>Intuition : empêcher l’extracteur de dépendre excessivement d’une petite région fréquentielle ou temporelle.</p>
+</div>
+</section>
+<section id="deux-philosophies-daugmentation" class="slide level2">
+<h2>Deux philosophies d’augmentation</h2>
+<h3 id="préserver-le-locuteur">1. Préserver le locuteur</h3>
+<p>Même label <span class="math inline">\(y\)</span> : bruit, RIR, babble, musique, codec, SpecAugment.</p>
+<p><span class="math display">\[
+y(\tilde u)=y(u).
+\]</span></p>
+<h3 id="créer-des-pseudo-locuteurs">2. Créer des pseudo-locuteurs</h3>
+<p>La <strong>speed perturbation</strong> ou la <strong>VTLP</strong> peuvent au contraire être utilisées pour modifier volontairement des traits vocaux et créer de nouvelles identités d’entraînement.</p>
+<p><strong>VTLP = Vocal Tract Length Perturbation</strong> : on déforme l’axe fréquentiel du spectre afin de déplacer notamment les positions formantiques, comme si la longueur du conduit vocal était différente. Cette transformation peut donc modifier des indices liés à l’identité vocale.</p>
+<p>Dans une recette de <strong>speaker augmentation</strong>, les versions suffisamment perturbées peuvent recevoir de <strong>nouveaux labels speaker</strong> plutôt que le label original.</p>
+<div class="refs">
+Zhou et al., Interspeech 2024, « A Comprehensive Investigation on Speaker Augmentation for Speaker Recognition ».
+</div>
+<div class="cm2-answer">
+<p>Donc : toute transformation audio ne doit pas automatiquement garder le même label. Cela dépend de ce que l’on veut rendre invariant.</p>
+</div>
+</section>
+<section id="la-recette-x-vector-historique" class="slide level2">
+<h2>La recette x-vector historique</h2>
+<p>Dans le papier x-vector de Snyder et al., l’augmentation combine notamment :</p>
+<ul>
+<li>bruit MUSAN ;</li>
+<li>musique MUSAN ;</li>
+<li>babble ;</li>
+<li>réverbération par RIR simulée.</li>
+</ul>
+<div class="refs">
+Snyder et al., ICASSP 2018, « X-Vectors: Robust DNN Embeddings for Speaker Recognition ».
+</div>
+</section>
+<section id="le-même-label-doit-survivre-à-la-nuisance" class="slide level2">
+<h2>Le même label doit survivre à la nuisance</h2>
+<p>Pendant l’entraînement :</p>
+<p><span class="math display">\[
+(u,y),\qquad(\tilde u,y)
+\]</span></p>
+<p>doivent tous deux produire un logit élevé pour la même classe <span class="math inline">\(y\)</span>.</p>
+<p>On espère alors apprendre, au moins au sens du score final :</p>
+<p><span class="math display">\[
+\boxed{f_\theta(u)\approx f_\theta(\tilde u).}
+\]</span></p>
+<p>Cette proximité n’est pas imposée par un terme pairwise explicite : elle émerge du <strong>label partagé</strong>.</p>
+</section>
+<section id="extractor-augmentation" class="slide level2">
+<h2>Extractor augmentation</h2>
+<p>On entraîne directement l’extracteur avec les audios augmentés :</p>
+<p><span class="math display">\[
+\{u,\tilde u\}
+\longrightarrow
+\boxed{f_\theta\text{ entraîné}}
+\longrightarrow
+\{x,\tilde x\}.
+\]</span></p>
+<p>L’objectif est que la nuisance déplace moins l’embedding :</p>
+<p><span class="math display">\[
+\operatorname{angle}(f_\theta(u),f_\theta(T(u)))\downarrow.
+\]</span></p>
+</section>
+<section id="plda-augmentation-lextracteur-reste-fixe" class="slide level2">
+<h2>PLDA augmentation : l’extracteur reste fixe</h2>
+<p>« PLDA augmentation » ne fusionne pas PLDA et x-vector.</p>
+<p>Le système reste :</p>
+<p><span class="math display">\[
+\text{audio}\to\text{x-vector}\to\text{PLDA score}.
+\]</span></p>
+<p>On calcule avec le <strong>même extracteur fixe</strong> :</p>
+<p><span class="math display">\[
+x=f_\theta(u),\qquad\tilde x=f_\theta(\tilde u).
+\]</span></p>
+</section>
+<section id="plda-augmentation-plus-dobservations-du-même-speaker" class="slide level2">
+<h2>PLDA augmentation : plus d’observations du même speaker</h2>
+<p>On entraîne PLDA avec</p>
+<p><span class="math display">\[
+(x,y),\qquad(\tilde x,y)
+\]</span></p>
+<p>comme deux observations du <strong>même locuteur</strong>.</p>
+<p>Dans le modèle</p>
+<p><span class="math display">\[
+x_{k,j}=\mu+\eta_k+\varepsilon_{k,j},
+\]</span></p>
+<p>clean et réverbéré partagent <span class="math inline">\(\eta_k\)</span> mais enrichissent la variabilité intra-speaker observée, donc notamment l’estimation de <span class="math inline">\(\Phi_w\)</span>.</p>
+<p><strong>Il n’y a ni concaténation ni somme des embeddings.</strong></p>
+</section>
+<section id="extractor-aug.-vs-plda-aug." class="slide level2">
+<h2>Extractor aug. vs PLDA aug.</h2>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Extractor aug.</strong></p>
+<p>« Essaie de rendre l’embedding lui-même invariant. »</p>
+<p><span class="math display">\[
+f_\theta(u)\approx f_\theta(\tilde u)
+\]</span></p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>PLDA aug.</strong></p>
+<p>« Ces déplacements d’embedding sont compatibles avec le même locuteur. »</p>
+<p><span class="math display">\[
+\Phi_w\text{ apprend cette variabilité.}
+\]</span></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="les-deux-ensemble" class="slide level2">
+<h2>Les deux ensemble</h2>
+<p>On peut faire :</p>
+<p><span class="math display">\[
+\boxed{\text{extractor augmentation}}
+\]</span></p>
+<p>puis utiliser les embeddings clean + augmentés pour :</p>
+<p><span class="math display">\[
+\boxed{\text{PLDA augmentation}}.
+\]</span></p>
+<p>Le réseau réduit la nuisance et PLDA modélise la nuisance résiduelle.</p>
+</section>
+<section id="tableau-x-vector-rappel" class="slide level2">
+<h2>Tableau x-vector : rappel</h2>
+
+<img data-src="assets/img/cm2/results_x-vectors.png" class="cm2-img-wide r-stretch"><div class="refs">
+Snyder et al., ICASSP 2018. « Extractor » désigne le DNN d’embedding pour x-vector, ou UBM/<span class="math inline">\(T\)</span> pour i-vector.
+</div>
+</section>
+<section id="lire-le-tableau-baseline-et-plda-augmentation" class="slide level2">
+<h2>Lire le tableau : baseline et PLDA augmentation</h2>
+<p><strong>Original systems</strong> : extracteur original + PLDA original.</p>
+<p><strong>PLDA aug.</strong> : l’extracteur est inchangé ; on produit plus d’embeddings clean/augmentés et on réestime PLDA :</p>
+<p><span class="math display">\[
+f_\theta\text{ fixe},\qquad\text{PLDA entraîné sur davantage de conditions}.
+\]</span></p>
+</section>
+<section id="lire-le-tableau-extractor-augmentation-et-combinaison" class="slide level2">
+<h2>Lire le tableau : extractor augmentation et combinaison</h2>
+<p><strong>Extractor aug.</strong> : <span class="math inline">\(f_\theta\)</span> est entraîné sur les audios augmentés ; la robustesse est poussée dans l’embedding.</p>
+<p><strong>PLDA and extractor aug.</strong> : on combine les deux :</p>
+<p><span class="math display">\[
+\text{audio augmenté}
+\to f_\theta\text{ robuste}
+\to\text{embeddings}
+\to\text{PLDA enrichi}.
+\]</span></p>
+</section>
+<section id="lire-incl.-voxceleb" class="slide level2">
+<h2>Lire “Incl. VoxCeleb”</h2>
+<p>On ajoute également davantage de données de locuteurs réels provenant de VoxCeleb.</p>
+<p>Le gain ne vient donc plus seulement des transformations artificielles :</p>
+<p><span class="math display">\[
+\text{plus de speakers / conditions réelles}
++
+\text{augmentations}.
+\]</span></p>
+</section>
+<section id="widget-augmentation-et-backend" class="slide level2">
+<h2>Widget — augmentation et backend</h2>
+<div class="cm3-widget" data-cm3-widget="augmentation">
+<div class="cm3-widget-loading">
+Chargement du widget…
+</div>
+</div>
+<div class="click-hint">
+Choisissez une nuisance et comparez : baseline, extractor augmentation et PLDA augmentation. Le dessin est conceptuel : il montre <strong>où</strong> la robustesse est apprise.
+</div>
+</section>
+<section id="lire-le-widget" class="slide level2">
+<h2>Lire le widget</h2>
+<ul>
+<li><strong>Baseline</strong> : une nuisance peut déplacer fortement l’embedding.</li>
+<li><strong>Extractor augmentation</strong> : on apprend à réduire directement ce déplacement.</li>
+<li><strong>PLDA augmentation</strong> : le déplacement peut rester présent, mais le backend apprend qu’il peut appartenir à la variabilité intra-speaker.</li>
+</ul>
+<p>Le widget montre donc <strong>où</strong> la robustesse est apprise, pas une fusion des représentations.</p>
+</section>
+<section id="une-augmentation-utile-doit-ressembler-au-déploiement" class="slide level2">
+<h2>Une augmentation utile doit ressembler au déploiement</h2>
+<p>Une transformation trop forte peut détruire l’information speaker ; une transformation irréaliste peut gaspiller de la capacité.</p>
+<p>On cherche donc des nuisances cohérentes avec le test :</p>
+<p><span class="math display">\[
+P_{\mathrm{aug}}(u\mid y)
+\approx
+\text{variations pertinentes de }P_{\mathrm{test}}(u\mid y).
+\]</span></p>
+</section>
+<section id="durée-silence-et-prétraitement" class="slide level2">
+<h2>Durée, silence et prétraitement</h2>
+<p>La robustesse ne concerne pas seulement le bruit :</p>
+<ul>
+<li>des chunks de durées variables exposent le réseau à différentes quantités de parole ;</li>
+<li>erreurs de VAD, silences ou artefacts de prétraitement ne doivent pas devenir des raccourcis associés à un speaker.</li>
+</ul>
+<p>Une durée très courte augmente néanmoins naturellement l’incertitude sur l’identité.</p>
+</section>
+<section id="aam-et-augmentation-sont-complémentaires" class="slide level2">
+<h2>AAM et augmentation sont complémentaires</h2>
+<p>AAM demande :</p>
+<p><span class="math display">\[
+\text{clusters angulaires compacts et séparés}.
+\]</span></p>
+<p>L’augmentation demande :</p>
+<p><span class="math display">\[
+\text{stabilité de ces clusters sous certaines nuisances}.
+\]</span></p>
+<p>Il faut donc trouver un compromis entre <strong>invariance</strong> et <strong>information discriminante</strong>.</p>
+</section></section>
+<section>
+<section id="recette-pratique-et-évaluation" class="title-slide slide level1 center">
+<h1>6. Recette pratique et évaluation</h1>
+
+</section>
+<section id="une-mini-batch-doit-contenir-de-la-diversité" class="slide level2">
+<h2>Une mini-batch doit contenir de la diversité</h2>
+<p>Une batch utile doit exposer :</p>
+<ul>
+<li>plusieurs speakers ;</li>
+<li>plusieurs utterances / conditions ;</li>
+<li>éventuellement plusieurs augmentations.</li>
+</ul>
+<p>Le réseau doit simultanément réduire l’intra-speaker et préserver l’inter-speaker.</p>
+</section>
+<section id="valider-la-bonne-chose" class="slide level2">
+<h2>Valider la bonne chose</h2>
+<p>La loss d’entraînement mesure la classification des speakers connus. Notre objectif final est la vérification sur des speakers inconnus.</p>
+<p>Il faut donc :</p>
+<p><span class="math display">\[
+\mathcal S_{\mathrm{train}}\cap\mathcal S_{\mathrm{val}}=\varnothing
+\]</span></p>
+<p>et suivre des métriques comme</p>
+<p><span class="math display">\[
+\boxed{\text{EER / DCF sur speakers non vus}.}
+\]</span></p>
+</section>
+<section id="quel-embedding-garder" class="slide level2">
+<h2>Quel embedding garder ?</h2>
+<p>On conserve généralement la représentation <strong>avant</strong> la tête de classification :</p>
+<p><span class="math display">\[
+\text{encoder}\to\text{pooling}\to\boxed{x}\to\text{AAM head}.
+\]</span></p>
+<p>À l’inférence avec un backend cosinus :</p>
+<p><span class="math display">\[
+\hat x=\frac{x}{\|x\|_2},\qquad
+s=\hat x_e^\top\hat x_t.
+\]</span></p>
+</section>
+<section id="multi-enrollment" class="slide level2">
+<h2>Multi-enrollment</h2>
+<p>Avec plusieurs utterances d’enrôlement, on peut construire une représentation speaker à partir de plusieurs embeddings.</p>
+<p>Dans le modèle simple du TD :</p>
+<p><span class="math display">\[
+x_\ell=\mu_s+\varepsilon_\ell,
+\]</span></p>
+<p>si les erreurs de session sont indépendantes :</p>
+<p><span class="math display">\[
+\operatorname{Cov}(\bar x)=\frac{1}{L}\Sigma_w.
+\]</span></p>
+<p>Plusieurs observations réduisent donc la variabilité aléatoire de session.</p>
+</section>
+<section id="mais-les-sessions-peuvent-être-corrélées" class="slide level2">
+<h2>Mais les sessions peuvent être corrélées</h2>
+<p>Si toutes les observations utilisent le même téléphone ou le même environnement, une partie de l’erreur est commune.</p>
+<p>Le gain du multi-enrollment peut alors saturer.</p>
+<p>C’est un des exercices du TD.</p>
+</section>
+<section id="score-de-classification-score-de-vérification" class="slide level2">
+<h2>Score de classification ≠ score de vérification</h2>
+<p>Pendant l’apprentissage :</p>
+<p><span class="math display">\[
+g_k=s\cos\theta_k
+\]</span></p>
+<p>compare <span class="math inline">\(x\)</span> aux prototypes des classes training.</p>
+<p>Pendant la vérification :</p>
+<p><span class="math display">\[
+s(x_e,x_t)
+\]</span></p>
+<p>compare <strong>deux observations de speakers potentiellement inconnus</strong>.</p>
+</section>
+<section id="une-transformation-monotone-des-scores" class="slide level2">
+<h2>Une transformation monotone des scores</h2>
+<p>Si</p>
+<p><span class="math display">\[
+s_B=10s_A+7,
+\]</span></p>
+<p>alors l’ordre des trials ne change pas.</p>
+<p>Donc ROC et EER restent identiques.</p>
+<p>Mais l’échelle et les seuils changent : cela prépare la distinction <strong>discrimination / calibration</strong>.</p>
+</section>
+<section id="ce-que-cm4-ajoutera" class="slide level2">
+<h2>Ce que CM4 ajoutera</h2>
+<p>CM3 apprend surtout à produire un espace discriminant.</p>
+<p>CM4 demandera :</p>
+<p><span class="math display">\[
+\boxed{\text{à quel seuil prendre une décision ?}}
+\]</span></p>
+<p>avec priors, coûts, DCF, Bayes et calibration.</p>
+</section>
+<section id="pipeline-moderne-simplifié" class="slide level2">
+<h2>Pipeline moderne simplifié</h2>
+<p><span class="math display">\[
+\text{audio}
+\xrightarrow{\text{augmentation}}
+\tilde u
+\xrightarrow{f_\theta}
+\tilde x
+\xrightarrow{\text{AAM training}}
+\text{espace discriminant}
+\]</span></p>
+<p>puis à l’inférence :</p>
+<p><span class="math display">\[
+x_e,x_t
+\xrightarrow{\text{cosine / PLDA}}
+s.
+\]</span></p>
+</section>
+<section id="trois-niveaux-de-robustesse" class="slide level2">
+<h2>Trois niveaux de robustesse</h2>
+<div class="three-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<strong>Données</strong><br>augmentations réalistes
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<strong>Embedding</strong><br>loss + architecture
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<strong>Backend</strong><br>cosinus / PLDA / normalisation
+</div>
+</div>
+</div>
+</div>
+<p>Un système robuste combine souvent ces trois niveaux.</p>
+</section></section>
+<section>
+<section id="synthèse" class="title-slide slide level1 center">
+<h1>7. Synthèse</h1>
+
+</section>
+<section id="à-retenir-géométrie" class="slide level2">
+<h2>À retenir — géométrie</h2>
+<ol type="1">
+<li><p>La fonction de coût <strong>façonne l’espace d’embeddings</strong>.</p></li>
+<li><p>Normaliser poids et embeddings donne un classifieur angulaire :</p></li>
+</ol>
+<p><span class="math display">\[
+g_k=s\cos\theta_k.
+\]</span></p>
+<ol start="3" type="1">
+<li>AAM impose une contrainte plus forte :</li>
+</ol>
+<p><span class="math display">\[
+\theta_y+m&lt;\theta_j.
+\]</span></p>
+</section>
+<section id="à-retenir-apprentissage-et-robustesse" class="slide level2">
+<h2>À retenir — apprentissage et robustesse</h2>
+<ol start="4" type="1">
+<li><p>AAM n’est pas la seule possibilité : <strong>triplet, GE2E et prototypical losses</strong> imposent d’autres contraintes, plus directement liées aux comparaisons entre utterances.</p></li>
+<li><p>En metric learning, le <strong>sampling du mini-batch</strong> fait partie intégrante de la méthode.</p></li>
+<li><p><strong>Extractor augmentation</strong> apprend à rendre <span class="math inline">\(f_\theta\)</span> plus invariant, tandis que <strong>PLDA augmentation</strong> apprend au backend à mieux modéliser la variabilité résiduelle.</p></li>
+<li><p>À l’inférence, la tête de classification disparaît : on conserve l’embedding et on compare de nouveaux speakers.</p></li>
+</ol>
+</section>
+<section id="question-de-synthèse" class="slide level2">
+<h2>Question de synthèse</h2>
+<div class="cm2-question">
+<p>Pourquoi AAM + augmentation est-il un couple naturel ?</p>
+</div>
+<div class="fragment">
+<div class="cm2-answer">
+<p>AAM dit <strong>où</strong> placer les embeddings sur l’hypersphère ; l’augmentation dit <strong>quelles variations acoustiques doivent conduire au même endroit</strong>.</p>
+</div>
+</div>
+</section>
+<section id="transition-vers-le-td" class="slide level2">
+<h2>Transition vers le TD</h2>
+<p>Le TD ne recopiera pas les dérivations du CM. Il utilisera ces notions pour résoudre quatre problèmes plus ouverts :</p>
+<ol type="1">
+<li>jusqu’où peut-on pousser une marge angulaire ?</li>
+<li>AAM, triplet et angular prototypical donnent-ils les mêmes gradients ?</li>
+<li>comment modéliser mathématiquement une augmentation comme une nuisance ?</li>
+<li>comment fusionner plusieurs enrollments corrélés de qualité différente ?</li>
+</ol>
+</section>
+<section id="conclusion" class="slide level2">
+<h2>Conclusion</h2>
+<p><span class="math display">\[
+\boxed{
+\text{speaker recognition moderne}
+=
+\text{architecture}
++
+\text{loss et sampling}
++
+\text{invariances apprises}
++
+\text{backend}
+}
+\]</span></p>
+<p>Le CM suivant s’intéressera au <strong>sens décisionnel du score</strong>.</p>
+</section>
+<section id="références-principales" class="slide level2">
+<h2>Références principales</h2>
+<ul>
+<li>Snyder et al., <strong>X-Vectors: Robust DNN Embeddings for Speaker Recognition</strong>, ICASSP 2018.</li>
+<li>Wang et al., <strong>Additive Margin Softmax for Face Verification</strong>, IEEE SPL 2018.</li>
+<li>Deng et al., <strong>ArcFace: Additive Angular Margin Loss for Deep Face Recognition</strong>, CVPR 2019.</li>
+<li>Wan et al., <strong>Generalized End-to-End Loss for Speaker Verification</strong>, ICASSP 2018.</li>
+<li>Chung et al., <strong>In Defence of Metric Learning for Speaker Recognition</strong>, Interspeech 2020.</li>
+<li>Wang et al., <strong>Investigation of SpecAugment for Deep Speaker Embedding Learning</strong>, ICASSP 2020.</li>
+<li>Desplanques et al., <strong>ECAPA-TDNN</strong>, Interspeech 2020.</li>
+<li>Thienpondt et al., <strong>The IDLab VoxSRC-20 Submission: Large Margin Fine-Tuning and Quality-Aware Score Calibration in DNN Based Speaker Verification</strong>, ICASSP 2021.</li>
+<li>Zhou et al., <strong>A Comprehensive Investigation on Speaker Augmentation for Speaker Recognition</strong>, Interspeech 2024.</li>
+</ul>
+<script src="assets/js/cm3-interactive.js"></script>
+<style>
+.cm3-triplet-simple {
+  max-width: 1100px;
+  margin: 0.5em auto;
+}
+.triplet-controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0,1fr));
+  gap: 1em;
+  font-size: 0.72em;
+  margin-bottom: 0.5em;
+}
+.triplet-controls label {
+  display: block;
+}
+.triplet-controls input[type="range"] {
+  width: 100%;
+}
+.triplet-distance-row {
+  display: grid;
+  grid-template-columns: 170px 1fr;
+  align-items: center;
+  gap: 0.5em;
+  margin: 0.35em 0;
+}
+.triplet-name {
+  font-size: 0.78em;
+  text-align: right;
+}
+.triplet-track {
+  position: relative;
+  height: 54px;
+  background: #f1f3f5;
+  border: 1px solid #ccd1d6;
+  border-radius: 10px;
+}
+.triplet-anchor,
+.triplet-point {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: 700;
+  font-size: 0.72em;
+}
+.triplet-anchor { left: 7%; background: #333; }
+.triplet-positive { background: #3a8f5c; }
+.triplet-negative { background: #b84a4a; }
+.triplet-equation,
+.triplet-status {
+  text-align: center;
+  margin-top: 0.3em;
+}
+.triplet-status {
+  font-size: 0.78em;
+  font-weight: 700;
+}
+@media (max-width: 900px) {
+  .triplet-controls { grid-template-columns: 1fr; }
+  .triplet-distance-row { grid-template-columns: 1fr; }
+  .triplet-name { text-align: left; }
+}
+</style>
+<script>
+(function () {
+  function initTripletWidget() {
+    const root = document.getElementById('cm3-triplet-simple');
+    if (!root || root.dataset.initialized === '1') return;
+    root.dataset.initialized = '1';
+
+    const dap = root.querySelector('[data-input="dap"]');
+    const dan = root.querySelector('[data-input="dan"]');
+    const margin = root.querySelector('[data-input="margin"]');
+    const dapOut = root.querySelector('[data-value="dap"]');
+    const danOut = root.querySelector('[data-value="dan"]');
+    const marginOut = root.querySelector('[data-value="margin"]');
+    const p = root.querySelector('[data-point="p"]');
+    const n = root.querySelector('[data-point="n"]');
+    const status = root.querySelector('[data-status]');
+
+    if (!dap || !dan || !margin || !p || !n || !status) return;
+
+    function position(distance) {
+      const min = 0.05;
+      const max = 1.20;
+      const u = Math.max(0, Math.min(1, (distance - min) / (max - min)));
+      return 12 + 82 * u;
+    }
+
+    function update() {
+      const dp = Number(dap.value);
+      const dn = Number(dan.value);
+      const m = Number(margin.value);
+
+      dapOut.textContent = dp.toFixed(2);
+      danOut.textContent = dn.toFixed(2);
+      marginOut.textContent = m.toFixed(2);
+
+      p.style.left = position(dp) + '%';
+      n.style.left = position(dn) + '%';
+
+      const loss = Math.max(dp - dn + m, 0);
+      if (loss > 1e-9) {
+        status.textContent =
+          'L = ' + loss.toFixed(2) +
+          ' : contrainte violée — le negative doit être repoussé et/ou le positive rapproché.';
+        status.style.color = '#9b2c2c';
+      } else {
+        status.textContent =
+          'L = 0 : contrainte satisfaite — le negative est suffisamment plus loin que le positive.';
+        status.style.color = '#26734d';
+      }
+    }
+
+    dap.addEventListener('input', update);
+    dan.addEventListener('input', update);
+    margin.addEventListener('input', update);
+    update();
+  }
+
+  initTripletWidget();
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTripletWidget, { once: true });
+  }
+
+  window.addEventListener('load', initTripletWidget, { once: true });
+
+  if (window.Reveal && typeof window.Reveal.on === 'function') {
+    window.Reveal.on('ready', initTripletWidget);
+    window.Reveal.on('slidechanged', initTripletWidget);
+  }
+})();
+</script>
+
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1600,
+
+        height: 900,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copié");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copié");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>

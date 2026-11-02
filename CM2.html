@@ -1,0 +1,3157 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
+
+  <meta name="author" content="Mathieu Fontaine">
+  <meta name="dcterms.date" content="2026-12-10">
+  <title>CM2 — Représentations du locuteur</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-0427d8d92a431aa6a6430e53ec02a470.css">
+  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">CM2 — Représentations du locuteur</h1>
+  <p class="subtitle">Des i-vectors aux x-vectors, r-vectors et ECAPA-TDNN</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Mathieu Fontaine
+</div>
+</div>
+</div>
+
+  <p class="date">2026-12-10</p>
+</section>
+<section class="slide level2">
+
+<p><link rel="stylesheet" href="assets/css/course.css"></p>
+</section>
+<section id="objectifs-du-cm2" class="slide level2">
+<h2>Objectifs du CM2</h2>
+<p>À la fin de la séance, vous devez pouvoir :</p>
+<ul>
+<li>expliquer pourquoi la reconnaissance du locuteur repose sur une <strong>représentation fixe</strong> d’un signal de durée variable ;</li>
+<li>décrire l’idée générale des <strong>i-vectors</strong> sans rentrer dans l’algorithme EM complet ;</li>
+<li>expliquer l’architecture <strong>x-vector</strong> : TDNN, pooling statistique, couches segment-level ;</li>
+<li>distinguer <strong>statistics pooling</strong> et <strong>attentive statistics pooling</strong> ;</li>
+<li>motiver les évolutions <strong>r-vector / ResNet</strong> et <strong>ECAPA-TDNN</strong>.</li>
+</ul>
+<div class="refs">
+Fil directeur : CM1 introduisait score, seuil et protocole ; CM2 explique comment construire la représentation utilisée pour produire ces scores.
+</div>
+</section>
+<section id="où-en-sommes-nous" class="slide level2">
+<h2>Où en sommes-nous ?</h2>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>CM1</strong></p>
+<p>On a étudié le problème :</p>
+<p><span class="math display">\[
+(e,t) \longrightarrow s(e,t) \longrightarrow \delta_\tau(e,t).
+\]</span></p>
+<p>Mais le score <span class="math inline">\(s(e,t)\)</span> était une <strong>boîte noire</strong>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>CM2</strong></p>
+<p>On ouvre une partie de la boîte noire :</p>
+<p><span class="math display">\[
+x_{1:T}
+\longrightarrow
+z \in \mathbb R^d.
+\]</span></p>
+<p>Le système transforme un signal de durée variable en une <strong>représentation fixe du locuteur</strong>.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="question" class="slide level2">
+<h2>Question</h2>
+<div class="cm2-question">
+<p>Qu’est-ce qu’une bonne représentation du locuteur ?</p>
+</div>
+<div class="fragment">
+<div class="cm2-answer">
+<p>Elle doit être :</p>
+<ul>
+<li><strong>stable</strong> pour un même locuteur malgré le canal, le bruit, la durée, le contenu linguistique ;</li>
+<li><strong>discriminante</strong> entre locuteurs différents ;</li>
+<li><strong>utilisable</strong> pour la vérification, l’identification et parfois la diarization.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="plan-du-cm2" class="slide level2">
+<h2>Plan du CM2</h2>
+<ol type="1">
+<li>Motivation historique : de GMM-UBM à i-vector</li>
+<li>Le changement de paradigme : apprendre directement un embedding</li>
+<li>X-vector : TDNN, champ réceptif, statistics pooling</li>
+<li>R-vector : ResNet, attentive pooling et scoring cosinus</li>
+<li>ECAPA-TDNN : meilleure modélisation temporelle, attention de canal, agrégation multi-couches</li>
+<li>Transition vers CM3 : apprendre une géométrie discriminante</li>
+</ol>
+</section>
+<section>
+<section id="motivation-historique" class="title-slide slide level1 center">
+<h1>1. Motivation historique</h1>
+
+</section>
+<section id="chronologie-très-synthétique" class="slide level2">
+<h2>Chronologie très synthétique</h2>
+
+<img data-src="assets/img/cm2/chronology_Speaker_recognition.png" class="cm2-img-wide r-stretch"><div class="refs">
+Campbell, <em>Speaker recognition: a tutorial</em>, Proc. IEEE 1997 · Kinnunen et al., <em>An overview of text-independent speaker recognition: From features to supervectors</em>, Speech Communication 2010 · Bai et al., <em>Speaker recognition based on deep learning: An overview</em>, Neural Networks 2021.
+</div>
+</section>
+<section id="message-de-cette-chronologie" class="slide level2">
+<h2>Message de cette chronologie</h2>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Avant les embeddings neuronaux</strong></p>
+<ul>
+<li>features acoustiques : cepstrum, MFCC ;</li>
+<li>modèles probabilistes : HMM, GMM, GMM-UBM ;</li>
+<li>représentations statistiques : supervectors, i-vectors ;</li>
+<li>backends : LDA, PLDA.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Aujourd’hui</strong></p>
+<ul>
+<li>embeddings appris par réseaux neuronaux ;</li>
+<li>architectures TDNN, ResNet, ECAPA ;</li>
+<li>losses discriminantes ;</li>
+<li>scoring souvent cosinus ou PLDA selon le système.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="refs">
+L’objectif n’est pas de refaire tout LDA/PLDA, mais de comprendre pourquoi les x-vectors ont remplacé une partie de la chaîne statistique.
+</div>
+</section>
+<section id="où-interviennent-lda-et-plda" class="slide level2">
+<h2>Où interviennent LDA et PLDA ?</h2>
+<p>Dans la chaîne historique, on ne se contente pas d’extraire un i-vector : on applique souvent un <strong>backend</strong>.</p>
+<p><span class="math display">\[
+\mathcal X
+\longrightarrow
+i^{(\mathcal X)}
+\longrightarrow
+\text{normalisation / LDA}
+\longrightarrow
+\text{PLDA score}.
+\]</span></p>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>LDA</strong> : transformation linéaire supervisée.</p>
+<p>Objectif : rendre les locuteurs plus séparables.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>PLDA</strong> : modèle probabiliste sur les embeddings.</p>
+<p>Objectif : produire un score pour tester</p>
+<p><span class="math display">\[
+H_{\mathrm{tar}} \quad \text{vs} \quad H_{\mathrm{non}}.
+\]</span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="refs">
+Ces deux briques appartiennent au backend historique des systèmes i-vector ; on les présente ici seulement pour comprendre la transition vers les embeddings neuronaux.
+</div>
+</section>
+<section id="lda-pourquoi-une-projection-supervisée" class="slide level2">
+<h2>LDA : pourquoi une projection supervisée ?</h2>
+<p>Supposons que l’on ait déjà des représentations fixes d’utterances.</p>
+<p>On note</p>
+<p><span class="math display">\[
+z_{k,j}\in\mathbb R^d
+\]</span></p>
+<p>l’embedding du <span class="math inline">\(j\)</span>-ième utterance du locuteur <span class="math inline">\(k\)</span>.</p>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>PCA</strong> cherche les directions de grande variance globale.</p>
+<p>Mais une grande variance n’est pas forcément une bonne séparation entre locuteurs.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>LDA</strong> utilise les labels de locuteur.</p>
+<p>Elle cherche des directions où les locuteurs sont bien séparés et où chaque locuteur reste compact.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="lda-en-deux-classes-projection-1d" class="slide level2">
+<h2>LDA en deux classes : projection 1D</h2>
+<p>Pour comprendre l’idée, considérons deux locuteurs.</p>
+<p>On projette les embeddings sur un vecteur unitaire <span class="math inline">\(v\)</span> :</p>
+<p><span class="math display">\[
+a_{k,j}=v^\top z_{k,j}\in\mathbb R.
+\]</span></p>
+<p>Après projection, on veut :</p>
+<ul>
+<li>des moyennes de classes éloignées ;</li>
+<li>des variances intra-classe faibles.</li>
+</ul>
+<p>Pour deux classes, un critère naturel est :</p>
+<p><span class="math display">\[
+J(v)=
+\frac{\left(\mu_1(v)-\mu_2(v)\right)^2}
+{s_1^2(v)+s_2^2(v)}.
+\]</span></p>
+<div class="notation">
+<strong>Notation :</strong> <span class="math inline">\(\mu_k(v)\)</span> est la moyenne projetée du locuteur <span class="math inline">\(k\)</span> ; <span class="math inline">\(s_k^2(v)\)</span> est sa variance projetée.
+</div>
+</section>
+<section id="lda-matrices-de-dispersion" class="slide level2">
+<h2>LDA : matrices de dispersion</h2>
+<p>On généralise maintenant à <span class="math inline">\(K\)</span> locuteurs.</p>
+<p>On note :</p>
+<p><span class="math display">\[
+\bar z_k = \frac{1}{n_k}\sum_{j=1}^{n_k} z_{k,j}
+\]</span></p>
+<p>le centroïde du locuteur <span class="math inline">\(k\)</span>, où <span class="math inline">\(n_k\)</span> est le nombre d’utterances disponibles pour ce locuteur.</p>
+<p>On note aussi :</p>
+<p><span class="math display">\[
+\bar z = \frac{1}{N}\sum_{k=1}^{K}\sum_{j=1}^{n_k} z_{k,j},
+\qquad
+N=\sum_{k=1}^{K}n_k.
+\]</span></p>
+<div class="notation">
+<strong>Notation :</strong> <span class="math inline">\(\bar z_k\)</span> = moyenne du locuteur <span class="math inline">\(k\)</span> ; <span class="math inline">\(n_k\)</span> = nombre d’exemples du locuteur <span class="math inline">\(k\)</span> ; <span class="math inline">\(\bar z\)</span> = moyenne globale.
+</div>
+</section>
+<section id="lda-intra-vs-inter-locuteur" class="slide level2">
+<h2>LDA : intra vs inter-locuteur</h2>
+<p>La dispersion intra-locuteur est :</p>
+<p><span class="math display">\[
+S_w
+=
+\sum_{k=1}^{K}\sum_{j=1}^{n_k}
+(z_{k,j}-\bar z_k)(z_{k,j}-\bar z_k)^\top.
+\]</span></p>
+<p>La dispersion inter-locuteur est :</p>
+<p><span class="math display">\[
+S_b
+=
+\sum_{k=1}^{K}
+n_k(\bar z_k-\bar z)(\bar z_k-\bar z)^\top.
+\]</span></p>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><span class="math inline">\(S_w\)</span> mesure la variabilité <strong>à l’intérieur</strong> d’un même locuteur.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><span class="math inline">\(S_b\)</span> mesure la variabilité <strong>entre</strong> les centroïdes de locuteurs.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="lda-critère-doptimisation" class="slide level2">
+<h2>LDA : critère d’optimisation</h2>
+<p>Pour une projection 1D <span class="math inline">\(v\)</span>, on maximise le quotient de Rayleigh :</p>
+<p><span class="math display">\[
+J(v)
+=
+\frac{v^\top S_b v}{v^\top S_w v}.
+\]</span></p>
+<p>Si <span class="math inline">\(S_w\)</span> est inversible, les directions discriminantes sont obtenues via :</p>
+<p><span class="math display">\[
+S_b v = \lambda S_w v.
+\]</span></p>
+<p>En pratique, LDA produit une matrice de projection <span class="math inline">\(W\)</span> formée des principales directions discriminantes.</p>
+<div class="refs">
+Le critère multidimensionnel est souvent écrit comme un rapport de déterminants, <span class="math inline">\(\det(W^\top S_b W)/\det(W^\top S_w W)\)</span>, mais l’intuition est déjà entièrement contenue dans le cas 1D.
+</div>
+</section>
+<section id="plda-pourquoi-un-backend-probabiliste" class="slide level2">
+<h2>PLDA : pourquoi un backend probabiliste ?</h2>
+<p>Après LDA, les embeddings sont plus discriminants, mais ils contiennent toujours deux sources de variabilité :</p>
+<p><span class="math display">\[
+\boxed{
+\text{identité du locuteur}
++
+\text{variabilité intra-locuteur}
+}
+\]</span></p>
+<p>PLDA propose de modéliser ces deux effets statistiquement afin de produire un <strong>score de vérification</strong>.</p>
+<div class="fragment">
+<div class="cm2-question">
+<p>Question : si Alice prononce deux phrases différentes, que doit-on considérer comme commun aux deux embeddings ?</p>
+</div>
+</div>
+<div class="fragment">
+<p>Réponse : une variable latente de locuteur partagée.</p>
+</div>
+</section>
+<section id="plda-modèle-hiérarchique" class="slide level2">
+<h2>PLDA : modèle hiérarchique</h2>
+<p>On note <span class="math inline">\(z_{k,j}\in\mathbb R^d\)</span> l’embedding du <span class="math inline">\(j\)</span>-ième utterance du locuteur <span class="math inline">\(k\)</span>.</p>
+<p>PLDA introduit une variable latente de locuteur :</p>
+<p><span class="math display">\[
+y_k \sim \mathcal N(\mu,\Phi_b),
+\]</span></p>
+<p>où :</p>
+<ul>
+<li><span class="math inline">\(\mu\)</span> est la moyenne globale des embeddings ;</li>
+<li><span class="math inline">\(\Phi_b\)</span> est la covariance <strong>inter-locuteur</strong> (<em>between-speaker</em>) ;</li>
+<li><span class="math inline">\(y_k\)</span> représente la position latente du locuteur <span class="math inline">\(k\)</span>.</li>
+</ul>
+<p>Conditionnellement à <span class="math inline">\(y_k\)</span>, chaque utterance du locuteur <span class="math inline">\(k\)</span> est généré par :</p>
+<p><span class="math display">\[
+z_{k,j}\mid y_k
+\sim
+\mathcal N(y_k,\Phi_w),
+\]</span></p>
+<p>où <span class="math inline">\(\Phi_w\)</span> est la covariance <strong>intra-locuteur</strong> (<em>within-speaker</em>).</p>
+</section>
+<section id="plda-écriture-additive" class="slide level2">
+<h2>PLDA : écriture additive</h2>
+<p>On réécrit le facteur locuteur comme une fluctuation autour de la moyenne globale :</p>
+<p><span class="math display">\[
+y_k=\mu+\eta_k,
+\qquad
+\eta_k\sim\mathcal N(0,\Phi_b).
+\]</span></p>
+<p>Puis l’embedding observé s’écrit :</p>
+<p><span class="math display">\[
+z_{k,j}
+=
+\mu+\eta_k+\varepsilon_{k,j},
+\qquad
+\varepsilon_{k,j}\sim\mathcal N(0,\Phi_w).
+\]</span></p>
+<div class="notation">
+<strong>Lecture :</strong> <span class="math inline">\(\eta_k\)</span> est la partie liée au locuteur <span class="math inline">\(k\)</span> ; <span class="math inline">\(\varepsilon_{k,j}\)</span> est la variabilité spécifique au <span class="math inline">\(j\)</span>-ième utterance.
+</div>
+</section>
+<section id="plda-hypothèses-probabilistes" class="slide level2">
+<h2>PLDA : hypothèses probabilistes</h2>
+<p>Le calcul des covariances repose sur trois hypothèses explicites.</p>
+<div class="three-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>1. Locuteurs différents</strong></p>
+<p><span class="math display">\[
+\eta_k \perp \eta_\ell
+\qquad\text{si }k\neq \ell.
+\]</span></p>
+<p>Les facteurs de deux locuteurs différents sont indépendants.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>2. Utterances distincts</strong></p>
+<p><span class="math display">\[
+\varepsilon_{k,j}\perp\varepsilon_{\ell,r}
+\qquad
+\text{si }(k,j)\neq(\ell,r).
+\]</span></p>
+<p>Les résidus d’utterances distincts sont indépendants.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>3. Sources séparées</strong></p>
+<p><span class="math display">\[
+\eta_k\perp\varepsilon_{\ell,j}
+\qquad
+\forall k,\ell,j.
+\]</span></p>
+<p>La variabilité locuteur et la variabilité résiduelle sont indépendantes.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="plda-le-point-subtil" class="slide level2">
+<h2>PLDA : le point subtil</h2>
+<p>Pour un même locuteur <span class="math inline">\(k\)</span>, les embeddings</p>
+<p><span class="math display">\[
+z_{k,1},z_{k,2},\ldots
+\]</span></p>
+<p>partagent le même facteur latent <span class="math inline">\(\eta_k\)</span> :</p>
+<p><span class="math display">\[
+\begin{aligned}
+z_{k,1} &amp;= \mu+\eta_k+\varepsilon_{k,1},\\
+z_{k,2} &amp;= \mu+\eta_k+\varepsilon_{k,2}.
+\end{aligned}
+\]</span></p>
+<div class="fragment">
+<div class="eqbox">
+<p>Conditionnellement à <span class="math inline">\(\eta_k\)</span>, les utterances sont indépendants.</p>
+<p>Mais marginalement, ils ne le sont pas, car ils partagent le même <span class="math inline">\(\eta_k\)</span>.</p>
+</div>
+</div>
+</section>
+<section id="plda-covariance-dun-embedding" class="slide level2">
+<h2>PLDA : covariance d’un embedding</h2>
+<p>Comme</p>
+<p><span class="math display">\[
+z_{k,j}-\mu
+=
+\eta_k+\varepsilon_{k,j},
+\]</span></p>
+<p>on obtient :</p>
+<p><span class="math display">\[
+\begin{aligned}
+\operatorname{Cov}(z_{k,j})
+&amp;=
+\mathbb E[(\eta_k+\varepsilon_{k,j})(\eta_k+\varepsilon_{k,j})^\top]\\
+&amp;=
+\mathbb E[\eta_k\eta_k^\top]
++
+\mathbb E[\varepsilon_{k,j}\varepsilon_{k,j}^\top]
+\end{aligned}
+\]</span></p>
+<p>car les termes croisés sont nuls par indépendance et centrage.</p>
+<p>Donc :</p>
+<p><span class="math display">\[
+\boxed{
+\operatorname{Cov}(z_{k,j})=\Phi_b+\Phi_w.
+}
+\]</span></p>
+</section>
+<section id="plda-deux-utterances-du-même-locuteur" class="slide level2">
+<h2>PLDA : deux utterances du même locuteur</h2>
+<p>Pour deux utterances du même locuteur :</p>
+<p><span class="math display">\[
+z_{k,1}-\mu=\eta_k+\varepsilon_{k,1},
+\qquad
+z_{k,2}-\mu=\eta_k+\varepsilon_{k,2}.
+\]</span></p>
+<p>Alors :</p>
+<p><span class="math display">\[
+\begin{aligned}
+\operatorname{Cov}(z_{k,1},z_{k,2})
+&amp;=
+\mathbb E[(\eta_k+\varepsilon_{k,1})(\eta_k+\varepsilon_{k,2})^\top]\\
+&amp;=
+\underbrace{\mathbb E[\eta_k\eta_k^\top]}_{\Phi_b}
++
+\underbrace{\mathbb E[\eta_k\varepsilon_{k,2}^\top]}_{0}
++
+\underbrace{\mathbb E[\varepsilon_{k,1}\eta_k^\top]}_{0}
++
+\underbrace{\mathbb E[\varepsilon_{k,1}\varepsilon_{k,2}^\top]}_{0}.
+\end{aligned}
+\]</span></p>
+<p>Donc :</p>
+<p><span class="math display">\[
+\boxed{
+\operatorname{Cov}(z_{k,1},z_{k,2})=\Phi_b.
+}
+\]</span></p>
+</section>
+<section id="plda-deux-locuteurs-différents" class="slide level2">
+<h2>PLDA : deux locuteurs différents</h2>
+<p>Pour deux locuteurs différents <span class="math inline">\(k\neq \ell\)</span> :</p>
+<p><span class="math display">\[
+z_{k,1}-\mu=\eta_k+\varepsilon_{k,1},
+\qquad
+z_{\ell,1}-\mu=\eta_\ell+\varepsilon_{\ell,1}.
+\]</span></p>
+<p>Cette fois :</p>
+<p><span class="math display">\[
+\eta_k\perp\eta_\ell.
+\]</span></p>
+<p>Tous les termes croisés sont donc nuls, y compris</p>
+<p><span class="math display">\[
+\mathbb E[\eta_k\eta_\ell^\top]=0.
+\]</span></p>
+<p>Ainsi :</p>
+<p><span class="math display">\[
+\boxed{
+\operatorname{Cov}(z_{k,1},z_{\ell,1})=0.
+}
+\]</span></p>
+</section>
+<section id="plda-lintuition-du-score" class="slide level2">
+<h2>PLDA : l’intuition du score</h2>
+<p>PLDA compare deux structures probabilistes.</p>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Même locuteur</strong></p>
+<p>Les deux embeddings partagent le même facteur latent :</p>
+<p><span class="math display">\[
+\operatorname{Cov}(z_1,z_2)=\Phi_b.
+\]</span></p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Locuteurs différents</strong></p>
+<p>Les facteurs latents sont indépendants :</p>
+<p><span class="math display">\[
+\operatorname{Cov}(z_1,z_2)=0.
+\]</span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="eqbox">
+<p>PLDA ne compare donc pas seulement deux points par une distance : il demande si leur dépendance statistique est compatible avec un <strong>même facteur latent de locuteur</strong>.</p>
+</div>
+</section>
+<section id="plda-matrices-sous-les-deux-hypothèses" class="slide level2">
+<h2>PLDA : matrices sous les deux hypothèses</h2>
+<p>En regroupant deux embeddings dans un vecteur joint :</p>
+<p><span class="math display">\[
+\begin{bmatrix}z_1\\z_2\end{bmatrix},
+\]</span></p>
+<p>on obtient sous l’hypothèse target :</p>
+<p><span class="math display">\[
+H_{\mathrm{tar}}:
+\quad
+\begin{bmatrix}z_1\\z_2\end{bmatrix}
+\sim
+\mathcal N
+\left(
+\begin{bmatrix}\mu\\\mu\end{bmatrix},
+\begin{bmatrix}
+\Phi_b+\Phi_w &amp; \Phi_b\\
+\Phi_b &amp; \Phi_b+\Phi_w
+\end{bmatrix}
+\right).
+\]</span></p>
+<p>Sous l’hypothèse non-target :</p>
+<p><span class="math display">\[
+H_{\mathrm{non}}:
+\quad
+\begin{bmatrix}z_1\\z_2\end{bmatrix}
+\sim
+\mathcal N
+\left(
+\begin{bmatrix}\mu\\\mu\end{bmatrix},
+\begin{bmatrix}
+\Phi_b+\Phi_w &amp; 0\\
+0 &amp; \Phi_b+\Phi_w
+\end{bmatrix}
+\right).
+\]</span></p>
+</section>
+<section id="plda-score-de-vérification" class="slide level2">
+<h2>PLDA : score de vérification</h2>
+<p>Pour une paire d’embeddings <span class="math inline">\((z_e,z_t)\)</span>, PLDA compare :</p>
+<p><span class="math display">\[
+H_{\mathrm{tar}}:
+\text{$z_e$ et $z_t$ partagent le même facteur latent de locuteur},
+\]</span></p>
+<p><span class="math display">\[
+H_{\mathrm{non}}:
+\text{$z_e$ et $z_t$ ont deux facteurs latents indépendants}.
+\]</span></p>
+<p>Le score PLDA est un log-rapport de vraisemblance :</p>
+<p><span class="math display">\[
+s_{\mathrm{PLDA}}(z_e,z_t)
+=
+\log
+\frac{p(z_e,z_t\mid H_{\mathrm{tar}})}
+{p(z_e,z_t\mid H_{\mathrm{non}})}.
+\]</span></p>
+<div class="cm2-question">
+Message : un score PLDA est un score de test d’hypothèses probabiliste.
+</div>
+</section>
+<section id="plda-forme-factorielle-classique" class="slide level2">
+<h2>PLDA : forme factorielle classique</h2>
+<p>On rencontre aussi une paramétrisation factorielle :</p>
+<p><span class="math display">\[
+z_{k,j}
+=
+\mu+Fh_k+\varepsilon_{k,j},
+\]</span></p>
+<p>avec</p>
+<p><span class="math display">\[
+h_k\sim\mathcal N(0,I),
+\qquad
+\varepsilon_{k,j}\sim\mathcal N(0,\Sigma).
+\]</span></p>
+<p>Dans ce cas :</p>
+<p><span class="math display">\[
+\Phi_b = FF^\top,
+\qquad
+\Phi_w=\Sigma.
+\]</span></p>
+<div class="notation">
+<strong>Interprétation :</strong> <span class="math inline">\(h_k\)</span> est un facteur latent de locuteur de faible dimension ; <span class="math inline">\(F\)</span> définit le sous-espace locuteur.
+</div>
+</section>
+<section id="ce-que-lon-garde-pour-la-suite" class="slide level2">
+<h2>Ce que l’on garde pour la suite</h2>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Chaîne historique forte</strong></p>
+<p><span class="math display">\[
+\text{i-vector}
++
+\text{LDA/PLDA}.
+\]</span></p>
+<p>On extrait une représentation statistique puis on applique un backend probabiliste.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Transition moderne</strong></p>
+<p><span class="math display">\[
+\text{DNN}
+\longrightarrow
+\text{embedding discriminant}.
+\]</span></p>
+<p>Le réseau apprend directement une géométrie favorable au scoring.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="refs">
+Dans ce CM, LDA/PLDA servent surtout de pont conceptuel : la suite se concentre sur la représentation elle-même.
+</div>
+</section>
+<section id="rappel-représentation-de-durée-fixe" class="slide level2">
+<h2>Rappel : représentation de durée fixe</h2>
+<p>Un enregistrement de parole n’est pas une seule observation : c’est une <strong>séquence temporelle</strong>.</p>
+<p>Après découpage en petites fenêtres, on obtient</p>
+<p><span class="math display">\[
+\mathcal X = \{x_t\}_{t=1}^{T},
+\qquad
+x_t\in \mathbb R^F.
+\]</span></p>
+<p>Concrètement, <span class="math inline">\(x_t\)</span> peut être par exemple :</p>
+<ul>
+<li>un vecteur de <strong>MFCC</strong> calculé sur une fenêtre de 25 ms ;</li>
+<li>un vecteur <strong>log-mel filterbank</strong> ;</li>
+<li>un vecteur avec dérivées <span class="math inline">\(\Delta,\Delta\Delta\)</span> ;</li>
+<li>plus généralement, une description acoustique courte autour du temps <span class="math inline">\(t\)</span>.</li>
+</ul>
+<div class="notation">
+<strong>Notation :</strong> <span class="math inline">\(T\)</span> dépend de la durée de l’utterance ; <span class="math inline">\(F\)</span> est la dimension des features par frame ; l’objectif est de construire une représentation fixe <span class="math inline">\(z\in\mathbb R^d\)</span>.
+</div>
+</section>
+<section id="avant-li-vector-un-ubm-fixe" class="slide level2">
+<h2>Avant l’i-vector : un UBM fixe</h2>
+<p>Dans la chaîne i-vector classique, on entraîne d’abord un <strong>GMM-UBM</strong> sur un grand corpus de développement.</p>
+<p><span class="math display">\[
+p(x)
+=
+\sum_{c=1}^{C}
+\pi_c\,\mathcal N(x;\mu_c,\Sigma_c).
+\]</span></p>
+<p>Une fois cet UBM appris, ses paramètres sont <strong>fixes</strong> :</p>
+<p><span class="math display">\[
+\boxed{\pi_c,\;\mu_c,\;\Sigma_c\quad\text{sont fixés pendant l'extraction i-vector}.}
+\]</span></p>
+<p>Ici :</p>
+<ul>
+<li><span class="math inline">\(c\in\{1,\ldots,C\}\)</span> indexe une composante gaussienne ;</li>
+<li><span class="math inline">\(\mu_c\in\mathbb R^F\)</span> est la moyenne de cette composante ;</li>
+<li>une composante gaussienne n’est <strong>pas</strong> un locuteur : c’est une région acoustique du modèle UBM.</li>
+</ul>
+<div class="refs">
+L’UBM sert de modèle acoustique universel : il définit un repère statistique commun dans lequel tous les utterances seront décrits.
+</div>
+</section>
+<section id="un-utterance-vu-par-lubm" class="slide level2">
+<h2>Un utterance vu par l’UBM</h2>
+<p>Pour un nouvel utterance</p>
+<p><span class="math display">\[
+\mathcal X=\{x_t\}_{t=1}^{T},
+\]</span></p>
+<p>on ne réentraîne pas le GMM. On utilise l’UBM fixe pour calculer, pour chaque frame <span class="math inline">\(x_t\)</span>, la responsabilité :</p>
+<p><span class="math display">\[
+\gamma_{t,c}
+=
+P(c\mid x_t)
+=
+\frac{\pi_c\mathcal N(x_t;\mu_c,\Sigma_c)}
+{\sum_{j=1}^{C}\pi_j\mathcal N(x_t;\mu_j,\Sigma_j)}.
+\]</span></p>
+<p>Interprétation : <span class="math inline">\(\gamma_{t,c}\)</span> mesure à quel point la frame <span class="math inline">\(x_t\)</span> est expliquée par la gaussienne <span class="math inline">\(c\)</span> du UBM.</p>
+<div class="notation">
+<strong>Important :</strong> <span class="math inline">\(\mu_c\)</span> est fixe, mais <span class="math inline">\(\gamma_{t,c}\)</span> dépend de l’utterance <span class="math inline">\(\mathcal X\)</span>.
+</div>
+</section>
+<section id="statistiques-suffisantes-de-lutterance" class="slide level2">
+<h2>Statistiques suffisantes de l’utterance</h2>
+<p>À partir des responsabilités, on résume <span class="math inline">\(\mathcal X\)</span> par des statistiques par composante :</p>
+<p><span class="math display">\[
+N_c^{(\mathcal X)}
+=
+\sum_{t=1}^{T}\gamma_{t,c},
+\qquad
+F_c^{(\mathcal X)}
+=
+\sum_{t=1}^{T}\gamma_{t,c}x_t.
+\]</span></p>
+<p>Souvent on utilise aussi la statistique centrée :</p>
+<p><span class="math display">\[
+\widetilde F_c^{(\mathcal X)}
+=
+\sum_{t=1}^{T}\gamma_{t,c}(x_t-\mu_c).
+\]</span></p>
+<p>Lecture :</p>
+<ul>
+<li><span class="math inline">\(N_c^{(\mathcal X)}\)</span> : combien l’utterance occupe la composante <span class="math inline">\(c\)</span> ;</li>
+<li><span class="math inline">\(F_c^{(\mathcal X)}\)</span> : somme pondérée des observations associées à <span class="math inline">\(c\)</span> ;</li>
+<li><span class="math inline">\(\widetilde F_c^{(\mathcal X)}\)</span> : écart de l’utterance par rapport au UBM.</li>
+</ul>
+</section>
+<section id="du-ubm-au-supervecteur-latent" class="slide level2">
+<h2>Du UBM au supervecteur latent</h2>
+<p>Le supervecteur moyen du UBM est fixe :</p>
+<p><span class="math display">\[
+\mu
+=
+\begin{bmatrix}
+\mu_1^\top &amp; \cdots &amp; \mu_C^\top
+\end{bmatrix}^\top
+\in\mathbb R^{CF}.
+\]</span></p>
+<p>Pour un utterance <span class="math inline">\(\mathcal X\)</span>, le modèle de variabilité totale suppose un supervecteur latent :</p>
+<p><span class="math display">\[
+\mathcal M^{(\mathcal X)}
+=
+\mu+\Phi h^{(\mathcal X)}+\epsilon.
+\]</span></p>
+<p>On peut lire chaque bloc comme</p>
+<p><span class="math display">\[
+\mathcal M_c^{(\mathcal X)}
+=
+\mu_c+\Phi_c h^{(\mathcal X)}+\epsilon_c.
+\]</span></p>
+<div class="notation">
+<strong>Ne pas confondre :</strong> <span class="math inline">\(\mu_c\)</span> est la moyenne fixe du UBM ; <span class="math inline">\(\mathcal M_c^{(\mathcal X)}\)</span> est le bloc latent spécifique à l’utterance <span class="math inline">\(\mathcal X\)</span>.
+</div>
+</section>
+<section id="i-vector-ce-que-lon-extrait-vraiment" class="slide level2">
+<h2>i-vector : ce que l’on extrait vraiment</h2>
+<p>Dans la pratique, on ne veut pas manipuler directement le très grand supervecteur <span class="math inline">\(\mathcal M^{(\mathcal X)}\in\mathbb R^{CF}\)</span>.</p>
+<p>On infère plutôt le facteur latent de faible dimension :</p>
+<p><span class="math display">\[
+h^{(\mathcal X)}\in\mathbb R^d,
+\qquad d\ll CF.
+\]</span></p>
+<p>L’i-vector est typiquement la moyenne a posteriori :</p>
+<p><span class="math display">\[
+\boxed{
+i^{(\mathcal X)}
+=
+\mathbb E\left[h^{(\mathcal X)}\mid \mathcal X\right]
+}
+\]</span></p>
+<p>à partir des statistiques <span class="math inline">\(N_c^{(\mathcal X)}\)</span> et <span class="math inline">\(F_c^{(\mathcal X)}\)</span> calculées avec l’UBM.</p>
+<div class="cm2-question">
+<p>Chaîne conceptuelle :</p>
+<p><span class="math display">\[
+\mathcal X
+\longrightarrow
+\gamma_{t,c}
+\longrightarrow
+(N_c,F_c)
+\longrightarrow
+h^{(\mathcal X)}
+\longrightarrow
+\text{i-vector}.
+\]</span></p>
+</div>
+<div class="refs">
+Dehak et al., 2011 ; Kenny et al., 2007 ; Kinnunen &amp; Li, 2010.
+</div>
+</section>
+<section id="visualisation-du-modèle-i-vector" class="slide level2">
+<h2>Visualisation du modèle i-vector</h2>
+
+<img data-src="assets/img/cm2/FA_i_vectors.png" class="cm2-img-tall r-stretch"><div class="cm2-caption">
+Lecture de la figure : <span class="math inline">\(\mu\)</span> est le supervecteur fixe du UBM. Le facteur latent <span class="math inline">\(h^{(\mathcal X)}\)</span> déforme ce supervecteur via <span class="math inline">\(\Phi\)</span> pour produire un supervecteur latent <span class="math inline">\(\mathcal M^{(\mathcal X)}\)</span>. L’i-vector est l’estimation a posteriori de ce facteur latent.
+</div>
+<div class="refs">
+Illustration du modèle de variabilité totale : le facteur latent déforme le supervecteur UBM dans un sous-espace de faible dimension.
+</div>
+</section>
+<section id="tableau-de-synthèse-des-quantités" class="slide level2">
+<h2>Tableau de synthèse des quantités</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Quantité</th>
+<th>Rôle</th>
+<th>Fixe ou dépend de <span class="math inline">\(\mathcal X\)</span> ?</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(x_t\)</span></td>
+<td>feature acoustique de la frame <span class="math inline">\(t\)</span></td>
+<td>dépend de <span class="math inline">\(\mathcal X\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\pi_c,\mu_c,\Sigma_c\)</span></td>
+<td>paramètres de la gaussienne <span class="math inline">\(c\)</span> du UBM</td>
+<td>fixes après apprentissage</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\gamma_{t,c}\)</span></td>
+<td>responsabilité de <span class="math inline">\(c\)</span> pour <span class="math inline">\(x_t\)</span></td>
+<td>dépend de <span class="math inline">\(\mathcal X\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(N_c^{(\mathcal X)},F_c^{(\mathcal X)}\)</span></td>
+<td>statistiques de Baum-Welch</td>
+<td>dépendent de <span class="math inline">\(\mathcal X\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\Phi\)</span></td>
+<td>matrice de variabilité totale</td>
+<td>fixe après apprentissage</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(h^{(\mathcal X)}\)</span></td>
+<td>facteur latent</td>
+<td>dépend de <span class="math inline">\(\mathcal X\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(i^{(\mathcal X)}\)</span></td>
+<td>i-vector extrait</td>
+<td>dépend de <span class="math inline">\(\mathcal X\)</span></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="ce-que-li-vector-apporte" class="slide level2">
+<h2>Ce que l’i-vector apporte</h2>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Problème initial</strong></p>
+<p>Un utterance est une séquence longue :</p>
+<p><span class="math display">\[
+\mathcal X = \{x_1,\ldots,x_T\}.
+\]</span></p>
+<p>Difficile de comparer deux séquences directement.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Solution i-vector</strong></p>
+<p>On extrait une représentation compacte :</p>
+<p><span class="math display">\[
+i^{(\mathcal X)}\in\mathbb R^d.
+\]</span></p>
+<p>Puis on peut comparer, normaliser, appliquer LDA/PLDA.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="la-machinerie-i-vector" class="slide level2">
+<h2>La machinerie i-vector</h2>
+
+<img data-src="assets/img/cm2/summarize_ivec.png" class="cm2-img-wide r-stretch"><p>Cette figure résume la chaîne complète :</p>
+<p><span class="math display">\[
+\text{UBM fixe}
+\rightarrow
+\text{statistiques }(N_c,F_c)
+\rightarrow
+\text{inférence de }h
+\rightarrow
+\text{i-vector}.
+\]</span></p>
+<div class="cm2-question">
+<p>Message pédagogique : l’i-vector est puissant, mais il nécessite UBM, statistiques d’ordre 0/1, modèle latent, EM, puis souvent un backend LDA/PLDA.</p>
+</div>
+</section>
+<section id="transition-vers-les-embeddings-neuronaux" class="slide level2">
+<h2>Transition vers les embeddings neuronaux</h2>
+<div class="cm2-question">
+<p>Peut-on apprendre directement la fonction</p>
+<p><span class="math display">\[
+\{x_t\}_{t=1}^{T}
+\longmapsto
+z
+\]</span></p>
+<p>par apprentissage supervisé sur des locuteurs ?</p>
+</div>
+<div class="fragment">
+<div class="cm2-answer">
+<p>C’est l’idée générale des <strong>x-vectors</strong> : entraîner un réseau à classifier les locuteurs du training set, puis utiliser une couche cachée comme embedding.</p>
+</div>
+</div>
+</section></section>
+<section>
+<section id="paradigme-x-vector" class="title-slide slide level1 center">
+<h1>2. Paradigme x-vector</h1>
+
+</section>
+<section id="recette-moderne-dun-extracteur-speaker" class="slide level2">
+<h2>Recette moderne d’un extracteur speaker</h2>
+
+<img data-src="assets/img/cm2/summary_speaker_extractor.png" class="cm2-img-wide r-stretch"><div class="refs">
+Pipeline générique d’un extracteur d’embedding : features ou signal → encodeur frame-level → pooling → embedding → classifieur speaker.
+</div>
+</section>
+<section id="le-paradoxe-utile" class="slide level2">
+<h2>Le paradoxe utile</h2>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>À l’entraînement</strong></p>
+<p>On résout un problème closed-set :</p>
+<p><span class="math display">\[
+p(y=k\mid \mathcal X),
+\qquad
+k\in\{1,\ldots,K\}.
+\]</span></p>
+<p>Les locuteurs du training set sont connus.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Au test</strong></p>
+<p>On vérifie des locuteurs jamais vus :</p>
+<p><span class="math display">\[
+s(z_e,z_t).
+\]</span></p>
+<p>L’embedding doit généraliser à de nouvelles identités.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="refs">
+Snyder et al., “X-vectors: Robust DNN embeddings for speaker recognition”, ICASSP 2018.
+</div>
+</section>
+<section id="question-1" class="slide level2">
+<h2>Question</h2>
+<div class="cm2-question">
+<p>Pourquoi entraîner un classifieur de locuteurs peut-il produire une représentation utile pour des locuteurs jamais vus ?</p>
+</div>
+<div class="fragment">
+<div class="cm2-answer">
+<p>Parce que la classification impose au réseau d’organiser l’espace latent selon des caractéristiques discriminantes du locuteur :</p>
+<p><span class="math display">\[
+\text{intra-speaker compact}
+\qquad\text{et}\qquad
+\text{inter-speaker séparé}.
+\]</span></p>
+<p>Le classifieur final sera jeté ; on conserve l’embedding.</p>
+</div>
+</div>
+</section>
+<section id="définition-opérationnelle-dun-x-vector" class="slide level2">
+<h2>Définition opérationnelle d’un x-vector</h2>
+<p>Un x-vector est un embedding extrait d’une couche segment-level d’un réseau entraîné pour classifier les speakers.</p>
+<p>Schéma abstrait :</p>
+<p><span class="math display">\[
+x_{1:T}
+\xrightarrow{\text{TDNN}}
+h_{1:T}
+\xrightarrow{\text{statistics pooling}}
+g
+\xrightarrow{\text{segment layers}}
+z
+\xrightarrow{\text{softmax}}
+y.
+\]</span></p>
+<div class="notation">
+<strong>Notation :</strong> <span class="math inline">\(x_t\)</span> = représentation frame-level ; <span class="math inline">\(g\)</span> = représentation après pooling ; <span class="math inline">\(z\)</span> = x-vector.
+</div>
+</section></section>
+<section>
+<section id="le-tdnn-de-lx-vector" class="title-slide slide level1 center">
+<h1>3. Le TDNN de l’x-vector</h1>
+
+</section>
+<section id="tdnn-champ-réceptif-local" class="slide level2">
+<h2>TDNN : champ réceptif local</h2>
+
+<img data-src="assets/img/cm2/seq2seq_tdnn/seq2seq_tdnn_01.png" class="cm2-img-wide r-stretch"><div class="cm2-caption">
+Couche 1 : kernel <span class="math inline">\(5\)</span>, dilation <span class="math inline">\(1\)</span> — une sortie voit 5 frames d’entrée.
+</div>
+</section>
+<section id="tdnn-accumulation-du-contexte" class="slide level2">
+<h2>TDNN : accumulation du contexte</h2>
+
+<img data-src="assets/img/cm2/seq2seq_tdnn/seq2seq_tdnn_02.png" class="cm2-img-wide r-stretch"><div class="cm2-caption">
+On conserve une représentation frame-level, mais chaque frame agrège déjà un voisinage local.
+</div>
+</section>
+<section id="tdnn-dilation" class="slide level2">
+<h2>TDNN : dilation</h2>
+
+<img data-src="assets/img/cm2/seq2seq_tdnn/seq2seq_tdnn_03.png" class="cm2-img-wide r-stretch"><div class="cm2-caption">
+La deuxième couche utilise une dilation : elle augmente rapidement le contexte sans trop augmenter le nombre de paramètres.
+</div>
+</section>
+<section id="tdnn-contexte-effectif" class="slide level2">
+<h2>TDNN : contexte effectif</h2>
+
+<img data-src="assets/img/cm2/seq2seq_tdnn/seq2seq_tdnn_04.png" class="cm2-img-wide r-stretch"><div class="cm2-caption">
+Une activation plus profonde dépend de plusieurs frames éloignées dans l’entrée.
+</div>
+</section>
+<section id="tdnn-troisième-couche" class="slide level2">
+<h2>TDNN : troisième couche</h2>
+
+<img data-src="assets/img/cm2/seq2seq_tdnn/seq2seq_tdnn_05.png" class="cm2-img-wide r-stretch"><div class="cm2-caption">
+Kernel <span class="math inline">\(3\)</span>, dilation <span class="math inline">\(3\)</span> : le contexte temporel s’élargit encore.
+</div>
+</section>
+<section id="tdnn-champ-réceptif-après-trois-couches" class="slide level2">
+<h2>TDNN : champ réceptif après trois couches</h2>
+
+<img data-src="assets/img/cm2/seq2seq_tdnn/seq2seq_tdnn_06.png" class="cm2-img-wide r-stretch"><div class="cm2-caption">
+On obtient une représentation locale enrichie, toujours alignée temporellement.
+</div>
+</section>
+<section id="tdnn-couches-à-kernel-1" class="slide level2">
+<h2>TDNN : couches à kernel 1</h2>
+
+<img data-src="assets/img/cm2/seq2seq_tdnn/seq2seq_tdnn_07.png" class="cm2-img-wide r-stretch"><div class="cm2-caption">
+Les couches <span class="math inline">\(1\times1\)</span> changent la représentation sans augmenter le champ réceptif.
+</div>
+</section>
+<section id="tdnn-complet-avant-pooling" class="slide level2">
+<h2>TDNN complet avant pooling</h2>
+
+<img data-src="assets/img/cm2/seq2seq_tdnn/seq2seq_tdnn_08.png" class="cm2-img-wide r-stretch"><div class="cm2-caption">
+À ce stade, on a toujours une séquence de représentations frame-level.
+</div>
+</section>
+<section id="le-champ-réceptif-en-formule" class="slide level2">
+<h2>Le champ réceptif en formule</h2>
+<p>Pour une pile de convolutions 1D de kernel <span class="math inline">\(k_\ell\)</span> et dilation <span class="math inline">\(d_\ell\)</span>, sans stride, le champ réceptif vérifie :</p>
+<p><span class="math display">\[
+R_L
+=
+1+
+\sum_{\ell=1}^{L}(k_\ell-1)d_\ell.
+\]</span></p>
+<p>Pour les trois premières couches :</p>
+<p><span class="math display">\[
+R_3
+=
+1+(5-1)\cdot1+(3-1)\cdot2+(3-1)\cdot3
+=
+15.
+\]</span></p>
+<div class="notation">
+<strong>Interprétation :</strong> une représentation frame-level peut résumer environ 15 frames d’entrée, mais elle reste indexée par le temps.
+</div>
+</section>
+<section id="question-2" class="slide level2">
+<h2>Question</h2>
+<div class="cm2-question">
+<p>On possède maintenant une représentation pour chaque frame :</p>
+<p><span class="math display">\[
+x_1,\ldots,x_T.
+\]</span></p>
+<p>Mais <span class="math inline">\(T\)</span> varie selon l’utterance. Comment obtenir un seul vecteur fixe ?</p>
+</div>
+<div class="fragment">
+<div class="cm2-answer">
+<p>On applique un <strong>pooling temporel</strong> sur toute la séquence.</p>
+</div>
+</div>
+</section>
+<section id="statistics-pooling" class="slide level2">
+<h2>Statistics pooling</h2>
+
+<img data-src="assets/img/cm2/seq2seq_tdnn/seq2seq_tdnn_09.png" class="cm2-img-wide r-stretch"><div class="cm2-caption">
+Le pooling transforme une séquence de longueur variable en un vecteur fixe.
+</div>
+</section>
+<section id="mean-and-standard-deviation-pooling" class="slide level2">
+<h2>Mean and standard deviation pooling</h2>
+
+<img data-src="assets/img/cm2/meanstdpooling.png" class="cm2-img-wide r-stretch"><div class="refs">
+Le x-vector standard concatène moyenne et écart-type sur les frames.
+</div>
+</section>
+<section id="statistics-pooling-équations" class="slide level2">
+<h2>Statistics pooling : équations</h2>
+<p>Soit <span class="math inline">\(x_t\in\mathbb R^D\)</span> la représentation frame-level. On calcule :</p>
+<p><span class="math display">\[
+\mu
+=
+\frac{1}{T}\sum_{t=1}^{T}x_t,
+\]</span></p>
+<p><span class="math display">\[
+\sigma
+=
+\sqrt{
+\frac{1}{T}\sum_{t=1}^{T}(x_t-\mu)^{\odot 2}
+}.
+\]</span></p>
+<p>Puis :</p>
+<p><span class="math display">\[
+g=[\mu,\sigma]\in\mathbb R^{2D}.
+\]</span></p>
+<div class="notation">
+<strong>Notation :</strong> l’opérateur <span class="math inline">\(\odot 2\)</span> signifie carré élément par élément.
+</div>
+</section>
+<section id="pourquoi-garder-lécart-type" class="slide level2">
+<h2>Pourquoi garder l’écart-type ?</h2>
+<div class="cm2-question">
+<p>Deux utterances peuvent-elles avoir la même moyenne temporelle mais une distribution d’activations différente ?</p>
+</div>
+<div class="fragment">
+<div class="cm2-answer">
+<p>Oui. La moyenne décrit un centre ; l’écart-type donne une information sur la dispersion temporelle des activations.</p>
+<p><span class="math display">\[
+\text{mean only} \quad &lt; \quad \text{mean + standard deviation}.
+\]</span></p>
+</div>
+</div>
+</section>
+<section id="après-le-pooling-couches-segment-level" class="slide level2">
+<h2>Après le pooling : couches segment-level</h2>
+
+<img data-src="assets/img/cm2/seq2seq_tdnn/seq2seq_tdnn_10.png" class="cm2-img-wide r-stretch"><div class="cm2-caption">
+Après pooling, le réseau ne traite plus une séquence mais un vecteur de dimension fixe.
+</div>
+</section>
+<section id="extraction-de-lx-vector" class="slide level2">
+<h2>Extraction de l’x-vector</h2>
+
+<img data-src="assets/img/cm2/seq2seq_tdnn/seq2seq_tdnn_11.png" class="cm2-img-wide r-stretch"><div class="cm2-caption">
+L’élément noir indique la couche dont on extrait l’embedding speaker.
+</div>
+</section>
+<section id="classifieur-speaker" class="slide level2">
+<h2>Classifieur speaker</h2>
+
+<img data-src="assets/img/cm2/seq2seq_tdnn/seq2seq_tdnn_12.png" class="cm2-img-wide r-stretch"><div class="cm2-caption">
+Le classifieur sert à apprendre l’espace ; il n’est pas nécessairement conservé à l’inférence.
+</div>
+</section>
+<section id="vue-complète" class="slide level2">
+<h2>Vue complète</h2>
+
+<img data-src="assets/img/cm2/seq2seq_tdnn/seq2seq_tdnn_13.png" class="cm2-img-wide r-stretch"><div class="cm2-caption">
+Frame-level TDNN → statistics pooling → segment-level → x-vector → speaker classifier.
+</div>
+</section>
+<section id="résumé-visuel-final" class="slide level2">
+<h2>Résumé visuel final</h2>
+
+<img data-src="assets/img/cm2/seq2seq_tdnn/seq2seq_tdnn_14.png" class="cm2-img-wide r-stretch"></section>
+<section id="architecture-x-vector-lecture-compacte" class="slide level2">
+<h2>Architecture x-vector : lecture compacte</h2>
+
+<img data-src="assets/img/cm2/x-vectors_architecture.png" class="cm2-img-tall r-stretch"><div class="refs">
+Vue compacte de l’architecture x-vector et d’une variante SincNet x-vector.
+</div>
+</section>
+<section id="comment-lire-les-triplets-ckd" class="slide level2">
+<h2>Comment lire les triplets <span class="math inline">\([C,K,D]\)</span> ?</h2>
+<p>Dans cette figure, une couche notée</p>
+<p><span class="math display">\[
+\text{Conv1D}[C,K,D]
+\]</span></p>
+<p>se lit comme :</p>
+<p><span class="math display">\[
+\boxed{
+C=\text{nombre de canaux de sortie},
+\quad
+K=\text{taille du noyau},
+\quad
+D=\text{dilatation}
+}
+\]</span></p>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Exemple TDNN</strong></p>
+<p><span class="math display">\[
+\text{Conv1D}[512,5,1]
+\]</span></p>
+<p>produit, à chaque instant <span class="math inline">\(t\)</span>, une représentation</p>
+<p><span class="math display">\[
+x_t\in\mathbb R^{512}
+\]</span></p>
+<p>avec un noyau temporel de 5 frames.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Exemple SincNet</strong></p>
+<p><span class="math display">\[
+\text{SincNet}[80,251,1]
+\]</span></p>
+<p>signifie : <span class="math inline">\(80\)</span> filtres appliqués au waveform. À chaque position temporelle, chaque filtre regarde une fenêtre locale de <span class="math inline">\(251\)</span> échantillons et produit une réponse.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="parenthèse-utile-sincnet" class="slide level2">
+<h2>Parenthèse utile : SincNet</h2>
+<div class="two-col">
+<div>
+<p>Dans les architectures x-vector classiques, l’entrée du réseau est souvent une séquence de features déjà extraites :</p>
+<p><span class="math display">\[
+x_t \in \mathbb{R}^{D},
+\qquad t=1,\ldots,T.
+\]</span></p>
+<p>Par exemple : MFCC, log-mel filterbanks, ou features similaires.</p>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Question</strong></p>
+<p>Peut-on apprendre la première banque de filtres directement à partir du signal brut ?</p>
+<p><span class="math display">\[
+s[n] \longrightarrow \text{speaker network}
+\]</span></p>
+<p><strong>SincNet</strong> répond : oui, mais avec une forte contrainte acoustique sur la première couche.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="refs">
+Ravanelli &amp; Bengio, “Speaker Recognition from Raw Waveform with SincNet”, SLT 2018.
+</div>
+</section>
+<section id="convolution-1d-classique-sur-waveform" class="slide level2">
+<h2>Convolution 1D classique sur waveform</h2>
+<p>Soit <span class="math inline">\(s[n]\)</span> un signal audio discret.</p>
+<p>Une convolution 1D standard avec le filtre <span class="math inline">\(i\)</span> de longueur <span class="math inline">\(L\)</span> donne :</p>
+<p><span class="math display">\[
+y_i[n]
+=
+(s*h_i)[n]
+=
+\sum_{k=0}^{L-1} h_i[k]s[n-k].
+\]</span></p>
+<p>Les coefficients</p>
+<p><span class="math display">\[
+h_i[0],\ldots,h_i[L-1]
+\]</span></p>
+<p>sont appris <strong>indépendamment</strong>.</p>
+<div class="fragment">
+<div class="eqbox">
+<p>Pour un filtre :</p>
+<p><span class="math display">\[
+\boxed{\text{Conv1D classique : }L\text{ paramètres appris}}
+\]</span></p>
+<p>Exemple : si <span class="math inline">\(L=251\)</span>, alors il y a <span class="math inline">\(251\)</span> paramètres par filtre.</p>
+</div>
+</div>
+</section>
+<section id="sincnet-ne-pas-apprendre-tous-les-coefficients" class="slide level2">
+<h2>SincNet : ne pas apprendre tous les coefficients</h2>
+<p>SincNet impose que la première couche soit une banque de filtres <strong>passe-bande</strong>.</p>
+<p>Le filtre <span class="math inline">\(i\)</span> n’est plus défini par <span class="math inline">\(L\)</span> coefficients libres, mais par deux fréquences de coupure :</p>
+<p><span class="math display">\[
+f_{1,i},\qquad f_{2,i},
+\qquad f_{2,i}&gt;f_{1,i}.
+\]</span></p>
+<p>Son impulsion est :</p>
+<p><span class="math display">\[
+g_i[n]
+=
+2f_{2,i}\,\mathrm{sinc}(2\pi f_{2,i}n)
+-
+2f_{1,i}\,\mathrm{sinc}(2\pi f_{1,i}n).
+\]</span></p>
+<p>La sortie du filtre est ensuite :</p>
+<p><span class="math display">\[
+y_i[n]=(s*g_i)[n].
+\]</span></p>
+<div class="fragment">
+<div class="eqbox">
+<p><span class="math display">\[
+\boxed{\text{SincNet : }2\text{ paramètres principaux par filtre}}
+\]</span></p>
+<p>au lieu de <span class="math inline">\(L\)</span> coefficients libres.</p>
+</div>
+</div>
+</section>
+<section id="pourquoi-cette-contrainte-est-utile" class="slide level2">
+<h2>Pourquoi cette contrainte est utile ?</h2>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Conv1D classique</strong></p>
+<ul>
+<li>apprend <span class="math inline">\(L\)</span> coefficients arbitraires ;</li>
+<li>très flexible ;</li>
+<li>les filtres peuvent être difficiles à interpréter ;</li>
+<li>le réseau doit découvrir seul la sélectivité fréquentielle.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>SincNet</strong></p>
+<ul>
+<li>apprend seulement <span class="math inline">\(f_1\)</span> et <span class="math inline">\(f_2\)</span> ;</li>
+<li>impose un biais audio fort ;</li>
+<li>chaque filtre correspond à une bande fréquentielle ;</li>
+<li>moins de paramètres dans la première couche.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<div class="eqbox">
+<p>Idée principale :</p>
+<p><span class="math display">\[
+\boxed{
+\text{ne pas apprendre la forme du filtre depuis zéro ; apprendre où écouter.}
+}
+\]</span></p>
+</div>
+</div>
+<div class="refs">
+En pratique, les réponses impulsionnelles idéales sont tronquées et fenêtrées, par exemple avec une fenêtre de Hamming.
+</div>
+</section>
+<section id="sincnet-que-veut-dire-802511" class="slide level2">
+<h2>SincNet : que veut dire <span class="math inline">\([80,251,1]\)</span> ?</h2>
+<p>Supposons que le waveform contienne <span class="math inline">\(N\)</span> échantillons :</p>
+<p><span class="math display">\[
+s[0],s[1],\ldots,s[N-1].
+\]</span></p>
+<p>La couche SincNet contient <span class="math inline">\(80\)</span> filtres :</p>
+<p><span class="math display">\[
+g_1,\ldots,g_{80}.
+\]</span></p>
+<p>Chaque filtre regarde localement <span class="math inline">\(251\)</span> échantillons du signal. Pour une position <span class="math inline">\(n\)</span>, le filtre <span class="math inline">\(i\)</span> produit un scalaire :</p>
+<p><span class="math display">\[
+y_i[n]
+=
+\sum_{k=0}^{250} g_i[k]s[n-k].
+\]</span></p>
+<p>Comme il y a <span class="math inline">\(80\)</span> filtres, on obtient à cette position :</p>
+<p><span class="math display">\[
+\mathbf y[n]=[y_1[n],\ldots,y_{80}[n]]^\top\in\mathbb R^{80}.
+\]</span></p>
+</section>
+<section id="sincnet-fenêtre-glissante" class="slide level2">
+<h2>SincNet : fenêtre glissante</h2>
+<p>Le point important : <span class="math inline">\(251\)</span> n’est pas la longueur du fichier audio.</p>
+<p>C’est la taille de la <strong>fenêtre locale</strong> vue par un filtre à une position donnée.</p>
+<p><span class="math display">\[
+\underbrace{s[0],\ldots,s[N-1]}_{\text{waveform complet}}
+\quad\Rightarrow\quad
+\underbrace{s[n-250],\ldots,s[n]}_{251\text{ samples locaux}}
+\quad\Rightarrow\quad
+\mathbf y[n]\in\mathbb R^{80}.
+\]</span></p>
+<p>Puis la fenêtre glisse :</p>
+<p><span class="math display">\[
+n\rightarrow n+1\rightarrow n+2\rightarrow\cdots
+\]</span></p>
+<p>et on obtient une séquence de vecteurs :</p>
+<p><span class="math display">\[
+\mathbf y[1],\ldots,\mathbf y[T'].
+\]</span></p>
+<p>À <span class="math inline">\(16\,\mathrm{kHz}\)</span>, <span class="math inline">\(251\)</span> échantillons correspondent à environ</p>
+<p><span class="math display">\[
+\frac{251}{16000}\simeq 15.7\,\mathrm{ms}.
+\]</span></p>
+</section>
+<section id="sincnet-dans-une-chaîne-x-vector" class="slide level2">
+<h2>SincNet dans une chaîne x-vector</h2>
+<p>Pour la couche</p>
+<p><span class="math display">\[
+\text{SincNet}[80,251,1],
+\]</span></p>
+<p>on applique donc <span class="math inline">\(80\)</span> filtres passe-bande au waveform :</p>
+<p><span class="math display">\[
+\boxed{
+s[n]
+\longrightarrow
+\underbrace{\{s*g_i\}_{i=1}^{80}}_{\text{80 feature maps}}
+\longrightarrow
+\text{x-vector network}
+}
+\]</span></p>
+<p>Chaque filtre <span class="math inline">\(g_i\)</span> a une longueur temporelle de <span class="math inline">\(251\)</span> échantillons, mais il est paramétré principalement par deux fréquences de coupure.</p>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Ce que SincNet remplace</strong></p>
+<p>La première étape de feature extraction, typiquement :</p>
+<p><span class="math display">\[
+\text{waveform}\rightarrow\text{MFCC/filterbanks}.
+\]</span></p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Ce que SincNet ne remplace pas</strong></p>
+<p>Les idées principales du x-vector restent ensuite valables :</p>
+<p><span class="math display">\[
+\text{frame encoder}
+\rightarrow
+\text{pooling}
+\rightarrow
+\text{embedding}.
+\]</span></p>
+</div>
+</div>
+</div>
+</div>
+<div class="refs">
+La figure précédente compare notamment une architecture x-vector classique et une variante utilisant SincNet en front-end.
+</div>
+</section>
+<section id="résultats-x-vector-vs-i-vector" class="slide level2">
+<h2>Résultats x-vector vs i-vector</h2>
+
+<img data-src="assets/img/cm2/results_x-vectors.png" class="cm2-img-wide r-stretch"><div class="cm2-question">
+<p>l’x-vector est-il meilleur dans toutes les conditions ? Que semble apporter l’augmentation de données ?</p>
+</div>
+</section>
+<section id="bilan-intermédiaire" class="slide level2">
+<h2>Bilan intermédiaire</h2>
+<div class="three-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>i-vector</strong></p>
+<p>Représentation latente issue d’un modèle probabiliste.</p>
+<p><span class="math display">\[
+i^{(\mathcal X)}=\mathbb E[h\mid\mathcal X]
+\]</span></p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>x-vector</strong></p>
+<p>Embedding appris par classification supervisée des locuteurs.</p>
+<p><span class="math display">\[
+z=f_\theta(\mathcal X)
+\]</span></p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Limite visible</strong></p>
+<p>Pooling uniforme : toutes les frames contribuent de la même manière.</p>
+</div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="pause" class="title-slide slide level1 center">
+<h1>Pause</h1>
+
+</section>
+<section id="pause-15-min" class="slide level2">
+<h2>Pause — 15 min</h2>
+<div class="cm2-question cm2-center">
+<p>À la reprise : que se passe-t-il si certaines frames sont plus informatives que d’autres pour l’identité du locuteur ?</p>
+</div>
+</section></section>
+<section>
+<section id="attention-et-r-vectors" class="title-slide slide level1 center">
+<h1>4. Attention et r-vectors</h1>
+
+</section>
+<section id="limite-du-statistics-pooling" class="slide level2">
+<h2>Limite du statistics pooling</h2>
+<p>Le statistics pooling standard applique :</p>
+<p><span class="math display">\[
+\mu
+=
+\frac1T\sum_t x_t,
+\qquad
+\sigma
+=
+\sqrt{\frac1T\sum_t(x_t-\mu)^2}.
+\]</span></p>
+<p>Toutes les frames ont le même poids.</p>
+<div class="cm2-question">
+<p>Est-ce raisonnable si certaines frames contiennent du silence, du bruit, une consonne peu informative ou un chevauchement ?</p>
+</div>
+</section>
+<section id="de-la-moyenne-uniforme-à-lattention" class="slide level2">
+<h2>De la moyenne uniforme à l’attention</h2>
+
+<img data-src="assets/img/cm2/better_meanstdpooling.png" class="cm2-img-wide r-stretch"></section>
+<section id="attentive-statistics-pooling" class="slide level2">
+<h2>Attentive statistics pooling</h2>
+<p>On apprend des poids temporels :</p>
+<p><span class="math display">\[
+w_t
+=
+\frac{\exp(e_t)}{\sum_{\tau=1}^{T}\exp(e_\tau)},
+\qquad
+\sum_{t=1}^{T}w_t=1.
+\]</span></p>
+<p>Puis :</p>
+<p><span class="math display">\[
+\tilde\mu
+=
+\sum_{t=1}^{T}w_t x_t,
+\]</span></p>
+<p><span class="math display">\[
+\tilde\sigma
+=
+\sqrt{
+\sum_{t=1}^{T}w_t x_t^{\odot 2}
+-
+\tilde\mu^{\odot 2}
+}.
+\]</span></p>
+</section>
+<section id="architecture-attentive-pooling" class="slide level2">
+<h2>Architecture attentive pooling</h2>
+
+<img data-src="assets/img/cm2/arch_attentivepooling.png" class="cm2-img-wide r-stretch"><div class="refs">
+L’attention temporelle pondère les frames avant de calculer moyenne et variance pondérées.
+</div>
+</section>
+<section id="pourquoi-parler-de-resnet-ici" class="slide level2">
+<h2>Pourquoi parler de ResNet ici ?</h2>
+<p>Dans un x-vector TDNN, on traite surtout une séquence temporelle de features :</p>
+<p><span class="math display">\[
+(x_1,\ldots,x_T),
+\qquad x_t\in\mathbb R^D.
+\]</span></p>
+<p>Avec un ResNet speaker, on repart souvent d’une représentation temps-fréquence, par exemple un spectrogramme ou des log-mel filterbanks :</p>
+<p><span class="math display">\[
+X\in\mathbb R^{F\times T}.
+\]</span></p>
+<p>On peut alors utiliser des convolutions 2D pour apprendre des motifs locaux en temps et en fréquence.</p>
+<div class="eqbox">
+<p><span class="math display">\[
+\text{spectrogramme}
+\longrightarrow
+\text{ResNet}
+\longrightarrow
+\text{séquence ou carte d'activations}
+\longrightarrow
+\text{pooling}
+\longrightarrow
+\text{embedding speaker}
+\]</span></p>
+</div>
+</section>
+<section id="rappel-bloc-résiduel" class="slide level2">
+<h2>Rappel : bloc résiduel</h2>
+<p>Un bloc profond classique apprend une transformation <span class="math inline">\(F(x)\)</span>.</p>
+<p>Un bloc résiduel apprend plutôt une <strong>correction</strong> ajoutée à l’entrée :</p>
+<p><span class="math display">\[
+y=x+F(x).
+\]</span></p>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Pourquoi c’est utile ?</strong></p>
+<ul>
+<li>facilite l’entraînement de réseaux profonds ;</li>
+<li>permet de préserver l’information utile ;</li>
+<li>chaque bloc peut raffiner la représentation plutôt que tout reconstruire.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>En speaker recognition</strong></p>
+<p>Le ResNet apprend des motifs spectro-temporels robustes : formants, zones harmoniques, transitions, énergie, bruit de canal.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="r-vector-changement-dencodeur" class="slide level2">
+<h2>r-vector : changement d’encodeur</h2>
+
+<img data-src="assets/img/cm2/r-vector_summary.png" class="cm2-img-wide r-stretch"><div class="refs">
+r-vector : encodeur ResNet sur spectrogramme, attentive pooling, couche linéaire et objectif discriminant à marge angulaire.
+</div>
+</section>
+<section id="lecture-du-r-vector" class="slide level2">
+<h2>Lecture du r-vector</h2>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Entrée</strong></p>
+<p>Au lieu de considérer seulement une séquence de vecteurs acoustiques, le réseau exploite une carte temps-fréquence :</p>
+<p><span class="math display">\[
+X\in\mathbb R^{F\times T}.
+\]</span></p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Encodeur</strong></p>
+<p>Un ResNet transforme cette carte en représentations haut-niveau :</p>
+<p><span class="math display">\[
+X \longmapsto H_1,H_2,\ldots
+\]</span></p>
+<p>puis un pooling attentif produit un embedding fixe.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Scoring</strong></p>
+<p>Une fois l’embedding extrait, on peut utiliser un score cosinus :</p>
+<p><span class="math display">\[
+s(e,t)=\cos(z_e,z_t).
+\]</span></p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Training</strong></p>
+<p>L’objectif à marge angulaire, par exemple AAM-Softmax, sera détaillé au CM3.</p>
+<p>Ici, il sert à rendre les clusters de locuteurs plus compacts et mieux séparés.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="résultats-r-vector" class="slide level2">
+<h2>Résultats r-vector</h2>
+
+<img data-src="assets/img/cm2/results_r-vectors.png" class="cm2-img-wide r-stretch"><div class="cm2-question">
+<p>À observer : les systèmes ResNet utilisent ici un backend cosinus, tandis que les TDNN historiques utilisent souvent PLDA.</p>
+</div>
+</section></section>
+<section>
+<section id="ecapa-tdnn" class="title-slide slide level1 center">
+<h1>5. ECAPA-TDNN</h1>
+
+</section>
+<section id="pourquoi-encore-améliorer-x-vector-r-vector" class="slide level2">
+<h2>Pourquoi encore améliorer x-vector / r-vector ?</h2>
+<div class="cm2-question">
+<p>Que veut-on améliorer dans un extracteur speaker moderne ?</p>
+</div>
+<div class="fragment">
+<div class="cm2-answer">
+<ul>
+<li>mieux modéliser plusieurs <strong>échelles temporelles</strong> ;</li>
+<li>renforcer dynamiquement les <strong>canaux utiles</strong> ;</li>
+<li>ne pas jeter les représentations intermédiaires du réseau ;</li>
+<li>donner au pooling une représentation plus riche de l’utterance.</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="ecapa-tdnn-idée-générale" class="slide level2">
+<h2>ECAPA-TDNN : idée générale</h2>
+<p>ECAPA signifie :</p>
+<blockquote>
+<p><strong>Emphasized Channel Attention, Propagation and Aggregation</strong>.</p>
+</blockquote>
+<p>L’architecture garde la recette x-vector :</p>
+<p><span class="math display">\[
+\text{frames}
+\longrightarrow
+\text{encodeur frame-level}
+\longrightarrow
+\text{pooling}
+\longrightarrow
+\text{embedding}.
+\]</span></p>
+<p>Mais elle remplace l’encodeur TDNN simple par une chaîne plus riche :</p>
+<p><span class="math display">\[
+\boxed{\text{TDNN}}
+\quad\rightarrow\quad
+\boxed{\text{SE-Res2Blocks}}
+\quad\rightarrow\quad
+\boxed{\text{MFA}}
+\quad\rightarrow\quad
+\boxed{\text{attentive pooling}}.
+\]</span></p>
+<div class="refs">
+Desplanques, Thienpondt &amp; Demuynck, “ECAPA-TDNN: Emphasized Channel Attention, Propagation and Aggregation in TDNN Based Speaker Verification”, Interspeech 2020.
+</div>
+</section>
+<section id="ecapa-tdnn-architecture-complète" class="slide level2">
+<h2>ECAPA-TDNN : architecture complète</h2>
+
+<img data-src="assets/img/cm2/ecapa_tdnn_detail.png" class="cm2-img-tall r-stretch"><div class="refs">
+La figure est dense. On va la relire avec une notation unique, puis localiser explicitement le MFA.
+</div>
+</section>
+<section id="notation-unique-pour-lire-le-schéma" class="slide level2">
+<h2>Notation unique pour lire le schéma</h2>
+<p>On note l’entrée frame-level :</p>
+<p><span class="math display">\[
+X\in\mathbb R^{T\times F},
+\]</span></p>
+<p>où :</p>
+<ul>
+<li><span class="math inline">\(T\)</span> = nombre de frames ;</li>
+<li><span class="math inline">\(F\)</span> = dimension acoustique par frame.</li>
+</ul>
+<p>Après la première convolution temporelle :</p>
+<p><span class="math display">\[
+U_0 = \mathrm{Conv1D}(X),
+\qquad
+U_0\in\mathbb R^{T\times C}.
+\]</span></p>
+<p>Puis ECAPA applique trois blocs principaux :</p>
+<p><span class="math display">\[
+U_1=B_1(U_0),
+\qquad
+U_2=B_2(U_1),
+\qquad
+U_3=B_3(U_2).
+\]</span></p>
+<p>Chaque <span class="math inline">\(B_i\)</span> est un <strong>SE-Res2Block</strong>.</p>
+</section>
+<section id="les-objets-importants" class="slide level2">
+<h2>Les objets importants</h2>
+<p>À ce stade :</p>
+<p><span class="math display">\[
+U_1,U_2,U_3\in\mathbb R^{T\times C}.
+\]</span></p>
+<p>Pour une frame <span class="math inline">\(t\)</span> :</p>
+<p><span class="math display">\[
+u_{1,t},u_{2,t},u_{3,t}\in\mathbb R^C.
+\]</span></p>
+<div class="notation">
+<p><strong>Interprétation :</strong> <span class="math inline">\(U_1\)</span>, <span class="math inline">\(U_2\)</span> et <span class="math inline">\(U_3\)</span> sont trois représentations frame-level du même utterance, mais obtenues à différentes profondeurs du réseau.</p>
+</div>
+<p>On peut donc les voir comme :</p>
+<p><span class="math display">\[
+\boxed{U_1:\text{ première représentation}}
+\quad
+\boxed{U_2:\text{ représentation plus profonde}}
+\quad
+\boxed{U_3:\text{ représentation encore plus profonde}}.
+\]</span></p>
+</section>
+<section id="où-est-le-mfa-dans-le-schéma" class="slide level2">
+<h2>Où est le MFA dans le schéma ?</h2>
+<p>Le <strong>MFA</strong> correspond au bloc gris <strong>Concat</strong> situé au-dessus des trois SE-Res2Blocks, puis à la convolution <span class="math inline">\(1\times1\)</span> qui suit.</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a aria-label="1"></a>                     U1 ───────────────┐</span>
+<span id="cb1-2"><a aria-label="2"></a>X → Conv → B1 → U1 → B2 → U2 → B3 → U3 │</span>
+<span id="cb1-3"><a aria-label="3"></a>                     U2 ───────────────┼──► Concat ─► Conv 1×1 ─► Pooling</span>
+<span id="cb1-4"><a aria-label="4"></a>                     U3 ───────────────┘</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cm2-answer">
+<p>Le MFA n’est pas à l’intérieur d’un SE-Res2Block.<br>
+Il agrège les sorties de plusieurs blocs <strong>avant</strong> le pooling.</p>
+</div>
+</section>
+<section id="mfa-écriture-frame-par-frame" class="slide level2">
+<h2>MFA : écriture frame par frame</h2>
+<p>Pour chaque frame <span class="math inline">\(t\)</span>, on concatène les sorties des trois blocs :</p>
+<p><span class="math display">\[
+u_{\mathrm{cat},t}
+=
+\begin{bmatrix}
+u_{1,t}\\
+u_{2,t}\\
+u_{3,t}\end{bmatrix}
+\in\mathbb R^{3C}.
+\]</span></p>
+<p>Sur toute la séquence :</p>
+<p><span class="math display">\[
+U_{\mathrm{cat}}
+=
+[U_1;U_2;U_3]
+\in
+\mathbb R^{T\times 3C}.
+\]</span></p>
+<p>Puis la convolution <span class="math inline">\(1\times1\)</span> mélange les canaux concaténés :</p>
+<p><span class="math display">\[
+V
+=
+\mathrm{Conv}_{1\times1}(U_{\mathrm{cat}}),
+\qquad
+V\in\mathbb R^{T\times C'}.
+\]</span></p>
+<p>Dans l’architecture ECAPA classique, <span class="math inline">\(C'\)</span> vaut souvent <span class="math inline">\(1536\)</span>.</p>
+</section>
+<section id="pourquoi-faire-du-mfa" class="slide level2">
+<h2>Pourquoi faire du MFA ?</h2>
+<p>Un x-vector classique utilise surtout la représentation frame-level finale avant pooling.</p>
+<p>ECAPA utilise :</p>
+<p><span class="math display">\[
+U_1,\quad U_2,\quad U_3
+\]</span></p>
+<p>avant le pooling.</p>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Sans MFA</strong></p>
+<p><span class="math display">\[
+U_3\longrightarrow\text{pooling}
+\]</span></p>
+<p>On ne donne au pooling que la représentation la plus profonde.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Avec MFA</strong></p>
+<p><span class="math display">\[
+[U_1;U_2;U_3]\longrightarrow\text{pooling}
+\]</span></p>
+<p>Le pooling reçoit plusieurs niveaux d’abstraction.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="les-trois-mécanismes-ne-sont-pas-au-même-endroit" class="slide level2">
+<h2>Les trois mécanismes ne sont pas au même endroit</h2>
+<p>Il faut distinguer trois idées :</p>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Dans un bloc</strong></p>
+<ul>
+<li><strong>Res2Net</strong> : plusieurs échelles temporelles ;</li>
+<li><strong>Squeeze-and-Excitation</strong> : attention de canal ;</li>
+<li>connexion résiduelle.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Entre les blocs et le pooling</strong></p>
+<ul>
+<li><strong>MFA</strong> : concaténation de <span class="math inline">\(U_1,U_2,U_3\)</span> ;</li>
+<li>convolution <span class="math inline">\(1\times1\)</span> ;</li>
+<li>représentation enrichie <span class="math inline">\(V\)</span> donnée au pooling.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<p><span class="math display">\[
+\boxed{
+\text{Res2Net et SE : dans } B_i
+}
+\qquad
+\boxed{
+\text{MFA : après } B_1,B_2,B_3
+}
+\]</span></p>
+</section>
+<section id="un-se-res2block-vue-globale" class="slide level2">
+<h2>Un SE-Res2Block : vue globale</h2>
+<p>Chaque bloc <span class="math inline">\(B_i\)</span> prend une séquence</p>
+<p><span class="math display">\[
+U_{i-1}\in\mathbb R^{T\times C}
+\]</span></p>
+<p>et renvoie</p>
+<p><span class="math display">\[
+U_i\in\mathbb R^{T\times C}.
+\]</span></p>
+<p>Schématiquement :</p>
+<p><span class="math display">\[
+U_i
+=
+U_{i-1}
++
+\mathrm{SE}\!\left(
+\mathrm{Res2Net}(U_{i-1})
+\right).
+\]</span></p>
+<div class="notation">
+<p><strong>Lecture :</strong> le bloc apprend une correction multi-échelle et pondérée par canal, puis l’ajoute à l’entrée par une connexion résiduelle.</p>
+</div>
+</section>
+<section id="res2net-pourquoi-multi-échelle" class="slide level2">
+<h2>Res2Net : pourquoi « multi-échelle » ?</h2>
+<p>Dans un bloc Res2Net, les canaux sont séparés en groupes :</p>
+<p><span class="math display">\[
+U=[X_1,X_2,\ldots,X_S].
+\]</span></p>
+<p>Chaque groupe passe par un chemin légèrement différent :</p>
+<p><span class="math display">\[
+Y_1=X_1,
+\]</span></p>
+<p><span class="math display">\[
+Y_2=K_2(X_2),
+\]</span></p>
+<p><span class="math display">\[
+Y_s=K_s(X_s+Y_{s-1}),\qquad s\ge 3.
+\]</span></p>
+<p>Puis :</p>
+<p><span class="math display">\[
+Y=[Y_1,Y_2,\ldots,Y_S].
+\]</span></p>
+<div class="notation">
+<strong>Intuition :</strong> les groupes successifs voient des contextes temporels différents. Le bloc combine donc plusieurs champs réceptifs dans une même représentation.
+</div>
+</section>
+<section id="pourquoi-le-multi-échelle-est-utile-pour-le-speaker" class="slide level2">
+<h2>Pourquoi le multi-échelle est utile pour le speaker ?</h2>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Indices locaux</strong></p>
+<p>Certaines informations de locuteur apparaissent sur des durées courtes :</p>
+<ul>
+<li>forme spectrale instantanée ;</li>
+<li>phonation ;</li>
+<li>transitions locales.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Indices plus longs</strong></p>
+<p>D’autres nécessitent davantage de contexte :</p>
+<ul>
+<li>dynamique prosodique ;</li>
+<li>coarticulation ;</li>
+<li>patterns temporels plus stables.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+<p><span class="math display">\[
+\boxed{\text{Res2Net} \Rightarrow \text{plusieurs contextes temporels dans un même bloc}}
+\]</span></p>
+</section>
+<section id="squeeze-and-excitation-idée" class="slide level2">
+<h2>Squeeze-and-Excitation : idée</h2>
+<p>Après la partie Res2Net, on possède une activation</p>
+<p><span class="math display">\[
+U=[u_{t,c}]\in\mathbb R^{T\times C}.
+\]</span></p>
+<p>Tous les canaux ne sont pas nécessairement aussi utiles pour un utterance donné.</p>
+<p>Le bloc <strong>SE</strong> effectue :</p>
+<p><span class="math display">\[
+\boxed{\text{squeeze}}
+\quad\longrightarrow\quad
+\boxed{\text{excitation}}
+\quad\longrightarrow\quad
+\boxed{\text{reweighting}}.
+\]</span></p>
+<div class="cm2-question">
+<p>Comment le réseau peut-il décider quels canaux mettre en avant ?</p>
+</div>
+</section>
+<section id="squeeze-résumer-chaque-canal-sur-le-temps" class="slide level2">
+<h2>Squeeze : résumer chaque canal sur le temps</h2>
+<p>Pour chaque canal <span class="math inline">\(c\)</span>, on calcule un résumé temporel global :</p>
+<p><span class="math display">\[
+z_c
+=
+\frac{1}{T}
+\sum_{t=1}^{T}u_{t,c}.
+\]</span></p>
+<p>On obtient :</p>
+<p><span class="math display">\[
+z=[z_1,\ldots,z_C]^\top\in\mathbb R^C.
+\]</span></p>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Avant</strong></p>
+<p><span class="math display">\[
+U\in\mathbb R^{T\times C}
+\]</span></p>
+<p>une séquence d’activations.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Après squeeze</strong></p>
+<p><span class="math display">\[
+z\in\mathbb R^C
+\]</span></p>
+<p>un résumé global de chaque canal.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="excitation-produire-un-gain-par-canal" class="slide level2">
+<h2>Excitation : produire un gain par canal</h2>
+<p>Le résumé <span class="math inline">\(z\)</span> passe dans un petit réseau :</p>
+<p><span class="math display">\[
+a
+=
+\sigma\!\left(
+W_2\,\mathrm{ReLU}(W_1 z+b_1)+b_2
+\right),
+\]</span></p>
+<p>avec</p>
+<p><span class="math display">\[
+a=[a_1,\ldots,a_C]^\top,
+\qquad
+0&lt;a_c&lt;1.
+\]</span></p>
+<p>Puis chaque canal est recalibré :</p>
+<p><span class="math display">\[
+\widetilde u_{t,c}
+=
+a_c\,u_{t,c}.
+\]</span></p>
+<div class="notation">
+<strong>Point important :</strong> les gains <span class="math inline">\(a_c\)</span> dépendent de l’utterance courant. Le bloc SE fait donc une attention de canal dépendante du contenu.
+</div>
+</section>
+<section id="attention-dans-ecapa-deux-endroits-différents" class="slide level2">
+<h2>Attention dans ECAPA : deux endroits différents</h2>
+<p>Le mot « attention » apparaît à deux niveaux dans ECAPA-TDNN.</p>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>1. Dans les SE-Res2Blocks</strong></p>
+</div>
+<div class="callout-content">
+<p><span class="math display">\[
+U=[u_{t,c}]\in\mathbb R^{T\times C}
+\]</span></p>
+<p>Le bloc SE produit un gain par canal :</p>
+<p><span class="math display">\[
+\widetilde u_{t,c}=a_c u_{t,c}.
+\]</span></p>
+<p>C’est une <strong>attention sur les canaux</strong>.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>2. Au moment du pooling</strong></p>
+</div>
+<div class="callout-content">
+<p>Après MFA :</p>
+<p><span class="math display">\[
+V=[v_{t,c}]\in\mathbb R^{T\times C'}
+\]</span></p>
+<p>Le pooling produit des poids :</p>
+<p><span class="math display">\[
+\alpha_{t,c}.
+\]</span></p>
+<p>C’est une <strong>attention temporelle dépendante du canal</strong>.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="notation">
+<strong>À retenir :</strong> SE et attentive pooling sont deux mécanismes distincts.
+</div>
+</section>
+<section id="que-signifie-channel-attention-dans-le-bloc-se" class="slide level2">
+<h2>Que signifie « channel attention » dans le bloc SE ?</h2>
+<div class="cm2-question">
+<p>Un canal correspond-il directement à « pitch », « timbre », « formant », etc. ?</p>
+</div>
+<div class="fragment">
+<div class="cm2-answer">
+<p>Pas nécessairement.</p>
+<p>Les canaux sont des <strong>features latentes</strong> apprises par le réseau.</p>
+<p>Le bloc SE apprend que, pour un utterance donné, certaines dimensions internes doivent être renforcées et d’autres atténuées.</p>
+<p><span class="math display">\[
+\boxed{\text{SE} = \text{repondération de canaux dépendante de l'utterance}}
+\]</span></p>
+</div>
+</div>
+</section>
+<section id="le-pooling-reçoit-la-représentation-mfa" class="slide level2">
+<h2>Le pooling reçoit la représentation MFA</h2>
+<p>Après MFA, le pooling ne travaille pas sur <span class="math inline">\(U_3\)</span> seul.</p>
+<p>Il reçoit la séquence enrichie</p>
+<p><span class="math display">\[
+V=[v_{t,c}]
+\in
+\mathbb R^{T\times C'},
+\]</span></p>
+<p>où :</p>
+<ul>
+<li><span class="math inline">\(t\in\{1,\ldots,T\}\)</span> indexe les frames ;</li>
+<li><span class="math inline">\(c\in\{1,\ldots,C'\}\)</span> indexe les canaux latents ;</li>
+<li><span class="math inline">\(v_t\in\mathbb R^{C'}\)</span> est la représentation de la frame <span class="math inline">\(t\)</span>.</li>
+</ul>
+<div class="notation">
+<strong>Objectif du pooling :</strong> transformer une séquence de longueur variable <span class="math inline">\(V\)</span> en un vecteur fixe d’utterance.
+</div>
+</section>
+<section id="rappel-statistics-pooling-uniforme" class="slide level2">
+<h2>Rappel : statistics pooling uniforme</h2>
+<p>Le x-vector classique utilise un pooling uniforme.</p>
+<p>Pour chaque canal <span class="math inline">\(c\)</span> :</p>
+<p><span class="math display">\[
+\mu_c
+=
+\frac1T\sum_{t=1}^{T} v_{t,c},
+\]</span></p>
+<p><span class="math display">\[
+\sigma_c
+=
+\sqrt{
+\frac1T\sum_{t=1}^{T}(v_{t,c}-\mu_c)^2
+}.
+\]</span></p>
+<p>Chaque frame contribue donc avec le même poids :</p>
+<p><span class="math display">\[
+\frac1T.
+\]</span></p>
+<div class="cm2-question">
+Mais toutes les frames sont-elles aussi informatives pour l’identité du locuteur ?
+</div>
+</section>
+<section id="rappel-attentive-statistics-pooling-des-r-vectors" class="slide level2">
+<h2>Rappel : attentive statistics pooling des r-vectors</h2>
+<p>Dans les r-vectors, on a déjà introduit l’idée : apprendre un poids temporel.</p>
+<p>Schématiquement :</p>
+<p><span class="math display">\[
+e_t=f(v_t),
+\qquad
+w_t=
+\frac{\exp(e_t)}{\sum_{\tau}\exp(e_\tau)}.
+\]</span></p>
+<p>Puis :</p>
+<p><span class="math display">\[
+\widetilde\mu
+=
+\sum_t w_t v_t,
+\qquad
+\widetilde\sigma
+=
+\sqrt{
+\sum_t w_t v_t^{\odot 2}
+-
+\widetilde\mu^{\odot 2}
+}.
+\]</span></p>
+<div class="notation">
+<strong>Limite :</strong> le même poids <span class="math inline">\(w_t\)</span> est utilisé pour toutes les dimensions de <span class="math inline">\(v_t\)</span>.
+</div>
+</section>
+<section id="ecapa-le-pooling-attentif-est-enrichi" class="slide level2">
+<h2>ECAPA : le pooling attentif est enrichi</h2>
+<p>ECAPA garde le même principe général :</p>
+<p><span class="math display">\[
+\text{attention}
++
+\text{moyenne/écart-type pondérés}.
+\]</span></p>
+<p>Mais il ajoute deux raffinements.</p>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Channel-dependent</strong></p>
+</div>
+<div class="callout-content">
+<p>Le poids dépend de la frame <strong>et</strong> du canal :</p>
+<p><span class="math display">\[
+\alpha_{t,c}.
+\]</span></p>
+<p>On obtient donc une distribution temporelle différente pour chaque canal latent.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Context-dependent</strong></p>
+</div>
+<div class="callout-content">
+<p>Le score d’attention n’est pas calculé à partir de <span class="math inline">\(v_t\)</span> seul.</p>
+<p>Il utilise aussi un résumé global de l’utterance.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="étape-1-calculer-le-contexte-global" class="slide level2">
+<h2>Étape 1 — calculer le contexte global</h2>
+<p>Avant de produire les poids d’attention, ECAPA calcule d’abord des statistiques globales <strong>non pondérées</strong> de l’utterance.</p>
+<p><span class="math display">\[
+\mu_V
+=
+\frac1T\sum_{t=1}^{T} v_t
+\in\mathbb R^{C'},
+\]</span></p>
+<p><span class="math display">\[
+\sigma_V
+=
+\sqrt{
+\frac1T\sum_{t=1}^{T}(v_t-\mu_V)^{\odot 2}
+}
+\in\mathbb R^{C'}.
+\]</span></p>
+<p>Ces deux vecteurs résument le contexte global de l’utterance.</p>
+<div class="notation">
+<strong>Important :</strong> ces statistiques ne sont pas encore la sortie finale du pooling. Elles servent à calculer l’attention.
+</div>
+</section>
+<section id="étape-2-enrichir-chaque-frame-par-le-contexte" class="slide level2">
+<h2>Étape 2 — enrichir chaque frame par le contexte</h2>
+<p>Pour chaque frame <span class="math inline">\(t\)</span>, on construit une entrée pour le réseau d’attention :</p>
+<p><span class="math display">\[
+q_t
+=
+[v_t;\mu_V;\sigma_V]
+\in
+\mathbb R^{3C'}.
+\]</span></p>
+<p>Le vecteur <span class="math inline">\(q_t\)</span> contient donc :</p>
+<ul>
+<li>l’information locale de la frame <span class="math inline">\(t\)</span> : <span class="math inline">\(v_t\)</span> ;</li>
+<li>la moyenne globale de l’utterance : <span class="math inline">\(\mu_V\)</span> ;</li>
+<li>la variabilité globale de l’utterance : <span class="math inline">\(\sigma_V\)</span>.</li>
+</ul>
+<div class="notation">
+<strong>Context-dependent :</strong> l’attention sur une frame est décidée en connaissant aussi le contexte global de l’utterance.
+</div>
+</section>
+<section id="étape-3-produire-les-scores-dattention" class="slide level2">
+<h2>Étape 3 — produire les scores d’attention</h2>
+<p>Le petit réseau d’attention reçoit <span class="math inline">\(q_t\)</span> et produit un score pour chaque canal :</p>
+<p><span class="math display">\[
+e_{t,c}
+=
+f_c(q_t).
+\]</span></p>
+<p>On peut lire cela comme :</p>
+<p><span class="math display">\[
+\boxed{
+\text{frame locale }v_t
++
+\text{contexte global }(\mu_V,\sigma_V)
+\longrightarrow
+\text{score d'attention }e_{t,c}
+}
+\]</span></p>
+<p>Le score <span class="math inline">\(e_{t,c}\)</span> dit à quel point la frame <span class="math inline">\(t\)</span> est informative pour le canal <span class="math inline">\(c\)</span>.</p>
+</section>
+<section id="étape-4-softmax-temporel-par-canal" class="slide level2">
+<h2>Étape 4 — softmax temporel par canal</h2>
+<p>Pour chaque canal <span class="math inline">\(c\)</span>, on normalise les scores sur le temps :</p>
+<p><span class="math display">\[
+\alpha_{t,c}
+=
+\frac{\exp(e_{t,c})}
+{\sum_{\tau=1}^{T}\exp(e_{\tau,c})}.
+\]</span></p>
+<p>Donc, pour chaque canal :</p>
+<p><span class="math display">\[
+\sum_{t=1}^{T}\alpha_{t,c}=1.
+\]</span></p>
+<div class="notation">
+<strong>Channel-dependent :</strong> on a une distribution temporelle différente pour chaque canal.
+</div>
+</section>
+<section id="exemple-une-attention-différente-selon-le-canal" class="slide level2">
+<h2>Exemple : une attention différente selon le canal</h2>
+<p>Supposons trois frames et deux canaux.</p>
+<p><span class="math display">\[
+\alpha
+=
+\begin{bmatrix}
+0.8 &amp; 0.1\\
+0.1 &amp; 0.2\\
+0.1 &amp; 0.7
+\end{bmatrix}.
+\]</span></p>
+<p>Pour le canal 1 :</p>
+<p><span class="math display">\[
+(0.8,0.1,0.1),
+\]</span></p>
+<p>la première frame domine.</p>
+<p>Pour le canal 2 :</p>
+<p><span class="math display">\[
+(0.1,0.2,0.7),
+\]</span></p>
+<p>la troisième frame domine.</p>
+<div class="notation">
+<strong>Ce n’est pas une attention temporelle unique :</strong> c’est une distribution temporelle par canal.
+</div>
+</section>
+<section id="étape-5-calculer-les-statistiques-pondérées-finales" class="slide level2">
+<h2>Étape 5 — calculer les statistiques pondérées finales</h2>
+<p>Une fois les poids <span class="math inline">\(\alpha_{t,c}\)</span> calculés, ECAPA calcule les statistiques finales.</p>
+<p>Pour chaque canal <span class="math inline">\(c\)</span> :</p>
+<p><span class="math display">\[
+\widetilde\mu_c
+=
+\sum_{t=1}^{T}\alpha_{t,c}v_{t,c},
+\]</span></p>
+<p><span class="math display">\[
+\widetilde\sigma_c
+=
+\sqrt{
+\sum_{t=1}^{T}\alpha_{t,c}v_{t,c}^2
+-
+\widetilde\mu_c^2
+}.
+\]</span></p>
+<p>Le pooling produit alors :</p>
+<p><span class="math display">\[
+\boxed{
+p=[\widetilde\mu;\widetilde\sigma]
+}
+\]</span></p>
+<p>Ce vecteur <span class="math inline">\(p\)</span> est ensuite projeté vers l’embedding de locuteur.</p>
+</section>
+<section id="où-intervient-exactement-le-context-dependent" class="slide level2">
+<h2>Où intervient exactement le « context-dependent » ?</h2>
+<p>Le « context-dependent » n’est pas une étape après <span class="math inline">\(p\)</span>.</p>
+<p>Il intervient <strong>avant</strong>, au moment où l’on calcule les scores d’attention :</p>
+<p><span class="math display">\[
+V
+\longrightarrow
+(\mu_V,\sigma_V)
+\longrightarrow
+q_t=[v_t;\mu_V;\sigma_V]
+\longrightarrow
+e_{t,c}
+\longrightarrow
+\alpha_{t,c}
+\longrightarrow
+p.
+\]</span></p>
+<div class="cm2-answer">
+<p>Une fois que <span class="math inline">\(p=[\widetilde\mu;\widetilde\sigma]\)</span> est calculé, le pooling est terminé.</p>
+</div>
+</section>
+<section id="résumé-des-attentions-ecapa" class="slide level2">
+<h2>Résumé des attentions ECAPA</h2>
+<p><span class="math display">\[
+X
+\longrightarrow
+\underbrace{\text{SE-Res2Blocks}}_{
+\substack{\text{attention sur les canaux}}}
+\longrightarrow
+\underbrace{\text{MFA}}_{\text{concaténation multi-couches}}
+\longrightarrow
+V.
+\]</span></p>
+<p>Puis :</p>
+<p><span class="math display">\[
+V
+\longrightarrow
+\underbrace{\alpha_{t,c}}_{
+\substack{\text{attention temporelle}\\\text{dépendante du canal}\\\text{et du contexte global}}}
+\longrightarrow
+[\widetilde\mu,\widetilde\sigma]
+\longrightarrow
+\text{embedding}.
+\]</span></p>
+<div class="cm2-answer">
+<p>Le pooling ECAPA apprend donc <strong>où écouter dans le temps</strong>, mais cette décision est différente pour chaque canal latent.</p>
+</div>
+</section>
+<section id="relire-maintenant-larchitecture-ecapa" class="slide level2">
+<h2>Relire maintenant l’architecture ECAPA</h2>
+
+<img data-src="assets/img/cm2/ecapa_tdnn_detail.png" class="cm2-img-tall r-stretch"><p>On peut maintenant identifier :</p>
+<ul>
+<li>les <strong>SE-Res2Blocks</strong> : Res2Net + Squeeze-and-Excitation + résidu ;</li>
+<li>les flèches qui remontent vers <strong>Concat</strong> : sorties <span class="math inline">\(U_1,U_2,U_3\)</span> ;</li>
+<li><strong>MFA</strong> : <code>Concat</code> + <code>Conv-1D</code> juste avant le pooling ;</li>
+<li>le <strong>channel-dependent attentive statistics pooling</strong> ;</li>
+<li>la projection finale vers l’embedding.</li>
+</ul>
+</section>
+<section id="résumé-du-flux-ecapa" class="slide level2">
+<h2>Résumé du flux ECAPA</h2>
+<p><span class="math display">\[
+X
+\longrightarrow
+U_0
+\longrightarrow
+\begin{cases}
+U_1=B_1(U_0),\\
+U_2=B_2(U_1),\\
+U_3=B_3(U_2)
+\end{cases}
+\]</span></p>
+<p><span class="math display">\[
+(U_1,U_2,U_3)
+\xrightarrow{\text{MFA}}
+V
+\xrightarrow{\text{attentive pooling}}
+\text{embedding}.
+\]</span></p>
+<div class="cm2-answer">
+<p>Le rôle du MFA est donc de transformer plusieurs représentations frame-level intermédiaires en une représentation enrichie <span class="math inline">\(V\)</span> donnée au pooling.</p>
+</div>
+</section>
+<section id="résultats-ecapa-tdnn" class="slide level2">
+<h2>Résultats ECAPA-TDNN</h2>
+
+<img data-src="assets/img/cm2/results_ecapa_tdnn.png" class="cm2-img-wide r-stretch"><div class="cm2-question">
+<p>À observer : ECAPA améliore fortement E-TDNN et ResNet avec une taille de modèle qui reste raisonnable.</p>
+</div>
+</section>
+<section id="ce-quil-faut-retenir-decapa" class="slide level2">
+<h2>Ce qu’il faut retenir d’ECAPA</h2>
+<div class="cm2-kpi">
+<div>
+<p><strong>Multi-échelle</strong><br> Res2Net / contextes temporels</p>
+</div>
+<div>
+<p><strong>Channel attention</strong><br> Squeeze-and-Excitation</p>
+</div>
+<div>
+<p><strong>Agrégation</strong><br> Multi-layer Feature Aggregation</p>
+</div>
+</div>
+<p><span class="math display">\[
+\boxed{
+\text{ECAPA}
+=
+\text{SE-Res2Blocks}
++
+\text{MFA}
++
+\text{attentive statistics pooling}
+}
+\]</span></p>
+</section></section>
+<section>
+<section id="synthèse" class="title-slide slide level1 center">
+<h1>6. Synthèse</h1>
+
+</section>
+<section id="la-recette-moderne" class="slide level2">
+<h2>La recette moderne</h2>
+<p><span class="math display">\[
+\boxed{\text{features ou waveform}}
+\rightarrow
+\boxed{\text{frame encoder}}
+\rightarrow
+\boxed{\text{temporal aggregation}}
+\rightarrow
+\boxed{\text{speaker embedding}}
+\rightarrow
+\boxed{\text{score}}.
+\]</span></p>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>CM2</strong></p>
+<p>Quelle architecture produit <span class="math inline">\(z\)</span> ?</p>
+<ul>
+<li>i-vector ;</li>
+<li>x-vector ;</li>
+<li>r-vector ;</li>
+<li>ECAPA-TDNN.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>CM3</strong></p>
+<p>Comment apprendre une bonne géométrie pour <span class="math inline">\(z\)</span> ?</p>
+<ul>
+<li>softmax ;</li>
+<li>normalisation ;</li>
+<li>marges ;</li>
+<li>AAM-Softmax ;</li>
+<li>pertes métriques.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="question-finale" class="slide level2">
+<h2>Question finale</h2>
+<div class="cm2-question">
+<p>Si deux systèmes ont la même architecture mais des losses différentes, auront-ils nécessairement la même géométrie d’embedding ?</p>
+</div>
+<div class="fragment">
+<div class="cm2-answer">
+<p>Non. L’architecture définit comment calculer <span class="math inline">\(z\)</span>, mais la loss définit fortement la géométrie apprise dans l’espace latent.</p>
+<p>C’est le sujet du CM3.</p>
+</div>
+</div>
+</section>
+<section id="take-home-messages" class="slide level2">
+<h2>Take-home messages</h2>
+<ul>
+<li>Un speaker embedding transforme une séquence de durée variable en un vecteur fixe.</li>
+<li>L’i-vector est une représentation probabiliste compacte, historiquement centrale.</li>
+<li>Le x-vector apprend directement un embedding par classification supervisée des speakers.</li>
+<li>Le statistics pooling est le passage clé frame-level → segment-level.</li>
+<li>Les r-vectors et ECAPA améliorent surtout l’encodeur et le pooling.</li>
+<li>La prochaine question est : <strong>quelle loss impose la bonne géométrie ?</strong></li>
+</ul>
+
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1600,
+
+        height: 900,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
