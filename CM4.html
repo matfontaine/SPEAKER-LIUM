@@ -1,0 +1,2710 @@
+<!DOCTYPE html>
+<html lang="fr"><head>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/tabby.min.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-64a204ab8560d761af7679ceaba22944.css" rel="stylesheet" id="quarto-text-highlighting-styles"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.10.18">
+
+  <meta name="author" content="Mathieu Fontaine">
+  <meta name="dcterms.date" content="2026-09-11">
+  <title>CM4 — Décision bayésienne et calibration des scores</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: 1.5em;}
+    div.column{flex: auto;}
+    @media screen {
+    div.columns{gap: min(4vw, 1.5em);}
+    div.column{overflow-x: auto;}
+    }
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+  </style>
+  <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-0427d8d92a431aa6a6430e53ec02a470.css">
+  <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/font-awesome/css/all.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/reveal-chalkboard/style.css" rel="stylesheet">
+  <link href="site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">CM4 — Décision bayésienne et calibration des scores</h1>
+  <p class="subtitle">Du score brut à une décision exploitable</p>
+
+<div class="quarto-title-authors">
+<div class="quarto-title-author">
+<div class="quarto-title-author-name">
+Mathieu Fontaine
+</div>
+</div>
+</div>
+
+  <p class="date">2026-09-11</p>
+</section>
+<section class="slide level2">
+
+<p><link rel="stylesheet" href="assets/css/course.css"></p>
+<style>
+.cm4-big {
+  font-size: 1.35em;
+  text-align: center;
+  margin: 0.8em auto;
+}
+.cm4-equation {
+  border-left: 6px solid #d71920;
+  padding: 0.6em 0.9em;
+  background: rgba(215,25,32,0.05);
+  border-radius: 8px;
+  margin: 0.8em auto;
+}
+.cm4-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 0.8em;
+}
+.cm4-box {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 0.7em 0.9em;
+  background: white;
+}
+.cm4-box strong {
+  color: #b5121b;
+}
+.cm4-center {
+  text-align: center;
+}
+.cm4-small {
+  font-size: 0.78em;
+}
+.cm4-step {
+  font-size: 1.05em;
+  margin: 0.45em 0;
+}
+@media (max-width: 900px) {
+  .cm4-grid-3 { grid-template-columns: 1fr; }
+}
+</style>
+</section>
+<section id="contrôle-final-format" class="slide level2">
+<h2>Contrôle final — format</h2>
+<p>Le contrôle durera <strong>1 heure</strong> et sera <strong>sans document</strong>.</p>
+<p>Il comportera trois types de questions :</p>
+<ol type="1">
+<li>un <strong>QCM classique</strong> sur les notions principales des CM ;</li>
+<li>quelques <strong>questions courtes de compréhension</strong> ;</li>
+<li>un <strong>très court problème / calcul</strong> demandant d’appliquer une idée du cours.</li>
+</ol>
+<p>L’objectif sera surtout de vérifier la <strong>compréhension des concepts</strong> et la capacité à raisonner avec eux.</p>
+</section>
+<section id="fil-rouge-du-cm4" class="slide level2">
+<h2>Fil rouge du CM4</h2>
+<p>Dans les CM précédents, nous avons construit un système qui transforme deux segments audio en un <strong>score de similarité</strong> :</p>
+<p><span class="math display">\[
+(e,t)
+\longrightarrow
+s(e,t).
+\]</span></p>
+<p>Aujourd’hui, on ajoute la dernière étape :</p>
+<p><span class="math display">\[
+\boxed{
+(e,t)
+\longrightarrow
+s(e,t)
+\longrightarrow
+\text{décision target / non-target}.
+}
+\]</span></p>
+<p>La question du jour est donc :</p>
+<blockquote>
+<p><strong>Comment transformer correctement un score en décision ?</strong></p>
+</blockquote>
+</section>
+<section id="rappel-cm1-quest-ce-quun-trial" class="slide level2">
+<h2>Rappel CM1 — qu’est-ce qu’un trial ?</h2>
+<p>Un <strong>trial</strong> est une comparaison entre :</p>
+<ul>
+<li>un segment d’<strong>enrôlement</strong> <span class="math inline">\(e\)</span> ;</li>
+<li>un segment de <strong>test</strong> <span class="math inline">\(t\)</span>.</li>
+</ul>
+<p>Deux cas sont possibles :</p>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Target</strong></p>
+<p>Même locuteur :</p>
+<p><span class="math display">\[
+H_{\mathrm{tar}}
+:
+\operatorname{spk}(e)=\operatorname{spk}(t).
+\]</span></p>
+<p>Exemple : Alice / Alice.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Non-target</strong></p>
+<p>Locuteurs différents :</p>
+<p><span class="math display">\[
+H_{\mathrm{non}}
+:
+\operatorname{spk}(e)\neq\operatorname{spk}(t).
+\]</span></p>
+<p>Exemple : Alice / Bob.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="rappel-cm1-du-score-à-la-décision" class="slide level2">
+<h2>Rappel CM1 — du score à la décision</h2>
+<p>Supposons qu’un système produise un score de similarité :</p>
+<p><span class="math display">\[
+s(e,t).
+\]</span></p>
+<p>Plus <span class="math inline">\(s\)</span> est grand, plus le système considère que les deux segments proviennent du même locuteur.</p>
+<p>On fixe un seuil <span class="math inline">\(\tau\)</span> :</p>
+<p><span class="math display">\[
+\boxed{
+s&gt;\tau
+\Rightarrow
+\text{target},
+\qquad
+s\le\tau
+\Rightarrow
+\text{non-target}.
+}
+\]</span></p>
+</section>
+<section id="exemple-concret" class="slide level2">
+<h2>Exemple concret</h2>
+<p>Prenons le seuil</p>
+<p><span class="math display">\[
+\tau=0.60.
+\]</span></p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>trial</th>
+<th>vérité</th>
+<th style="text-align: right;">score</th>
+<th>décision</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Alice / Alice</td>
+<td>target</td>
+<td style="text-align: right;"><span class="math inline">\(0.82\)</span></td>
+<td>target</td>
+</tr>
+<tr class="even">
+<td>Alice / Bob</td>
+<td>non-target</td>
+<td style="text-align: right;"><span class="math inline">\(0.31\)</span></td>
+<td>non-target</td>
+</tr>
+<tr class="odd">
+<td>Alice / Alice</td>
+<td>target</td>
+<td style="text-align: right;"><span class="math inline">\(0.54\)</span></td>
+<td>non-target</td>
+</tr>
+<tr class="even">
+<td>Alice / Bob</td>
+<td>non-target</td>
+<td style="text-align: right;"><span class="math inline">\(0.71\)</span></td>
+<td>target</td>
+</tr>
+</tbody>
+</table>
+<div class="fragment">
+<p>Les deux dernières lignes sont précisément les deux types d’erreurs.</p>
+</div>
+</section>
+<section id="rappel-cm1-les-deux-erreurs" class="slide level2">
+<h2>Rappel CM1 — les deux erreurs</h2>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Miss</strong></p>
+</div>
+<div class="callout-content">
+<p>La vérité est <strong>target</strong>, mais le score est trop faible :</p>
+<p><span class="math display">\[
+s\le\tau.
+\]</span></p>
+<p>On rejette le bon locuteur.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-titled callout-style-simple">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>False alarm</strong></p>
+</div>
+<div class="callout-content">
+<p>La vérité est <strong>non-target</strong>, mais le score est trop élevé :</p>
+<p><span class="math display">\[
+s&gt;\tau.
+\]</span></p>
+<p>On accepte un imposteur.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="pourquoi-déplacer-le-seuil" class="slide level2">
+<h2>Pourquoi déplacer le seuil ?</h2>
+<p>Avec un seuil plus élevé :</p>
+<p><span class="math display">\[
+P_{\mathrm{FA}}\downarrow
+\qquad
+P_{\mathrm{miss}}\uparrow.
+\]</span></p>
+<p>Avec un seuil plus faible :</p>
+<p><span class="math display">\[
+P_{\mathrm{FA}}\uparrow
+\qquad
+P_{\mathrm{miss}}\downarrow.
+\]</span></p>
+<p>Donc :</p>
+<p><span class="math display">\[
+\boxed{
+\text{choisir un seuil = choisir un compromis entre deux erreurs.}
+}
+\]</span></p>
+</section>
+<section id="organisation-de-la-séance" class="slide level2">
+<h2>Organisation de la séance</h2>
+<div class="cm4-grid-3">
+<div class="cm4-box">
+<p><strong>45 min — CM</strong></p>
+<p>Rappels EER / ROC / DET, puis décision bayésienne, prior, coûts, DCF.</p>
+</div>
+<div class="cm4-box">
+<p><strong>15 min — Pause</strong></p>
+</div>
+<div class="cm4-box">
+<p><strong>30 min — CM</strong></p>
+<p>Calibration, LLR, <span class="math inline">\(C_{\mathrm{llr}}\)</span>, PAV, mismatch.</p>
+</div>
+</div>
+<div class="cm4-box" style="margin-top:0.8em">
+<p><strong>30 min — TD dans les slides</strong></p>
+<p>Exercices courts avec correction progressive.</p>
+</div>
+</section>
+<section>
+<section id="du-score-à-la-décision" class="title-slide slide level1 center">
+<h1>1. Du score à la décision</h1>
+<aside class="notes">
+<p>Objectif temporel : environ 45 minutes jusqu’à la slide Pause. Ne pas refaire tout CM1 : rappeler seulement score/seuil, puis passer vite aux priors et coûts.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="rappel-visuel-distributions-de-scores" class="slide level2">
+<h2>Rappel visuel : distributions de scores</h2>
+<p>Sur beaucoup de trials, on obtient deux distributions empiriques :</p>
+<ul>
+<li>scores <strong>target</strong> ;</li>
+<li>scores <strong>non-target</strong>.</li>
+</ul>
+
+<img data-src="assets/img/cm4/score_distributions_threshold.png" style="width:74.0%" class="r-stretch"></section>
+<section id="deux-erreurs-pour-un-seuil-tau" class="slide level2">
+<h2>Deux erreurs pour un seuil <span class="math inline">\(\tau\)</span></h2>
+<p>On décide <strong>target</strong> si</p>
+<p><span class="math display">\[
+s&gt;\tau.
+\]</span></p>
+<p>Alors :</p>
+<p><span class="math display">\[
+\boxed{
+P_{\mathrm{FA}}(\tau)
+=
+P(s&gt;\tau\mid H_{\mathrm{non}})
+}
+\]</span></p>
+<p>est le taux de <strong>false alarm</strong>, et</p>
+<p><span class="math display">\[
+\boxed{
+P_{\mathrm{miss}}(\tau)
+=
+P(s\le\tau\mid H_{\mathrm{tar}})
+}
+\]</span></p>
+<p>est le taux de <strong>miss</strong>.</p>
+</section>
+<section id="déplacer-le-seuil-une-image" class="slide level2">
+<h2>Déplacer le seuil : une image</h2>
+
+<img data-src="assets/img/cm4/error_rates_eer.png" style="width:76.0%" class="r-stretch"><p>Quand <span class="math inline">\(\tau\)</span> augmente :</p>
+<p><span class="math display">\[
+P_{\mathrm{FA}}\downarrow
+\qquad\text{mais}\qquad
+P_{\mathrm{miss}}\uparrow.
+\]</span></p>
+</section>
+<section id="rappel-equal-error-rate" class="slide level2">
+<h2>Rappel : Equal Error Rate</h2>
+<p>L’<strong>EER</strong> est le taux d’erreur atteint au seuil <span class="math inline">\(\tau_{\mathrm{EER}}\)</span> tel que</p>
+<p><span class="math display">\[
+\boxed{
+P_{\mathrm{FA}}(\tau_{\mathrm{EER}})
+=
+P_{\mathrm{miss}}(\tau_{\mathrm{EER}})
+}.
+\]</span></p>
+<div class="fragment">
+<p>L’EER résume la qualité de séparation des deux distributions en <strong>un nombre</strong>, mais il correspond à un operating point particulier qui ne dépend pas des coûts de l’application.</p>
+</div>
+</section>
+<section id="courbe-roc" class="slide level2">
+<h2>Courbe ROC</h2>
+<p>Au lieu de choisir un seul seuil, on fait varier <span class="math inline">\(\tau\)</span> sur toutes ses valeurs.</p>
+<p>Pour chaque seuil, on trace :</p>
+<p><span class="math display">\[
+\boxed{
+x=P_{\mathrm{FA}}(\tau)
+}
+\]</span></p>
+<p>et</p>
+<p><span class="math display">\[
+\boxed{
+y=\mathrm{TPR}(\tau)
+=
+1-P_{\mathrm{miss}}(\tau).
+}
+\]</span></p>
+
+<img data-src="assets/img/cm4/roc_curve.png" style="width:61.0%" class="r-stretch"></section>
+<section id="comment-lire-une-roc" class="slide level2">
+<h2>Comment lire une ROC ?</h2>
+<p>Chaque point de la courbe correspond à <strong>un seuil différent</strong>.</p>
+<p>Le coin idéal est :</p>
+<p><span class="math display">\[
+(P_{\mathrm{FA}},\mathrm{TPR})=(0,1).
+\]</span></p>
+<p>Il signifie :</p>
+<ul>
+<li>aucune false alarm ;</li>
+<li>tous les targets correctement acceptés.</li>
+</ul>
+<p>La diagonale</p>
+<p><span class="math display">\[
+\mathrm{TPR}=P_{\mathrm{FA}}
+\]</span></p>
+<p>correspond à un système qui ne classe pas mieux que le hasard.</p>
+</section>
+<section id="maintenant-deux-systèmes-sur-les-mêmes-trials" class="slide level2">
+<h2>Maintenant : deux systèmes sur les mêmes trials</h2>
+<p>Considérons <strong>exactement les mêmes trials</strong>, mais deux systèmes qui produisent des scores différents.</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>trial</th>
+<th>vérité</th>
+<th style="text-align: right;"><span class="math inline">\(s_A\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(s_B=10s_A+7\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>T1</td>
+<td>non-target</td>
+<td style="text-align: right;"><span class="math inline">\(0.15\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(8.5\)</span></td>
+</tr>
+<tr class="even">
+<td>T2</td>
+<td>target</td>
+<td style="text-align: right;"><span class="math inline">\(0.78\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(14.8\)</span></td>
+</tr>
+<tr class="odd">
+<td>T3</td>
+<td>non-target</td>
+<td style="text-align: right;"><span class="math inline">\(0.32\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(10.2\)</span></td>
+</tr>
+<tr class="even">
+<td>T4</td>
+<td>target</td>
+<td style="text-align: right;"><span class="math inline">\(0.64\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(13.4\)</span></td>
+</tr>
+<tr class="odd">
+<td>T5</td>
+<td>target</td>
+<td style="text-align: right;"><span class="math inline">\(0.91\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(16.1\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Les nombres sont très différents, mais regardons leur <strong>ordre</strong>.</p>
+</section>
+<section id="même-ranking-échelles-différentes" class="slide level2">
+<h2>Même ranking, échelles différentes</h2>
+
+<img data-src="assets/img/cm4/same_ranking_different_scale.png" style="width:78.0%" class="r-stretch"><p>Comme</p>
+<p><span class="math display">\[
+s_B=10s_A+7
+\]</span></p>
+<p>est strictement croissante :</p>
+<p><span class="math display">\[
+s_A^{(i)}&gt;s_A^{(j)}
+\iff
+s_B^{(i)}&gt;s_B^{(j)}.
+\]</span></p>
+<p>Donc les deux systèmes rangent les trials exactement dans le même ordre.</p>
+</section>
+<section id="conséquence-sur-roc-et-eer" class="slide level2">
+<h2>Conséquence sur ROC et EER</h2>
+<p>Puisque la ROC ne dépend que du <strong>ranking obtenu lorsque le seuil se déplace</strong> :</p>
+<p><span class="math display">\[
+\boxed{
+\mathrm{ROC}_A=\mathrm{ROC}_B
+}
+\]</span></p>
+<p>et donc</p>
+<p><span class="math display">\[
+\boxed{
+\mathrm{EER}_A=\mathrm{EER}_B.
+}
+\]</span></p>
+<p>Les deux systèmes ont donc la même <strong>discrimination</strong>.</p>
+</section>
+<section id="mais-les-seuils-numériques-ne-sont-pas-les-mêmes" class="slide level2">
+<h2>Mais les seuils numériques ne sont pas les mêmes</h2>
+<p>Supposons qu’un seuil</p>
+<p><span class="math display">\[
+\tau_A=0.60
+\]</span></p>
+<p>soit utilisé sur le système A.</p>
+<p>La décision équivalente sur B demande :</p>
+<p><span class="math display">\[
+\tau_B
+=
+10\tau_A+7
+=
+13.
+\]</span></p>
+<p>Ainsi :</p>
+<p><span class="math display">\[
+\boxed{
+s_A&gt;0.60
+\iff
+s_B&gt;13.
+}
+\]</span></p>
+<div class="fragment">
+<p>Le même nombre de seuil, par exemple <span class="math inline">\(0.60\)</span>, n’a <strong>aucun sens</strong> sur les deux systèmes.</p>
+</div>
+</section>
+<section id="voilà-le-problème-de-calibration" class="slide level2">
+<h2>Voilà le problème de calibration</h2>
+<p>A et B savent aussi bien <strong>ordonner</strong> les trials :</p>
+<p><span class="math display">\[
+\text{même ROC, même EER}.
+\]</span></p>
+<p>Mais la valeur numérique du score n’a pas la même signification.</p>
+<p>C’est la différence entre :</p>
+<p><span class="math display">\[
+\boxed{\text{discrimination}}
+\qquad\text{et}\qquad
+\boxed{\text{calibration}}.
+\]</span></p>
+<p>La suite du CM va répondre à deux questions :</p>
+<ol type="1">
+<li><strong>quel seuil devrait imposer l’application ?</strong></li>
+<li><strong>comment mettre le score sur une échelle où ce seuil a un sens ?</strong></li>
+</ol>
+</section>
+<section id="et-lauroc" class="slide level2">
+<h2>Et l’AUROC ?</h2>
+<p>L’<strong>Area Under the ROC Curve (AUROC)</strong> résume la ROC par un nombre :</p>
+<p><span class="math display">\[
+0.5\le \mathrm{AUROC}\le1.
+\]</span></p>
+<ul>
+<li><span class="math inline">\(0.5\)</span> : ranking aléatoire ;</li>
+<li><span class="math inline">\(1\)</span> : séparation parfaite.</li>
+</ul>
+<p>Dans la suite du cours, nous utiliserons surtout :</p>
+<ul>
+<li><strong>EER</strong> — <em>Equal Error Rate</em> ;</li>
+<li><strong>DET</strong> — <em>Detection Error Trade-off</em> : représentation de <span class="math inline">\(P_{\mathrm{FA}}\)</span> face à <span class="math inline">\(P_{\mathrm{miss}}\)</span> ;</li>
+<li><strong>DCF</strong> — <em>Detection Cost Function</em> : coût moyen des erreurs pour une application donnée.</li>
+</ul>
+<p>La DET arrive juste après ; la DCF sera définie après l’introduction des <strong>priors</strong> et des <strong>coûts</strong>.</p>
+</section>
+<section id="courbe-det" class="slide level2">
+<h2>Courbe DET</h2>
+<p>En speaker verification, on représente souvent directement les deux erreurs :</p>
+<p><span class="math display">\[
+P_{\mathrm{FA}}
+\quad\text{vs}\quad
+P_{\mathrm{miss}}.
+\]</span></p>
+
+<img data-src="assets/img/cm4/det_curve.png" style="width:59.0%" class="r-stretch"><p>Les axes sont transformés pour rendre les faibles taux d’erreurs plus lisibles.</p>
+</section>
+<section id="pourquoi-leer-ne-suffit-pas-pour-décider" class="slide level2">
+<h2>Pourquoi l’EER ne suffit pas pour décider</h2>
+<p>L’EER choisit implicitement un compromis symétrique entre les deux erreurs.</p>
+<p>Mais une application réelle peut préférer un autre point de la ROC / DET.</p>
+<p><span class="math display">\[
+\boxed{
+\text{le bon seuil dépend de ce que coûtent les erreurs}
+}
+\]</span></p>
+<p>C’est précisément ce que la théorie de la décision bayésienne va formaliser.</p>
+</section>
+<section id="première-information-manquante-le-prior" class="slide level2">
+<h2>Première information manquante : le prior</h2>
+<p>On note</p>
+<p><span class="math display">\[
+\pi=P(H_{\mathrm{tar}})
+\]</span></p>
+<p>la probabilité a priori qu’un trial soit target.</p>
+<p>Alors</p>
+<p><span class="math display">\[
+P(H_{\mathrm{non}})=1-\pi.
+\]</span></p>
+<div class="cm4-big">
+<p>Un système bancaire et un benchmark équilibré peuvent avoir des <strong>priors radicalement différents</strong>.</p>
+</div>
+</section>
+<section id="exemple-un-target-peut-être-rare" class="slide level2">
+<h2>Exemple : un target peut être rare</h2>
+<p>Supposons</p>
+<p><span class="math display">\[
+\pi=10^{-3}.
+\]</span></p>
+<p>Avant même d’écouter le signal :</p>
+<p><span class="math display">\[
+P(H_{\mathrm{non}})=0.999.
+\]</span></p>
+<div class="fragment">
+<p>Accepter un imposteur peut donc devenir extrêmement pénalisant si on utilise trop facilement l’hypothèse target.</p>
+</div>
+</section>
+<section id="deuxième-information-manquante-les-coûts" class="slide level2">
+<h2>Deuxième information manquante : les coûts</h2>
+<p>Un <strong>coût</strong> mesure la pénalité associée à une décision lorsque la vérité est connue.</p>
+<p>On définit</p>
+<p><span class="math display">\[
+\boxed{C(d,H):=\text{coût de la décision }d\text{ lorsque la vraie hypothèse est }H.}
+\]</span></p>
+<p>Pour la vérification du locuteur :</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 27%">
+<col style="width: 36%">
+<col style="width: 36%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>décision <span class="math inline">\(d\)</span></th>
+<th style="text-align: right;">vraie hypothèse <span class="math inline">\(H_{\mathrm{tar}}\)</span></th>
+<th style="text-align: right;">vraie hypothèse <span class="math inline">\(H_{\mathrm{non}}\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><strong>target</strong></td>
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(C_{\mathrm{FA}}\)</span></td>
+</tr>
+<tr class="even">
+<td><strong>non-target</strong></td>
+<td style="text-align: right;"><span class="math inline">\(C_{\mathrm{miss}}\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Ainsi,</p>
+<p><span class="math display">\[
+C_{\mathrm{FA}}=C(\mathrm{tar},H_{\mathrm{non}}),
+\qquad
+C_{\mathrm{miss}}=C(\mathrm{non},H_{\mathrm{tar}}).
+\]</span></p>
+<p>Les bonnes décisions sont ici prises de coût nul par convention.</p>
+</section>
+<section id="question" class="slide level2">
+<h2>Question ?</h2>
+<p>Dans une application d’authentification très sensible :</p>
+<blockquote>
+<p>Quelle erreur peut-on vouloir rendre particulièrement rare ?</p>
+</blockquote>
+<div class="fragment">
+<div class="cm2-answer">
+<p>Typiquement la <strong>false alarm</strong> :</p>
+<p><span class="math display">\[
+H_{\mathrm{non}}
+\longrightarrow
+\text{décision target}.
+\]</span></p>
+<p>On peut alors choisir un coût <span class="math inline">\(C_{\mathrm{FA}}\)</span> élevé et/ou un prior target faible.</p>
+</div>
+</div>
+</section>
+<section id="du-coût-au-risque-la-vérité-est-inconnue" class="slide level2">
+<h2>Du coût au risque : la vérité est inconnue</h2>
+<p>Au moment de décider, on ne connaît pas encore la vraie hypothèse.</p>
+<p>Après avoir observé le trial <span class="math inline">\(x\)</span>, le système dispose seulement de probabilités :</p>
+<p><span class="math display">\[
+P(H_{\mathrm{tar}}\mid x),
+\qquad
+P(H_{\mathrm{non}}\mid x).
+\]</span></p>
+<p>Le <strong>risque conditionnel</strong> d’une décision <span class="math inline">\(d\)</span> est alors son <strong>coût moyen attendu</strong> :</p>
+<p><span class="math display">\[
+\boxed{
+R(d\mid x)
+:=
+\sum_{H\in\{H_{\mathrm{tar}},H_{\mathrm{non}}\}}
+\underbrace{C(d,H)}_{\text{coût si }H\text{ est vraie}}
+\underbrace{P(H\mid x)}_{\text{probabilité de }H\text{ après avoir vu }x}
+}
+\]</span></p>
+<p>Autrement dit : <strong>coût × probabilité</strong>, puis on additionne les deux cas possibles.</p>
+</section>
+<section id="risque-si-lon-accepte" class="slide level2">
+<h2>Risque si l’on accepte</h2>
+<p>Si on décide <strong>target</strong> :</p>
+<ul>
+<li>si <span class="math inline">\(H_{\mathrm{tar}}\)</span> est vraie : bonne décision, coût <span class="math inline">\(0\)</span> ;</li>
+<li>si <span class="math inline">\(H_{\mathrm{non}}\)</span> est vraie : <strong>false alarm</strong>, coût <span class="math inline">\(C_{\mathrm{FA}}\)</span>.</li>
+</ul>
+<p>Donc</p>
+<p><span class="math display">\[
+\begin{aligned}
+R(\mathrm{tar}\mid x)
+&amp;:=0\times P(H_{\mathrm{tar}}\mid x)
++C_{\mathrm{FA}}P(H_{\mathrm{non}}\mid x)\\
+&amp;=\boxed{C_{\mathrm{FA}}P(H_{\mathrm{non}}\mid x)}.
+\end{aligned}
+\]</span></p>
+<p><strong>Interprétation :</strong> accepter devient risqué si une false alarm coûte cher <strong>et/ou</strong> si <span class="math inline">\(H_{\mathrm{non}}\)</span> reste probable.</p>
+</section>
+<section id="risque-si-lon-rejette" class="slide level2">
+<h2>Risque si l’on rejette</h2>
+<p>Si on décide <strong>non-target</strong> :</p>
+<ul>
+<li>si <span class="math inline">\(H_{\mathrm{non}}\)</span> est vraie : bonne décision, coût <span class="math inline">\(0\)</span> ;</li>
+<li>si <span class="math inline">\(H_{\mathrm{tar}}\)</span> est vraie : <strong>miss</strong>, coût <span class="math inline">\(C_{\mathrm{miss}}\)</span>.</li>
+</ul>
+<p>Donc</p>
+<p><span class="math display">\[
+\begin{aligned}
+R(\mathrm{non}\mid x)
+&amp;:=C_{\mathrm{miss}}P(H_{\mathrm{tar}}\mid x)
++0\times P(H_{\mathrm{non}}\mid x)\\
+&amp;=\boxed{C_{\mathrm{miss}}P(H_{\mathrm{tar}}\mid x)}.
+\end{aligned}
+\]</span></p>
+<p><strong>Interprétation :</strong> rejeter devient risqué si un miss coûte cher <strong>et/ou</strong> si <span class="math inline">\(H_{\mathrm{tar}}\)</span> est très probable.</p>
+</section>
+<section id="règle-de-bayes" class="slide level2">
+<h2>Règle de Bayes</h2>
+<p>La règle est très simple :</p>
+<p><span class="math display">\[
+\boxed{\text{choisir la décision dont le risque conditionnel est le plus faible}.}
+\]</span></p>
+<p>On décide donc <strong>target</strong> si</p>
+<p><span class="math display">\[
+\underbrace{C_{\mathrm{FA}}P(H_{\mathrm{non}}\mid x)}_{\text{risque d'accepter}}
+&lt;
+\underbrace{C_{\mathrm{miss}}P(H_{\mathrm{tar}}\mid x)}_{\text{risque de rejeter}}.
+\]</span></p>
+<p>En réarrangeant :</p>
+<p><span class="math display">\[
+\boxed{
+\frac{P(H_{\mathrm{tar}}\mid x)}{P(H_{\mathrm{non}}\mid x)}
+&gt;
+\frac{C_{\mathrm{FA}}}{C_{\mathrm{miss}}}
+}
+\]</span></p>
+<p>Le membre de gauche décrit ce que suggèrent les <strong>données</strong> ; celui de droite décrit ce que préfère l’<strong>application</strong>.</p>
+</section>
+<section id="bayes-faire-apparaître-les-vraisemblances" class="slide level2">
+<h2>Bayes : faire apparaître les vraisemblances</h2>
+<p>La formule de Bayes permet de séparer deux informations :</p>
+<ul>
+<li>ce que le trial <span class="math inline">\(x\)</span> apporte comme <strong>évidence</strong> ;</li>
+<li>ce que l’on croyait <strong>avant</strong> de voir <span class="math inline">\(x\)</span>.</li>
+</ul>
+<p><span class="math display">\[
+\frac{P(H_{\mathrm{tar}}\mid x)}{P(H_{\mathrm{non}}\mid x)}
+=
+\underbrace{
+\frac{p(x\mid H_{\mathrm{tar}})}{p(x\mid H_{\mathrm{non}})}
+}_{\text{évidence apportée par }x}
+\underbrace{
+\frac{\pi}{1-\pi}
+}_{\text{prior odds}}.
+\]</span></p>
+<p>On appelle</p>
+<p><span class="math display">\[
+\boxed{
+LR(x)
+:=
+\frac{p(x\mid H_{\mathrm{tar}})}{p(x\mid H_{\mathrm{non}})}
+}
+\]</span></p>
+<p>le <strong>likelihood ratio</strong>.</p>
+<p>Par exemple, <span class="math inline">\(LR(x)=10\)</span> signifie : <em>le trial observé est 10 fois plus vraisemblable sous l’hypothèse target que sous l’hypothèse non-target</em>.</p>
+</section>
+<section id="lire-un-lr-et-un-llr" class="slide level2">
+<h2>Lire un LR et un LLR</h2>
+<p>Le likelihood ratio se lit directement :</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">valeur</th>
+<th>interprétation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(LR&gt;1\)</span></td>
+<td>les données favorisent <span class="math inline">\(H_{\mathrm{tar}}\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(LR=1\)</span></td>
+<td>les données ne favorisent aucune hypothèse</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(LR&lt;1\)</span></td>
+<td>les données favorisent <span class="math inline">\(H_{\mathrm{non}}\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>On utilise souvent son logarithme :</p>
+<p><span class="math display">\[
+\ell(x):=\log LR(x).
+\]</span></p>
+<p>Alors</p>
+<p><span class="math display">\[
+\ell&gt;0 \Rightarrow H_{\mathrm{tar}}\text{ favorisée},
+\qquad
+\ell&lt;0 \Rightarrow H_{\mathrm{non}}\text{ favorisée}.
+\]</span></p>
+<p><strong>Attention :</strong> favoriser une hypothèse ne signifie pas encore qu’on doit la choisir ; le prior et les coûts peuvent déplacer le seuil loin de <span class="math inline">\(0\)</span>.</p>
+</section>
+<section id="seuil-bayésien-sur-le-likelihood-ratio" class="slide level2">
+<h2>Seuil bayésien sur le likelihood ratio</h2>
+<p>En injectant la formule de Bayes dans la règle de décision, on obtient :</p>
+<p><span class="math display">\[
+\boxed{
+LR(x)
+&gt;
+\frac{C_{\mathrm{FA}}(1-\pi)}{C_{\mathrm{miss}}\pi}
+}
+\]</span></p>
+<p>Donc le seuil optimal sur le likelihood ratio est</p>
+<p><span class="math display">\[
+\boxed{
+\tau_{LR}
+:=
+\frac{C_{\mathrm{FA}}(1-\pi)}{C_{\mathrm{miss}}\pi}.
+}
+\]</span></p>
+<p><strong>Lecture informatique :</strong> le backend fournit <span class="math inline">\(LR(x)\)</span> ; l’application fournit un seuil construit à partir de <span class="math inline">\((\pi,C_{\mathrm{FA}},C_{\mathrm{miss}})\)</span>.</p>
+</section>
+<section id="passer-au-log-likelihood-ratio" class="slide level2">
+<h2>Passer au log-likelihood ratio</h2>
+<p>Les likelihood ratios peuvent varier sur plusieurs ordres de grandeur. On travaille donc plutôt avec</p>
+<p><span class="math display">\[
+\ell(x):=\log LR(x).
+\]</span></p>
+<p>Le logarithme étant strictement croissant, la décision ne change pas :</p>
+<p><span class="math display">\[
+\boxed{
+\ell(x)
+&gt;
+\underbrace{
+\log\frac{C_{\mathrm{FA}}(1-\pi)}{C_{\mathrm{miss}}\pi}
+}_{\tau_{\mathrm{Bayes}}}
+}
+\]</span></p>
+<p>Le <strong>LLR</strong> met simplement la même information sur une échelle additive et plus pratique numériquement.</p>
+</section>
+<section id="pourquoi-le-llr-est-pratique" class="slide level2">
+<h2>Pourquoi le LLR est pratique ?</h2>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Le système fournit</strong></p>
+<p><span class="math display">\[
+\ell(x)
+\]</span></p>
+<p>une quantité liée à l’évidence apportée par les données.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>L’application fournit</strong></p>
+<p><span class="math display">\[
+\pi,\;
+C_{\mathrm{miss}},\;
+C_{\mathrm{FA}}.
+\]</span></p>
+<p>Ils déterminent le seuil.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="fragment">
+<p>Un même système peut donc être utilisé dans plusieurs applications <strong>sans être réentraîné</strong>.</p>
+</div>
+</section>
+<section id="question-numérique" class="slide level2">
+<h2>Question numérique</h2>
+<p>Supposons :</p>
+<p><span class="math display">\[
+\pi=0.01,
+\qquad
+C_{\mathrm{miss}}=10,
+\qquad
+C_{\mathrm{FA}}=1.
+\]</span></p>
+<p>Quel est le seuil bayésien sur le LLR ?</p>
+<div class="fragment">
+<p><span class="math display">\[
+\tau_{\mathrm{Bayes}}
+=
+\log\frac{1\times0.99}{10\times0.01}
+=
+\log(9.9)
+\approx
+\boxed{2.29}.
+\]</span></p>
+</div>
+</section>
+<section id="interprétation" class="slide level2">
+<h2>Interprétation</h2>
+<p>Avec ce choix de prior et de coûts :</p>
+<p><span class="math display">\[
+\ell&gt;2.29
+\quad\Longrightarrow\quad
+\text{target}.
+\]</span></p>
+<p>Un LLR légèrement positif ne suffit pas forcément.</p>
+<div class="fragment">
+<p>Le seuil <span class="math inline">\(0\)</span> n’est optimal que dans le cas particulier :</p>
+<p><span class="math display">\[
+\pi=\frac12
+\qquad\text{et}\qquad
+C_{\mathrm{miss}}=C_{\mathrm{FA}}.
+\]</span></p>
+</div>
+</section>
+<section id="et-nos-scores-cosinus" class="slide level2">
+<h2>Et nos scores cosinus ?</h2>
+<p>Un cosinus brut</p>
+<p><span class="math display">\[
+s_{\cos}(e,t)
+\]</span></p>
+<p>n’est <strong>pas automatiquement</strong> un LLR.</p>
+<p>Par exemple :</p>
+<p><span class="math display">\[
+0.72
+\]</span></p>
+<p>ne signifie pas</p>
+<p><span class="math display">\[
+72\%.
+\]</span></p>
+<p>Il ne possède pas nécessairement une interprétation probabiliste.</p>
+</section>
+<section id="cas-de-plda" class="slide level2">
+<h2>Cas de PLDA</h2>
+<p>Un backend PLDA est construit à partir de modèles probabilistes et peut produire un score de type log-rapport de vraisemblance.</p>
+<p>Mais en pratique :</p>
+<ul>
+<li>modèle imparfait ;</li>
+<li>données de test différentes des données d’entraînement ;</li>
+<li>durée, canal, bruit, population différents.</li>
+</ul>
+<div class="fragment">
+<p>Même un score « théoriquement LLR » peut nécessiter une <strong>recalibration</strong>.</p>
+</div>
+</section>
+<section id="évaluer-une-application-le-detection-cost-function" class="slide level2">
+<h2>Évaluer une application : le Detection Cost Function</h2>
+<p>Sur un grand ensemble de trials, on remplace les probabilités conditionnelles individuelles par les <strong>taux d’erreur observés</strong>.</p>
+<p>La <strong>Detection Cost Function (DCF)</strong> est le coût moyen attendu :</p>
+<p><span class="math display">\[
+\boxed{
+DCF(\tau)
+:=
+\underbrace{C_{\mathrm{miss}}\pi P_{\mathrm{miss}}(\tau)}_{\text{coût moyen des misses}}
++
+\underbrace{C_{\mathrm{FA}}(1-\pi)P_{\mathrm{FA}}(\tau)}_{\text{coût moyen des false alarms}}
+}
+\]</span></p>
+<p>Elle répond à la question :</p>
+<blockquote>
+<p><strong>« Avec ce seuil <span class="math inline">\(\tau\)</span>, combien me coûtent en moyenne les erreurs du système dans mon application ? »</strong></p>
+</blockquote>
+</section>
+<section id="lire-la-dcf" class="slide level2">
+<h2>Lire la DCF</h2>
+<p>La DCF combine <strong>trois choses</strong> :</p>
+<div class="cm4-grid-3">
+<div class="cm4-box">
+<p><strong>Fréquence</strong></p>
+<p><span class="math display">\[\pi\]</span></p>
+<p>À quel point les targets sont-ils fréquents ?</p>
+</div>
+<div class="cm4-box">
+<p><strong>Gravité</strong></p>
+<p><span class="math display">\[C_{\mathrm{miss}},\;C_{\mathrm{FA}}\]</span></p>
+<p>Quelle erreur est la plus coûteuse ?</p>
+</div>
+<div class="cm4-box">
+<p><strong>Performance</strong></p>
+<p><span class="math display">\[P_{\mathrm{miss}},\;P_{\mathrm{FA}}\]</span></p>
+<p>À quelle fréquence le système commet-il ces erreurs ?</p>
+</div>
+</div>
+<p>Donc deux applications utilisant <strong>le même système</strong> peuvent préférer deux seuils différents.</p>
+</section>
+<section id="dcf-normalisée" class="slide level2">
+<h2>DCF normalisée</h2>
+<p>On peut normaliser par le coût du meilleur système naïf :</p>
+<p><span class="math display">\[
+DCF_{\mathrm{norm}}(\tau)
+=
+\frac{DCF(\tau)}
+{\min\left(
+C_{\mathrm{miss}}\pi,
+C_{\mathrm{FA}}(1-\pi)
+\right)}.
+\]</span></p>
+<p>Ainsi, un système naïf optimal a un coût normalisé égal à <span class="math inline">\(1\)</span>.</p>
+</section>
+<section id="eer-et-dcf-ne-répondent-pas-à-la-même-question" class="slide level2">
+<h2>EER et DCF ne répondent pas à la même question</h2>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>EER</strong></p>
+<p>Au seuil <span class="math inline">\(\tau_{\mathrm{EER}}\)</span> :</p>
+<p><span class="math display">\[
+P_{\mathrm{miss}}(\tau_{\mathrm{EER}})
+=
+P_{\mathrm{FA}}(\tau_{\mathrm{EER}}).
+\]</span></p>
+<p>Mesure de discrimination, sans prior ni coûts applicatifs.</p>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>DCF</strong></p>
+<p>Pondère les erreurs par</p>
+<p><span class="math display">\[
+\pi,\;
+C_{\mathrm{miss}},\;
+C_{\mathrm{FA}}.
+\]</span></p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="roc-det-eer-et-dcf-même-famille-question-différente" class="slide level2">
+<h2>ROC / DET, EER et DCF : même famille, question différente</h2>
+<p>La ROC / DET décrit <strong>tous les operating points</strong> obtenus en déplaçant le seuil.</p>
+<p>L’EER sélectionne le point particulier :</p>
+<p><span class="math display">\[
+P_{\mathrm{FA}}=P_{\mathrm{miss}}.
+\]</span></p>
+<p>La DCF sélectionne au contraire le point pertinent pour :</p>
+<p><span class="math display">\[
+(\pi,C_{\mathrm{miss}},C_{\mathrm{FA}}).
+\]</span></p>
+<div class="fragment">
+<p>Même ROC, mais operating point choisi différemment.</p>
+</div>
+</section>
+<section id="mindcf" class="slide level2">
+<h2>minDCF</h2>
+<p>On suppose que l’on peut choisir <strong>a posteriori</strong> le meilleur seuil :</p>
+<p><span class="math display">\[
+\boxed{
+\mathrm{minDCF}
+=
+\min_\tau DCF(\tau).
+}
+\]</span></p>
+<p>Cela mesure surtout la capacité de <strong>discrimination</strong> du système pour cet operating point.</p>
+</section>
+<section id="actdcf" class="slide level2">
+<h2>actDCF</h2>
+<p>On utilise le seuil que la théorie bayésienne impose <strong>sur l’échelle de score annoncée</strong>.</p>
+<p>Si le score est un LLR correctement calibré :</p>
+<p><span class="math display">\[
+\tau_{\mathrm{Bayes}}
+=
+\log\frac{C_{\mathrm{FA}}(1-\pi)}
+          {C_{\mathrm{miss}}\pi}.
+\]</span></p>
+<p>Le coût obtenu est l’<strong>actual DCF</strong>.</p>
+</section>
+<section id="mindcf-vs-actdcf" class="slide level2">
+<h2>minDCF vs actDCF</h2>
+<div class="cm4-grid-3">
+<div class="cm4-box">
+<p><strong>minDCF</strong></p>
+<p>« Quel coût pourrais-je obtenir avec le meilleur seuil ? »</p>
+</div>
+<div class="cm4-box">
+<p><strong>actDCF</strong></p>
+<p>« Quel coût j’obtiens avec le seuil imposé par mon interprétation du score ? »</p>
+</div>
+<div class="cm4-box">
+<p><strong>Écart actDCF − minDCF</strong></p>
+<p>Indication d’un problème de <strong>calibration</strong>.</p>
+</div>
+</div>
+</section>
+<section id="discrimination-vs-calibration" class="slide level2">
+<h2>Discrimination vs calibration</h2>
+<div class="two-col">
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Discrimination</strong></p>
+<p>Les targets sont-ils généralement mieux classés que les non-targets ?</p>
+<p>Mesures typiques :</p>
+<ul>
+<li>ROC / DET ;</li>
+<li>EER ;</li>
+<li>minDCF.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="callout callout-none no-icon callout-style-simple">
+<div class="callout-body">
+<div class="callout-content">
+<p><strong>Calibration</strong></p>
+<p>La <strong>valeur</strong> du score est-elle cohérente avec l’interprétation probabiliste attendue ?</p>
+<p>Mesures typiques :</p>
+<ul>
+<li>actDCF ;</li>
+<li>log-loss / <span class="math inline">\(C_{\mathrm{llr}}\)</span>.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</section>
+<section id="fin-de-la-première-partie" class="slide level2">
+<h2>Fin de la première partie</h2>
+<p>À retenir :</p>
+<p><span class="math display">\[
+\boxed{
+\text{bonne discrimination}
+\not\Rightarrow
+\text{bonne calibration}
+}
+\]</span></p>
+<p>et</p>
+<p><span class="math display">\[
+\boxed{
+\text{LLR calibré}
++
+(\pi,C_{\mathrm{miss}},C_{\mathrm{FA}})
+\Rightarrow
+\text{seuil bayésien}
+}
+\]</span></p>
+</section></section>
+<section>
+<section id="pause-15-minutes" class="title-slide slide level1 center">
+<h1>Pause — 15 minutes</h1>
+
+</section>
+<section id="pause" class="slide level2 cm4-center">
+<h2>☕ Pause</h2>
+<p>Reprise : <strong>comment transformer un score brut en score calibré ?</strong></p>
+</section></section>
+<section>
+<section id="calibrer-un-système" class="title-slide slide level1 center">
+<h1>2. Calibrer un système</h1>
+
+</section>
+<section id="repartons-dun-exemple-concret" class="slide level2">
+<h2>Repartons d’un exemple concret</h2>
+<p>Supposons que notre système fournisse les scores suivants :</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>trial</th>
+<th>vérité</th>
+<th style="text-align: right;">score brut <span class="math inline">\(s\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>T1</td>
+<td>target</td>
+<td style="text-align: right;"><span class="math inline">\(0.85\)</span></td>
+</tr>
+<tr class="even">
+<td>T2</td>
+<td>target</td>
+<td style="text-align: right;"><span class="math inline">\(0.65\)</span></td>
+</tr>
+<tr class="odd">
+<td>N1</td>
+<td>non-target</td>
+<td style="text-align: right;"><span class="math inline">\(0.45\)</span></td>
+</tr>
+<tr class="even">
+<td>N2</td>
+<td>non-target</td>
+<td style="text-align: right;"><span class="math inline">\(0.20\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Le ranking semble raisonnable : les targets ont ici les scores les plus élevés.</p>
+<p>Mais une question reste ouverte :</p>
+<p><span class="math display">\[
+\boxed{\text{que signifie numériquement un score comme }0.65\text{ ?}}
+\]</span></p>
+</section>
+<section id="question-1" class="slide level2">
+<h2>Question ?</h2>
+<p>Un score brut</p>
+<p><span class="math display">\[
+s=0.65
+\]</span></p>
+<p>signifie-t-il que le système estime</p>
+<p><span class="math display">\[
+P(H_{\mathrm{tar}}\mid s)=65\% \; ?
+\]</span></p>
+<div class="fragment">
+<p><strong>Non.</strong></p>
+<p>Un score peut être un cosinus, une sortie PLDA, une distance transformée, etc.</p>
+<p>Sans hypothèse supplémentaire,</p>
+<p><span class="math display">\[
+\boxed{\text{score }0.65 \neq \text{probabilité }65\%.}
+\]</span></p>
+</div>
+</section>
+<section id="ce-que-lon-aimerait-obtenir" class="slide level2">
+<h2>Ce que l’on aimerait obtenir</h2>
+<p>On voudrait transformer le score brut <span class="math inline">\(s\)</span> en une quantité dont la valeur a un sens :</p>
+<p><span class="math display">\[
+s
+\longrightarrow
+\ell(s).
+\]</span></p>
+<p>Idéalement, <span class="math inline">\(\ell(s)\)</span> doit répondre à la question :</p>
+<blockquote>
+<p><strong>« À quel point les données favorisent-elles target plutôt que non-target ? »</strong></p>
+</blockquote>
+<p>Cette quantité est le <strong>log-likelihood ratio (LLR)</strong>.</p>
+</section>
+<section id="lire-un-llr-avant-de-voir-la-formule" class="slide level2">
+<h2>Lire un LLR avant de voir la formule</h2>
+<p>Quelques valeurs suffisent pour comprendre l’idée :</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">LLR <span class="math inline">\(\ell\)</span></th>
+<th>lecture</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(\ell=0\)</span></td>
+<td>aucune hypothèse n’est favorisée</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(\ell&gt;0\)</span></td>
+<td>les données favorisent target</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(\ell&lt;0\)</span></td>
+<td>les données favorisent non-target</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(\ell\)</span> très positif</td>
+<td>forte évidence pour target</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(\ell\)</span> très négatif</td>
+<td>forte évidence pour non-target</td>
+</tr>
+</tbody>
+</table>
+<p>Par exemple,</p>
+<p><span class="math display">\[
+\ell=\log 10
+\]</span></p>
+<p>signifie que le trial observé est <strong>10 fois plus vraisemblable</strong> sous <span class="math inline">\(H_{\mathrm{tar}}\)</span> que sous <span class="math inline">\(H_{\mathrm{non}}\)</span>.</p>
+</section>
+<section id="maintenant-la-définition" class="slide level2">
+<h2>Maintenant la définition</h2>
+<p>Le likelihood ratio est</p>
+<p><span class="math display">\[
+LR(s)
+:=
+\frac{p(s\mid H_{\mathrm{tar}})}
+     {p(s\mid H_{\mathrm{non}})}.
+\]</span></p>
+<p>Le LLR est simplement son logarithme :</p>
+<p><span class="math display">\[
+\boxed{
+\ell(s)
+:=
+\log LR(s)
+=
+\log
+\frac{p(s\mid H_{\mathrm{tar}})}
+     {p(s\mid H_{\mathrm{non}})}.
+}
+\]</span></p>
+<p>La <strong>calibration</strong> cherche donc une transformation</p>
+<p><span class="math display">\[
+\boxed{s\mapsto\ell(s)}
+\]</span></p>
+<p>qui donne au score cette interprétation.</p>
+</section>
+<section id="exemple-une-calibration-affine" class="slide level2">
+<h2>Exemple : une calibration affine</h2>
+<p>Imaginons qu’un jeu de calibration ait conduit à</p>
+<p><span class="math display">\[
+\boxed{\ell(s)=6s-3.}
+\]</span></p>
+<p>Nos quatre scores deviennent :</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>trial</th>
+<th style="text-align: right;"><span class="math inline">\(s\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(\ell(s)\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>T1</td>
+<td style="text-align: right;"><span class="math inline">\(0.85\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(2.1\)</span></td>
+</tr>
+<tr class="even">
+<td>T2</td>
+<td style="text-align: right;"><span class="math inline">\(0.65\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.9\)</span></td>
+</tr>
+<tr class="odd">
+<td>N1</td>
+<td style="text-align: right;"><span class="math inline">\(0.45\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-0.3\)</span></td>
+</tr>
+<tr class="even">
+<td>N2</td>
+<td style="text-align: right;"><span class="math inline">\(0.20\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-1.8\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Le ranking n’a pas changé, mais l’axe des scores possède maintenant une interprétation en termes d’évidence.</p>
+</section>
+<section id="même-exemple-graphiquement" class="slide level2">
+<h2>Même exemple, graphiquement</h2>
+
+<img data-src="assets/img/cm4/affine_calibration_example.png" style="width:70.0%" class="r-stretch"><p>Ici :</p>
+<ul>
+<li><span class="math inline">\(a=6\)</span> règle l’<strong>échelle</strong> ;</li>
+<li><span class="math inline">\(b=-3\)</span> règle le <strong>décalage</strong>.</li>
+</ul>
+<p>La transformation affine ne cherche pas à réordonner les trials : elle cherche à placer correctement leur score sur l’axe des LLR.</p>
+</section>
+<section id="mais-un-llr-nest-toujours-pas-un-posterior" class="slide level2">
+<h2>Mais un LLR n’est toujours pas un posterior</h2>
+<p>Prenons le trial T1 :</p>
+<p><span class="math display">\[
+\ell=2.1.
+\]</span></p>
+<p>Cette évidence acoustique est la même quelle que soit l’application.</p>
+<p>Mais la probabilité finale de target dépend également de ce que l’on croyait <strong>avant</strong> d’observer le trial.</p>
+<p>C’est le rôle du prior</p>
+<p><span class="math display">\[
+\pi=P(H_{\mathrm{tar}}).
+\]</span></p>
+</section>
+<section id="même-llr-deux-applications" class="slide level2">
+<h2>Même LLR, deux applications</h2>
+<p>Pour le même LLR <span class="math inline">\(\ell=2.1\)</span> :</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>application</th>
+<th style="text-align: right;">prior target</th>
+<th style="text-align: right;">posterior target</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>trials équilibrés</td>
+<td style="text-align: right;"><span class="math inline">\(\pi=0.5\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\approx 0.89\)</span></td>
+</tr>
+<tr class="even">
+<td>target très rare</td>
+<td style="text-align: right;"><span class="math inline">\(\pi=0.01\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\approx 0.08\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Donc :</p>
+<p><span class="math display">\[
+\boxed{\text{même évidence} \neq \text{même probabilité posterior}.}
+\]</span></p>
+<p>C’est précisément pourquoi on préfère calibrer vers un <strong>LLR</strong>, puis laisser l’application ajouter son prior.</p>
+</section>
+<section id="rappel-des-odds-cest-juste-un-rapport" class="slide level2">
+<h2>Rappel : des odds, c’est juste un rapport</h2>
+<p>Si</p>
+<p><span class="math display">\[
+q=P(H_{\mathrm{tar}}\mid s)=0.8,
+\]</span></p>
+<p>alors, puisqu’il n’y a que deux hypothèses,</p>
+<p><span class="math display">\[
+P(H_{\mathrm{non}}\mid s)=1-q=0.2.
+\]</span></p>
+<p>Les <strong>posterior odds</strong> valent donc</p>
+<p><span class="math display">\[
+\frac{P(H_{\mathrm{tar}}\mid s)}
+     {P(H_{\mathrm{non}}\mid s)}
+=
+\frac{0.8}{0.2}
+=
+4.
+\]</span></p>
+<p>On peut lire cela comme <strong>4 contre 1 en faveur de target</strong>.</p>
+</section>
+<section id="du-llr-au-posterior-la-relation-générale" class="slide level2">
+<h2>Du LLR au posterior : la relation générale</h2>
+<p>Posons</p>
+<p><span class="math display">\[
+q(s):=P(H_{\mathrm{tar}}\mid s).
+\]</span></p>
+<p>Comme le problème est binaire :</p>
+<p><span class="math display">\[
+P(H_{\mathrm{non}}\mid s)=1-q(s).
+\]</span></p>
+<p>La formule de Bayes donne</p>
+<p><span class="math display">\[
+\boxed{
+\frac{q(s)}{1-q(s)}
+=
+e^{\ell(s)}
+\frac{\pi}{1-\pi}.
+}
+\]</span></p>
+<p>Trois ingrédients apparaissent clairement :</p>
+<p><span class="math display">\[
+\underbrace{e^{\ell(s)}}_{\text{évidence des données}}
+\qquad
+\underbrace{\frac{\pi}{1-\pi}}_{\text{prior}}
+\qquad
+\longrightarrow
+\qquad
+\underbrace{\frac{q}{1-q}}_{\text{posterior odds}}.
+\]</span></p>
+</section>
+<section id="forme-explicite-du-posterior" class="slide level2">
+<h2>Forme explicite du posterior</h2>
+<p>En prenant le logarithme :</p>
+<p><span class="math display">\[
+\log\frac{q}{1-q}
+=
+\ell(s)
++
+\log\frac{\pi}{1-\pi}.
+\]</span></p>
+<p>Puis en appliquant la sigmoïde :</p>
+<p><span class="math display">\[
+\boxed{
+P(H_{\mathrm{tar}}\mid s)
+=
+\sigma\!\left(
+\ell(s)+
+\log\frac{\pi}{1-\pi}
+\right).
+}
+\]</span></p>
+<p>avec</p>
+<p><span class="math display">\[
+\sigma(u)=\frac{1}{1+e^{-u}}.
+\]</span></p>
+</section>
+<section id="comment-apprend-on-la-calibration" class="slide level2">
+<h2>Comment apprend-on la calibration ?</h2>
+<p>On réserve un petit ensemble de trials dont on connaît les labels :</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th style="text-align: right;">score <span class="math inline">\(s_i\)</span></th>
+<th style="text-align: right;">label <span class="math inline">\(y_i\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(0.81\)</span></td>
+<td style="text-align: right;">target</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(0.70\)</span></td>
+<td style="text-align: right;">target</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(0.58\)</span></td>
+<td style="text-align: right;">non-target</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(0.32\)</span></td>
+<td style="text-align: right;">non-target</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(\vdots\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(\vdots\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>On cherche une transformation qui rende les sorties cohérentes avec ces labels.</p>
+<p>La forme la plus simple est</p>
+<p><span class="math display">\[
+\boxed{\ell(s)=as+b.}
+\]</span></p>
+</section>
+<section id="régression-logistique-intuition" class="slide level2">
+<h2>Régression logistique : intuition</h2>
+<p>À partir des trials de calibration,</p>
+<p><span class="math display">\[
+\{(s_i,y_i)\}_{i=1}^{N},
+\]</span></p>
+<p>on choisit <span class="math inline">\(a\)</span> et <span class="math inline">\(b\)</span> afin que :</p>
+<ul>
+<li>les targets reçoivent des LLR plutôt positifs ;</li>
+<li>les non-targets reçoivent des LLR plutôt négatifs ;</li>
+<li>une erreur très confiante soit fortement pénalisée.</li>
+</ul>
+<p>C’est exactement l’esprit de la <strong>régression logistique</strong> utilisée pour la calibration.</p>
+</section>
+<section id="pourquoi-la-log-loss" class="slide level2">
+<h2>Pourquoi la log-loss ?</h2>
+<p>Prenons un vrai target.</p>
+<p>Deux systèmes annoncent :</p>
+<p><span class="math display">\[
+q_1=0.9,
+\qquad
+q_2=0.1.
+\]</span></p>
+<p>Le coût log associé est</p>
+<p><span class="math display">\[
+-\log q.
+\]</span></p>
+<p>Donc :</p>
+<p><span class="math display">\[
+-\log(0.9)\approx0.11,
+\qquad
+-\log(0.1)\approx2.30.
+\]</span></p>
+<p>La prédiction fausse <strong>et très confiante</strong> est beaucoup plus pénalisée.</p>
+</section>
+<section id="de-la-log-loss-à-c_mathrmllr" class="slide level2">
+<h2>De la log-loss à <span class="math inline">\(C_{\mathrm{llr}}\)</span></h2>
+<p>Pour comprendre les termes qui vont apparaître, partons d’un LLR <span class="math inline">\(\ell\)</span>.</p>
+<p>Pour définir une métrique <strong>indépendante d’une application particulière</strong>, on donne le même poids aux deux classes target / non-target.</p>
+<p>Cela revient ici à utiliser un prior d’évaluation</p>
+<p><span class="math display">\[
+\pi=\frac12.
+\]</span></p>
+<p>Dans ce cas,</p>
+<p><span class="math display">\[
+P(H_{\mathrm{tar}}\mid \ell)
+=
+\sigma(\ell)
+=
+\frac{1}{1+e^{-\ell}}.
+\]</span></p>
+<p>On peut maintenant écrire la log-loss d’un trial target ou non-target.</p>
+</section>
+<section id="doù-viennent-les-deux-termes" class="slide level2">
+<h2>D’où viennent les deux termes ?</h2>
+<h3 id="si-le-trial-est-target">Si le trial est target</h3>
+<p>La probabilité attribuée à la bonne classe est</p>
+<p><span class="math display">\[
+q=\sigma(\ell).
+\]</span></p>
+<p>Sa log-loss en bits est donc</p>
+<p><span class="math display">\[
+-\log_2 q
+=
+-\log_2\!\left(\frac{1}{1+e^{-\ell}}\right)
+=
+\boxed{\log_2(1+e^{-\ell})}.
+\]</span></p>
+<h3 id="si-le-trial-est-non-target">Si le trial est non-target</h3>
+<p>La probabilité de la bonne classe est <span class="math inline">\(1-q=\sigma(-\ell)\)</span>, donc</p>
+<p><span class="math display">\[
+-\log_2(1-q)
+=
+\boxed{\log_2(1+e^{\ell})}.
+\]</span></p>
+<p>Les deux formules sont donc simplement les <strong>cross-entropies binaires écrites en fonction du LLR</strong>.</p>
+</section>
+<section id="définition-de-c_mathrmllr" class="slide level2">
+<h2>Définition de <span class="math inline">\(C_{\mathrm{llr}}\)</span></h2>
+<p><span class="math inline">\(C_{\mathrm{llr}}\)</span> désigne le <strong>log-likelihood-ratio cost</strong> : le coût associé à la qualité des LLR.</p>
+<p>On calcule :</p>
+<ul>
+<li>la log-loss moyenne sur les trials target ;</li>
+<li>la log-loss moyenne sur les trials non-target ;</li>
+<li>puis on donne le même poids <span class="math inline">\(1/2\)</span> aux deux populations.</li>
+</ul>
+<p>Ainsi,</p>
+<p><span class="math display">\[
+\boxed{
+C_{\mathrm{llr}}
+:=
+\frac12
+\left[
+\frac1{N_{\mathrm{tar}}}
+\sum_{i\in\mathrm{tar}}
+\log_2(1+e^{-\ell_i})
++
+\frac1{N_{\mathrm{non}}}
+\sum_{j\in\mathrm{non}}
+\log_2(1+e^{\ell_j})
+\right].
+}
+\]</span></p>
+<p>Donc <span class="math inline">\(C_{\mathrm{llr}}\)</span> mesure si les LLR ont à la fois le <strong>bon signe</strong> et une <strong>amplitude raisonnable</strong>.</p>
+</section>
+<section id="trois-valeurs-à-retenir" class="slide level2">
+<h2>Trois valeurs à retenir</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 57%">
+<col style="width: 42%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">valeur</th>
+<th>interprétation</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(C_{\mathrm{llr}}\to0\)</span></td>
+<td>LLR excellents</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(C_{\mathrm{llr}}=1\)</span></td>
+<td>système non informatif, par exemple <span class="math inline">\(\ell=0\)</span> partout</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(C_{\mathrm{llr}}&gt;1\)</span></td>
+<td>pire, au sens de cette log-loss, que ne fournir aucune information</td>
+</tr>
+</tbody>
+</table>
+<p>Donc :</p>
+<p><span class="math display">\[
+\boxed{\text{plus }C_{\mathrm{llr}}\text{ est petit, mieux c'est}.}
+\]</span></p>
+</section>
+<section id="discrimination-ou-calibration" class="slide level2">
+<h2>Discrimination ou calibration ?</h2>
+<p>Imaginons que le ranking des trials soit très bon, mais que tous les LLR soient beaucoup trop grands.</p>
+<p>L’EER peut rester bon puisque l’ordre des trials ne change pas.</p>
+<p>En revanche,</p>
+<p><span class="math display">\[
+C_{\mathrm{llr}}
+\]</span></p>
+<p>peut se dégrader fortement, surtout pour les quelques erreurs très confiantes.</p>
+<p>Cela permet de distinguer deux défauts :</p>
+<ul>
+<li><strong>mal classer</strong> les trials ;</li>
+<li>leur donner une <strong>mauvaise valeur numérique</strong>.</li>
+</ul>
+</section>
+<section id="c_mathrmllrmin-une-expérience-oracle" class="slide level2">
+<h2><span class="math inline">\(C_{\mathrm{llr}}^{\min}\)</span> : une expérience oracle</h2>
+<p>On demande :</p>
+<blockquote>
+<p><em>« Si j’avais le droit de recalibrer les scores de façon monotone aussi bien que possible, sans changer leur ordre, quel serait le meilleur <span class="math inline">\(C_{\mathrm{llr}}\)</span> ? »</em></p>
+</blockquote>
+<p>On note cette valeur</p>
+<p><span class="math display">\[
+\boxed{C_{\mathrm{llr}}^{\min}.}
+\]</span></p>
+<p>Comme le ranking est conservé, elle reflète surtout la <strong>discrimination</strong> disponible dans les scores.</p>
+<p>Et</p>
+<p><span class="math display">\[
+C_{\mathrm{llr}}-C_{\mathrm{llr}}^{\min}
+\]</span></p>
+<p>quantifie la partie attribuable à la calibration.</p>
+</section>
+<section id="pav-définition-avant-lexemple" class="slide level2">
+<h2>PAV — définition avant l’exemple</h2>
+<p><strong>PAV = Pool Adjacent Violators.</strong></p>
+<p>C’est un algorithme de <strong>régression isotone</strong> utilisé ici pour construire une calibration :</p>
+<p><span class="math display">\[
+s\longmapsto \hat p(s)
+\]</span></p>
+<p>avec une contrainte très simple :</p>
+<p><span class="math display">\[
+s_1&lt;s_2
+\quad\Longrightarrow\quad
+\hat p(s_1)\le \hat p(s_2).
+\]</span></p>
+<p>Autrement dit :</p>
+<blockquote>
+<p>un score plus élevé ne doit pas conduire à une probabilité target plus faible.</p>
+</blockquote>
+<p>PAV est <strong>non paramétrique</strong> : contrairement à <span class="math inline">\(\ell(s)=as+b\)</span>, il n’impose pas à l’avance une droite ou une sigmoïde.</p>
+</section>
+<section id="pav-quappelle-t-on-fréquence-target" class="slide level2">
+<h2>PAV — qu’appelle-t-on « fréquence target » ?</h2>
+<p>Pour rendre l’exemple concret, regroupons des trials ayant des scores proches.</p>
+<p>Dans un bloc <span class="math inline">\(B\)</span>, on définit la <strong>fréquence target observée</strong> par</p>
+<p><span class="math display">\[
+\boxed{
+f_{\mathrm{tar}}(B)
+:=
+\frac{N_{\mathrm{tar}}(B)}
+     {N_{\mathrm{tar}}(B)+N_{\mathrm{non}}(B)}.
+}
+\]</span></p>
+<p>Exemple :</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: right;">score représentatif du bloc</th>
+<th style="text-align: right;">nombre de trials</th>
+<th style="text-align: right;">targets</th>
+<th style="text-align: right;">fréquence target</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(0.10\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(4\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0/4=0\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(0.25\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(4\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(3/4=0.75\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(0.40\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(4\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1/4=0.25\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><span class="math inline">\(0.65\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(4\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(3\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(3/4=0.75\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;"><span class="math inline">\(0.80\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(4\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(4\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(4/4=1\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Le problème est visible entre <span class="math inline">\(0.25\)</span> et <span class="math inline">\(0.40\)</span> :</p>
+<p><span class="math display">\[
+0.75&gt;0.25.
+\]</span></p>
+<p>Le score augmente, mais la fréquence target observée <strong>diminue</strong> : la monotonie est violée.</p>
+</section>
+<section id="pav-que-signifie-pool-adjacent-violators" class="slide level2">
+<h2>PAV — que signifie « Pool Adjacent Violators » ?</h2>
+<p>Les deux blocs voisins qui violent la monotonie sont :</p>
+<p><span class="math display">\[
+B_2:\;3\text{ targets sur }4
+\qquad\text{et}\qquad
+B_3:\;1\text{ target sur }4.
+\]</span></p>
+<p>PAV les <strong>regroupe</strong> (<em>pool</em>) en un seul bloc :</p>
+<p><span class="math display">\[
+B_{2\cup3}.
+\]</span></p>
+<p>Ce nouveau bloc contient :</p>
+<p><span class="math display">\[
+8\text{ trials}
+\qquad\text{dont}\qquad
+4\text{ targets}.
+\]</span></p>
+<p>Sa fréquence target devient donc</p>
+<p><span class="math display">\[
+\boxed{
+f_{\mathrm{tar}}(B_{2\cup3})
+=
+\frac{4}{8}
+=
+0.5.
+}
+\]</span></p>
+</section>
+<section id="pav-après-la-fusion" class="slide level2">
+<h2>PAV — après la fusion</h2>
+<p>Avant PAV, les fréquences étaient :</p>
+<p><span class="math display">\[
+0,\;0.75,\;0.25,\;0.75,\;1.
+\]</span></p>
+<p>Après fusion des deux blocs qui violaient la monotonie :</p>
+<p><span class="math display">\[
+\boxed{
+0,\;0.50,\;0.75,\;1.
+}
+\]</span></p>
+<p>Cette séquence est maintenant <strong>croissante</strong>.</p>
+<p>PAV continue exactement de la même manière tant qu’il existe deux blocs voisins tels que</p>
+<p><span class="math display">\[
+f_{\mathrm{tar}}(B_k)
+&gt;
+f_{\mathrm{tar}}(B_{k+1}).
+\]</span></p>
+<p>L’idée est donc simplement :</p>
+<p><span class="math display">\[
+\boxed{
+\text{trier}
+\rightarrow
+\text{détecter une violation}
+\rightarrow
+\text{fusionner}
+\rightarrow
+\text{recommencer}.
+}
+\]</span></p>
+</section>
+<section id="calibration-affine-ou-pav" class="slide level2">
+<h2>Calibration affine ou PAV ?</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>calibration affine</th>
+<th>PAV</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\ell(s)=as+b\)</span></td>
+<td>fonction par morceaux</td>
+</tr>
+<tr class="even">
+<td>paramétrique</td>
+<td>non paramétrique</td>
+</tr>
+<tr class="odd">
+<td>très peu de paramètres</td>
+<td>plus flexible</td>
+</tr>
+<tr class="even">
+<td>généralise souvent mieux avec peu de données</td>
+<td>demande davantage de données</td>
+</tr>
+<tr class="odd">
+<td>adaptée au déploiement</td>
+<td>utile notamment pour l’analyse oracle</td>
+</tr>
+</tbody>
+</table>
+<p>Les deux conservent l’ordre des scores lorsqu’elles sont monotones.</p>
+</section>
+<section id="très-important-données-séparées" class="slide level2">
+<h2>Très important : données séparées</h2>
+<p>La calibration affine utilisée en pratique doit être apprise sur un jeu de <strong>développement / calibration</strong> :</p>
+<p><span class="math display">\[
+\mathcal D_{\mathrm{cal}}
+=
+\{(s_i,y_i)\}.
+\]</span></p>
+<p>Puis <span class="math inline">\(a\)</span> et <span class="math inline">\(b\)</span> sont figés avant le test final.</p>
+<p>Apprendre <span class="math inline">\(a,b\)</span> sur les labels du test serait une <strong>fuite d’information</strong>.</p>
+</section>
+<section id="exemple-de-domain-mismatch" class="slide level2">
+<h2>Exemple de domain mismatch</h2>
+<p>Supposons que la calibration soit apprise sur :</p>
+<ul>
+<li>parole longue ;</li>
+<li>microphone propre ;</li>
+<li>environnement calme.</li>
+</ul>
+<p>Puis appliquée sur :</p>
+<ul>
+<li>segments courts ;</li>
+<li>téléphone ;</li>
+<li>bruit.</li>
+</ul>
+<p>Même si le système conserve un bon ranking, la relation</p>
+<p><span class="math display">\[
+s\mapsto\ell(s)
+\]</span></p>
+<p>peut avoir changé.</p>
+<p>La calibration apprise dans le premier domaine peut donc devenir incorrecte dans le second.</p>
+</section>
+<section id="courbe-de-calibration-comment-lire-les-axes" class="slide level2">
+<h2>Courbe de calibration — comment lire les axes ?</h2>
+<p>Après calibration, on peut convertir chaque score en une probabilité a posteriori target :</p>
+<p><span class="math display">\[
+\boxed{
+\hat p(s)
+:=
+\widehat{P}(H_{\mathrm{tar}}\mid s).
+}
+\]</span></p>
+<p>C’est ce nombre <span class="math inline">\(\hat p(s)\)</span> que j’appelle ici la <strong>probabilité annoncée par le système</strong>.</p>
+<p>Par exemple,</p>
+<p><span class="math display">\[
+\hat p(s)=0.8
+\]</span></p>
+<p>signifie simplement :</p>
+<blockquote>
+<p><strong>« pour ce trial, le système annonce 80 % de probabilité que l’hypothèse target soit vraie. »</strong></p>
+</blockquote>
+<p>Pour vérifier si cette annonce est fiable, on regroupe beaucoup de trials ayant des valeurs de <span class="math inline">\(\hat p\)</span> proches.</p>
+<p>Pour chaque groupe <span class="math inline">\(B\)</span> :</p>
+<p><span class="math display">\[
+\boxed{x=\text{probabilité annoncée }\hat p_B}
+\]</span></p>
+<p>et</p>
+<p><span class="math display">\[
+\boxed{
+y=
+\text{fraction réellement target}
+=
+\frac{N_{\mathrm{tar}}(B)}
+     {N_{\mathrm{tar}}(B)+N_{\mathrm{non}}(B)}.
+}
+\]</span></p>
+<p>Ainsi, le point <span class="math inline">\((0.8,0.6)\)</span> signifie : <strong>80 % annoncés, mais seulement 60 % de vrais targets observés.</strong></p>
+</section>
+<section id="calibration-cas-presque-idéal" class="slide level2">
+<h2>Calibration : cas presque idéal</h2>
+
+<img data-src="assets/img/cm4/calibration_ideal.png" style="width:48.0%" class="r-stretch"><p>Une calibration idéale suit la diagonale <span class="math inline">\(y=x\)</span>.</p>
+<p>Ici, la courbe reste proche de cette diagonale : les probabilités annoncées sont globalement cohérentes avec ce qui est réellement observé.</p>
+</section>
+<section id="calibration-sous-mismatch" class="slide level2">
+<h2>Calibration sous mismatch</h2>
+
+<img data-src="assets/img/cm4/calibration_mismatch.png" style="width:58.0%" class="r-stretch"><p>La courbe s’écarte maintenant davantage de la diagonale.</p>
+<p>Le système peut donc rester <strong>discriminant</strong> tout en donnant des probabilités <strong>mal calibrées</strong> lorsque le domaine change.</p>
+</section>
+<section id="normalisation-neq-calibration" class="slide level2">
+<h2>Normalisation <span class="math inline">\(\neq\)</span> calibration</h2>
+<table class="caption-top">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>normalisation des scores</th>
+<th>calibration</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>réduit certains effets de session / cohorte</td>
+<td>donne une interprétation probabiliste au score</td>
+</tr>
+<tr class="even">
+<td>ex. Z-norm, T-norm, S-norm</td>
+<td>ex. calibration affine / PAV</td>
+</tr>
+<tr class="odd">
+<td>modifie les scores pour les rendre plus comparables</td>
+<td>cherche typiquement <span class="math inline">\(s\mapsto\ell\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Les deux opérations peuvent être combinées.</p>
+</section>
+<section id="résumé-de-la-deuxième-partie" class="slide level2">
+<h2>Résumé de la deuxième partie</h2>
+<p>Le pipeline complet est maintenant :</p>
+<p><span class="math display">\[
+\boxed{
+s
+\;\xrightarrow[\text{apprise sur }\mathcal D_{\mathrm{cal}}]{\text{calibration}}
+\ell
+\;\xrightarrow[\pi,C_{\mathrm{miss}},C_{\mathrm{FA}}]{}
+\text{décision}
+}
+\]</span></p>
+<p>À retenir :</p>
+<ul>
+<li>le score brut n’est pas une probabilité ;</li>
+<li>le LLR représente l’évidence apportée par les données ;</li>
+<li>le posterior ajoute le prior de l’application ;</li>
+<li><span class="math inline">\(C_{\mathrm{llr}}\)</span> mesure aussi la qualité numérique des LLR ;</li>
+<li>PAV fournit une calibration monotone non paramétrique.</li>
+</ul>
+</section></section>
+<section>
+<section id="td-intégré-30-minutes" class="title-slide slide level1 center">
+<h1>3. TD intégré — 30 minutes</h1>
+<aside class="notes">
+<p>Trois mini-problèmes d’environ 10 minutes chacun.</p>
+<style type="text/css">
+        span.MJX_Assistive_MathML {
+          position:absolute!important;
+          clip: rect(1px, 1px, 1px, 1px);
+          padding: 1px 0 0 0!important;
+          border: 0!important;
+          height: 1px!important;
+          width: 1px!important;
+          overflow: hidden!important;
+          display:block!important;
+      }</style></aside>
+</section>
+<section id="exercice-1-même-évidence-deux-applications" class="slide level2">
+<h2>Exercice 1 — Même évidence, deux applications</h2>
+<p>Un trial produit le LLR</p>
+<p><span class="math display">\[
+\ell=2.20.
+\]</span></p>
+<p>On pourra utiliser</p>
+<p><span class="math display">\[
+e^{2.20}\approx 9.03.
+\]</span></p>
+<p>Deux applications utilisent exactement le même système :</p>
+<table class="caption-top">
+<colgroup>
+<col style="width: 20%">
+<col style="width: 26%">
+<col style="width: 26%">
+<col style="width: 26%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>application</th>
+<th style="text-align: right;"><span class="math inline">\(\pi=P(H_{\mathrm{tar}})\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(C_{\mathrm{miss}}\)</span></th>
+<th style="text-align: right;"><span class="math inline">\(C_{\mathrm{FA}}\)</span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>A</td>
+<td style="text-align: right;"><span class="math inline">\(0.50\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+</tr>
+<tr class="even">
+<td>B</td>
+<td style="text-align: right;"><span class="math inline">\(0.01\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(10\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+</tr>
+</tbody>
+</table>
+<h3 id="questions">Questions</h3>
+<ol type="1">
+<li>Pour chaque application, calculer le seuil bayésien sur le LLR.</li>
+<li>Quelle décision prend-on pour le même trial <span class="math inline">\(\ell=2.20\)</span> ?</li>
+<li>Pourquoi cela n’est-il pas contradictoire ?</li>
+</ol>
+</section></section>
+<section>
+<section id="exercice-2-construire-une-calibration-pav" class="title-slide slide level1 center">
+<h1>Exercice 2 — Construire une calibration PAV</h1>
+
+</section>
+<section id="données" class="slide level2">
+<h2>Données</h2>
+<p>On trie des trials par score croissant et on les regroupe en quatre blocs :</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>bloc</th>
+<th style="text-align: right;">score représentatif</th>
+<th style="text-align: right;">nombre de trials</th>
+<th style="text-align: right;">nombre de targets</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(B_1\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.20\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(10\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(1\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(B_2\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.40\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(10\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(7\)</span></td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(B_3\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.60\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(10\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(4\)</span></td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(B_4\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(0.80\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(10\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(9\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>Pour chaque bloc,</p>
+<p><span class="math display">\[
+f_{\mathrm{tar}}(B)
+=
+\frac{N_{\mathrm{tar}}(B)}{N(B)}.
+\]</span></p>
+<h3 id="questions-1">Questions</h3>
+<ol type="1">
+<li>Calculer les quatre fréquences target.</li>
+<li>La séquence est-elle monotone avec le score ?</li>
+<li>Si non, quels blocs PAV doit-il fusionner ?</li>
+</ol>
+</section></section>
+<section>
+<section id="exercice-3-même-eer-mais-même-calibration" class="title-slide slide level1 center">
+<h1>Exercice 3 — Même EER, mais même calibration ?</h1>
+
+</section>
+<section id="deux-systèmes" class="slide level2">
+<h2>Deux systèmes</h2>
+<p>Les quatre trials sont rangés dans le même ordre par deux systèmes :</p>
+<table class="caption-top">
+<thead>
+<tr class="header">
+<th>trial</th>
+<th>vraie classe</th>
+<th style="text-align: right;">système A</th>
+<th style="text-align: right;">système B</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>N1</td>
+<td>non-target</td>
+<td style="text-align: right;"><span class="math inline">\(-2\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-8\)</span></td>
+</tr>
+<tr class="even">
+<td>T1</td>
+<td>target</td>
+<td style="text-align: right;"><span class="math inline">\(-0.5\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(-2\)</span></td>
+</tr>
+<tr class="odd">
+<td>N2</td>
+<td>non-target</td>
+<td style="text-align: right;"><span class="math inline">\(+0.5\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(+2\)</span></td>
+</tr>
+<tr class="even">
+<td>T2</td>
+<td>target</td>
+<td style="text-align: right;"><span class="math inline">\(+2\)</span></td>
+<td style="text-align: right;"><span class="math inline">\(+8\)</span></td>
+</tr>
+</tbody>
+</table>
+<p>On a simplement</p>
+<p><span class="math display">\[
+\ell_B=4\ell_A.
+\]</span></p>
+<h3 id="question-1-1">Question 1</h3>
+<p>Sans aucun calcul de <span class="math inline">\(C_{\mathrm{llr}}\)</span>, que peut-on déjà dire de leur ROC et de leur EER ?</p>
+</section>
+<section id="exercice-3-question-2-calculer-c_mathrmllr" class="slide level2">
+<h2>Exercice 3 — Question 2 : calculer <span class="math inline">\(C_{\mathrm{llr}}\)</span></h2>
+<p>On rappelle :</p>
+<p><span class="math display">\[
+C_{\mathrm{llr}}
+=
+\frac12
+\left[
+\text{coût moyen target}
++
+\text{coût moyen non-target}
+\right].
+\]</span></p>
+<p>On pourra utiliser :</p>
+<p><span class="math display">\[
+\log_2(1+e^{-2})\approx0.183,
+\]</span></p>
+<p><span class="math display">\[
+\log_2(1+e^{0.5})\approx1.405,
+\]</span></p>
+<p><span class="math display">\[
+\log_2(1+e^{-8})\approx0.0005,
+\]</span></p>
+<p><span class="math display">\[
+\log_2(1+e^{2})\approx3.069.
+\]</span></p>
+<p>Calculer <span class="math inline">\(C_{\mathrm{llr}}\)</span> pour les deux systèmes.</p>
+</section></section>
+<section>
+<section id="conclusion" class="title-slide slide level1 center">
+<h1>Conclusion</h1>
+
+</section>
+<section id="les-cinq-idées-à-retenir" class="slide level2">
+<h2>Les cinq idées à retenir</h2>
+<ol type="1">
+<li>ROC / DET décrivent le compromis <span class="math inline">\(P_{\mathrm{FA}}\)</span> / <span class="math inline">\(P_{\mathrm{miss}}\)</span> ; l’EER est un operating point particulier.</li>
+<li>Un score brut n’est pas automatiquement une probabilité ou un LLR.</li>
+<li>Le seuil optimal dépend du <strong>prior</strong> et des <strong>coûts</strong>.</li>
+<li><strong>minDCF</strong> mesure surtout la discrimination ; <strong>actDCF</strong> révèle aussi la calibration.</li>
+<li>La calibration cherche une transformation</li>
+</ol>
+<p><span class="math display">\[
+\boxed{s\mapsto \ell}
+\]</span></p>
+<p>qui permette d’utiliser directement la théorie de la décision bayésienne.</p>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="site_libs/revealjs/plugin/reveal-chalkboard/plugin.js"></script>
+  <script src="site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleChalkboard(event)\"><kbd>b</kbd> Toggle Chalkboard</a></li>\n<li class=\"slide-tool-item\" data-item=\"6\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleNotesCanvas(event)\"><kbd>c</kbd> Toggle Notes Canvas</a></li>\n<li class=\"slide-tool-item\" data-item=\"7\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.downloadDrawings(event)\"><kbd>d</kbd> Download Drawings</a></li>\n<li class=\"slide-tool-item\" data-item=\"8\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'chalkboard': {"buttons":true},
+'smaller': false,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'fade',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1600,
+
+        height: 900,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@4/tex-chtml.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, RevealChalkboard, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copié");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copié");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
